@@ -23,6 +23,7 @@ const HomeComponent = () => {
               Try your drawing skills by imitating the sketch
             </p>
           </div>
+          <div className="g-signin2" data-onsuccess="onSignIn"></div>
 
           <div className="back">
             <img
