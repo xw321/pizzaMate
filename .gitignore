@@ -1,0 +1,4 @@
+/node_modules
+env.sh
+settings.json
+.DS_Store

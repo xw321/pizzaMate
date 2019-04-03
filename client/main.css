@@ -1,0 +1,101 @@
+/*
+.card-columns {
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
+}
+*/
+.myfont-bold {
+  font-family: "Raleway";
+  font-weight: 900;
+}
+
+.myfont {
+  font-family: "Raleway";
+}
+
+.rules {
+  color: blue;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: lightgray;
+  color: white;
+  text-align: center;
+}
+
+.status {
+  color: red;
+}
+
+.back {
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+
+  background: url(imgs/6.jpeg);
+  background-size: cover;
+}
+
+body {
+  padding-left: 30px;
+}
+
+h1 {
+  font-family: "Balto", sans-serif;
+  font-weight: 900;
+  font-size: 2.5em;
+  margin: 5px 200px;
+  text-align: center;
+}
+
+.frontText {
+  font-family: sans-serif;
+  color: dimgrey;
+  font-size: 1.2em;
+  margin: 5px 180px;
+  text-align: center;
+}
+
+.frontText2 {
+  font-family: sans-serif;
+  color: dimgrey;
+  font-size: 1em;
+  margin: 10px 480px;
+  text-align: center;
+}
+
+.navbar {
+  background-color: black;
+  color: black;
+}
+
+.battle1 {
+  text-align: center;
+}
+
+.battle2 {
+  text-align: center;
+}
+
+.top {
+  text-align: center;
+}
+
+.nav-link {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
