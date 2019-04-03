@@ -7,8 +7,8 @@ import AccountsUIWrapper from "./AccountsUIWrapper.jsx";
 export default class NavBar extends Component {
   render() {
     return (
-      <div className="px-5 mx-5">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 mx-5">
+      <div className="">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <a className="navbar-brand" href="#">
             <span role="img" aria-label="heart emoji">
               🎨
@@ -34,19 +34,12 @@ export default class NavBar extends Component {
                   <span className="nav-link sr-only">(current)</span>
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  activeClassName="active"
-                  to="/top"
-                >
-                  &nbsp;&nbsp;&nbsp; <span className="myfont">Top Players</span>
-                </NavLink>
-              </li>
             </ul>
             <AccountsUIWrapper />
           </div>
         </nav>
+        <br />
+        <br />
       </div>
     );
   }
