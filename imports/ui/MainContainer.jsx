@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
-import { withTracker } from "meteor/react-meteor-data";
-import PropTypes from "prop-types";
+// import { withTracker } from "meteor/react-meteor-data";
+// import PropTypes from "prop-types";
 import { EJSON } from "meteor/ejson";
 import { Input } from "semantic-ui-react";
 import BusinessItem from "./BusinessItem.jsx";
 import UserProfile from "./UserProfile.jsx";
 import "../../client/main.css";
 
-class MainContainer extends Component {
+export default class MainContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -68,11 +68,6 @@ class MainContainer extends Component {
               console.log(err);
               return;
             }
-
-            // console.log(
-            //   "return res:    " +
-            //     JSON.stringify(EJSON.parse(res["content"])["businesses"])
-            // );
             // Format returned result, and set it in the state
             let businessesArr = EJSON.parse(res["content"])["businesses"];
             this.setState({
@@ -114,27 +109,3 @@ class MainContainer extends Component {
     );
   }
 }
-
-MainContainer.propTypes = {
-  points: PropTypes.arrayOf(PropTypes.object).isRequired,
-  players: PropTypes.arrayOf(PropTypes.object).isRequired
-};
-
-export default withTracker(() => {
-  Meteor.subscribe("userData");
-  Meteor.subscribe("userStatus");
-  Meteor.subscribe("userList");
-  Meteor.subscribe("MyGame");
-  return {
-    points: Meteor.users
-      .find(
-        { _id: Meteor.userId() },
-        {
-          fields: { points: 1 }
-        }
-      )
-      .fetch(),
-    user: Meteor.user(),
-    players: Meteor.users.find({ type: "ready" }).fetch()
-  };
-})(MainContainer);

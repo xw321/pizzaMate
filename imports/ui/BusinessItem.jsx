@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Checkbox, Form, Modal } from "semantic-ui-react";
+import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
+import { Events } from "../api/events.js";
 
 const inlineStyle = {
   modal: {
@@ -16,7 +18,7 @@ const inlineStyle = {
 // This component returns a Card which consists:
 // Basic info about current restaurant;
 // (TODO) Event info associated with this restaurant
-export default class BusinessItem extends Component {
+class BusinessItem extends Component {
   constructor(props) {
     super(props);
     this.getRatingImg = this.getRatingImg.bind(this);
@@ -59,14 +61,22 @@ export default class BusinessItem extends Component {
     return res;
   }
 
+  renderMyEvents() {
+    return this.props.myEvents.map(c => (
+      <li key={c._id}>
+        {c.peopleLimit + " ppl @ " + c.appTime + "  @@  " + c.restaurantName}
+      </li>
+    ));
+  }
+
   handleClick() {
     //TODO
     console.log("button clicked");
     Meteor.call(
       "events.createNewEvent",
-      this.props.content.name,
+      this.props.content,
       8, //size limit
-      "20190430-15:00",
+      "2019/04/30-18:30",
       (err, res) => {
         if (err) {
           //alert("Error calling createEvent");
@@ -127,6 +137,7 @@ export default class BusinessItem extends Component {
             <li className="list-group-item">
               Phone: {this.props.content.display_phone}
             </li>
+            {this.renderMyEvents()}
             <li className="list-group-item">
               <Modal
                 trigger={<Button primary>Create New Event</Button>}
@@ -144,7 +155,7 @@ export default class BusinessItem extends Component {
                     <input type="number" placeholder="Party Size Limit" />
                   </Form.Field>
                   <Form.Field>
-                    <Checkbox label="I agree to share food with new friends and not being a jerk" />
+                    <Checkbox label="I agree to share food with new friends and have a good time" />
                   </Form.Field>
                   <Button
                     positive
@@ -164,5 +175,15 @@ export default class BusinessItem extends Component {
 }
 
 BusinessItem.propTypes = {
-  content: PropTypes.PropTypes.object.isRequired
+  content: PropTypes.PropTypes.object.isRequired,
+  myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
 };
+
+export default withTracker(() => {
+  // TODO: error subscribing using props
+  Meteor.subscribe("restaurantEvents");
+
+  return {
+    myEvents: Events.find({}).fetch()
+  };
+})(BusinessItem);
