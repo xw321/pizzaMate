@@ -1,5 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Button, Checkbox, Form, Modal } from "semantic-ui-react";
+import { Meteor } from "meteor/meteor";
+
+const inlineStyle = {
+  modal: {
+    marginTop: "0px !important",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginBottom: "50px",
+    position: "relative"
+  }
+};
 
 // This component returns a Card which consists:
 // Basic info about current restaurant;
@@ -47,9 +59,41 @@ export default class BusinessItem extends Component {
     return res;
   }
 
+  handleClick() {
+    //TODO
+    console.log("button clicked");
+    Meteor.call(
+      "events.createNewEvent",
+      this.props.content.name,
+      8, //size limit
+      "20190430-15:00",
+      (err, res) => {
+        if (err) {
+          //alert("Error calling createEvent");
+          console.log("Error calling createEvent    " + err);
+          return;
+        }
+
+        console.log("return res:    " + JSON.stringify(res));
+      }
+    );
+  }
+
   render() {
     return (
       <div className="card">
+        <div className="card-header">
+          {" "}
+          <a href="https://www.yelp.com/">
+            <img
+              className="float-left pr-3"
+              src={"imgs/Yelp_trademark_RGB.png"}
+              alt="yelp-logo-img"
+              height="15%"
+              width="15%"
+            />
+          </a>
+        </div>
         <div className="card-body">
           <img
             className="float-left pr-3"
@@ -82,6 +126,35 @@ export default class BusinessItem extends Component {
             </li>
             <li className="list-group-item">
               Phone: {this.props.content.display_phone}
+            </li>
+            <li className="list-group-item">
+              <Modal
+                trigger={<Button primary>Create New Event</Button>}
+                style={inlineStyle.modal}
+                closeIcon
+              >
+                <Modal.Header>Create Your Event</Modal.Header>
+                <Form size={"tiny"}>
+                  <Form.Field>
+                    <label>Time to Eat</label>
+                    <input placeholder="Time to Eat" />
+                  </Form.Field>
+                  <Form.Field>
+                    <label>Party Size Limit</label>
+                    <input type="number" placeholder="Party Size Limit" />
+                  </Form.Field>
+                  <Form.Field>
+                    <Checkbox label="I agree to share food with new friends and not being a jerk" />
+                  </Form.Field>
+                  <Button
+                    positive
+                    type="submit"
+                    onClick={this.handleClick.bind(this)}
+                  >
+                    Submit
+                  </Button>
+                </Form>
+              </Modal>
             </li>
           </ul>
         </div>

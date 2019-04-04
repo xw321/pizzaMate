@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { HTTP } from "meteor/http";
-// import "../imports/api/methods.js";
+import "../imports/api/events.js";
 import { ServiceConfiguration } from "meteor/service-configuration";
 
 const settings = Meteor.settings.google;

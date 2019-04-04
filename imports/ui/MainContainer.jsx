@@ -3,7 +3,9 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { EJSON } from "meteor/ejson";
+import { Input } from "semantic-ui-react";
 import BusinessItem from "./BusinessItem.jsx";
+import UserProfile from "./UserProfile.jsx";
 import "../../client/main.css";
 
 class MainContainer extends Component {
@@ -67,10 +69,10 @@ class MainContainer extends Component {
               return;
             }
 
-            console.log(
-              "return res:    " +
-                JSON.stringify(EJSON.parse(res["content"])["businesses"])
-            );
+            // console.log(
+            //   "return res:    " +
+            //     JSON.stringify(EJSON.parse(res["content"])["businesses"])
+            // );
             // Format returned result, and set it in the state
             let businessesArr = EJSON.parse(res["content"])["businesses"];
             this.setState({
@@ -88,45 +90,24 @@ class MainContainer extends Component {
     return (
       <div className="row">
         <div className="col-2">
-          User info
-          <div className="card">
-            <div className="card-header">My profile</div>
-            <img
-              className="card-img-top"
-              src={Meteor.user().profile.picture}
-              alt="user-profile-img"
-            />
-            <div className="card-body">
-              <p className="card-text">Name: {Meteor.user().profile.name}</p>
-              <div className="card-header">Joined Events:</div>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">Cras justo odio</li>
-                <li className="list-group-item">Dapibus ac facilisis in</li>
-                <li className="list-group-item">Vestibulum at eros</li>
-              </ul>
-            </div>
-          </div>
+          <UserProfile content={Meteor.user()} />
         </div>
 
         <div className="col-5">
-          Search box and Map
           <h2>Search</h2>
-          <label htmlFor="inMessage">
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Search for restaurant"
-              value={this.state.message}
-              onChange={this.onChange.bind(this)}
-              onKeyPress={this.onKey.bind(this)}
-            />
-          </label>
+          <Input
+            icon="search"
+            type="text"
+            placeholder="Search for restaurant"
+            value={this.state.message}
+            onChange={this.onChange.bind(this)}
+            onKeyPress={this.onKey.bind(this)}
+          />
           <br />
           <br />
         </div>
 
         <div className="col-5">
-          rendered reetaurants
           <div>{this.renderBusinesses()}</div>
         </div>
       </div>
