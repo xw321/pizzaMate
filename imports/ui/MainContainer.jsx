@@ -3,8 +3,8 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { EJSON } from "meteor/ejson";
+import BusinessItem from "./BusinessItem.jsx";
 import "../../client/main.css";
-//import "../api/methods.js";
 
 class MainContainer extends Component {
   constructor(props) {
@@ -21,10 +21,12 @@ class MainContainer extends Component {
   }
 
   renderBusinesses() {
-    //TODO
-    return "test";
+    return this.state.businesses.map((c, i) => (
+      <BusinessItem key={i++} content={c} />
+    ));
   }
 
+  //Update state.message upon input update
   onChange(evt) {
     console.log("change", evt.target.value);
     this.setState({
@@ -33,10 +35,13 @@ class MainContainer extends Component {
     console.log("After change  ", this.state.message);
   }
 
+  // When user press Enter, get current location, and send location, input text to server.
+  // Server would call Yelp api and return an array of businesses. Update returned array in state.businesses
   onKey(evt) {
     if (evt.key === "Enter") {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
+          // get current location
           let lat = position.coords.latitude;
           let longt = position.coords.longitude;
           console.log("latitude:  " + lat + "    longitude:  " + longt);
@@ -49,6 +54,7 @@ class MainContainer extends Component {
           });
         });
 
+        // call backend yelp api
         Meteor.call(
           "searchYelp",
           this.state.lat,
@@ -65,6 +71,7 @@ class MainContainer extends Component {
               "return res:    " +
                 JSON.stringify(EJSON.parse(res["content"])["businesses"])
             );
+            // Format returned result, and set it in the state
             let businessesArr = EJSON.parse(res["content"])["businesses"];
             this.setState({
               businesses: businessesArr
