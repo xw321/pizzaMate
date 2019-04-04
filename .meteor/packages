@@ -24,3 +24,4 @@ session
 accounts-google
 google-config-ui
 service-configuration
+percolate:google-api
