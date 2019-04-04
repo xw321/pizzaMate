@@ -6,7 +6,10 @@ import { EJSON } from "meteor/ejson";
 import { Input } from "semantic-ui-react";
 import BusinessItem from "./BusinessItem.jsx";
 import UserProfile from "./UserProfile.jsx";
+import Map from "./Map.jsx";
 import "../../client/main.css";
+
+
 
 class MainContainer extends Component {
   constructor(props) {
@@ -105,7 +108,10 @@ class MainContainer extends Component {
           />
           <br />
           <br />
+          <Map />
+         
         </div>
+
 
         <div className="col-5">
           <div>{this.renderBusinesses()}</div>
