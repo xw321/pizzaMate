@@ -6,7 +6,13 @@ This project is made by [Xun Wang](https://xw321.github.io/) and [Yan Zhao](http
 
 ## Demo
 
-TODO
+![](https://github.com/xw321/pizzaMate/blob/master/demo.png)
+
+You can find the video demo [here](https://www.youtube.com/watch?v=chpMIP6mXZg&feature=youtu.be) 
+
+You can play around with the [demo](https://pizzamate.herokuapp.com/)
+
+You can see google slides for presentation [here](https://docs.google.com/presentation/d/1yFoyAzsKUo4VTTYOXizdb74unP6tbJOBRv0ttpENku4/edit#slide=id.g559317a0f8_0_47)
 
 ## Description
 
@@ -20,9 +26,10 @@ It will allow users to join or start food sharing event in a restaurant in their
 
 * Yelp APi for searching local restaurants.
 
-- TODO
+- Mapbox visualizing restaurants
 
-* TODO
+* Create/join an event associated with a restaurant
+
 
 ## Requires
 
