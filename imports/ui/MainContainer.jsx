@@ -30,7 +30,7 @@ export default class MainContainer extends Component {
   }
 
   renderMap() {
-    return <Map key={2019} markers={this.state.businesses} />;
+    return <Map markers={this.state.businesses} />;
   }
 
   //Update state.message upon input update

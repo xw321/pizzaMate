@@ -30,6 +30,19 @@ class Map extends Component {
   }
 
   renderMarker() {
+    // console.log("makers >>>>>>>   " + this.props.markers);
+    // let newLongitude = this.props.markers[0].coordinates.longitude;
+    // let newLatitude = this.props.markers[0].coordinates.longitude;
+    // let newViewPort = {
+    //   latitude: newLatitude,
+    //   longitude: newLongitude,
+    //   zoom: 12,
+    //   bearing: 0,
+    //   pitch: 0,
+    //   width: 600,
+    //   height: 600
+    // };
+    // this.setState({ viewport: newViewPort });
     return this.props.markers.map(c => (
       <Marker
         key={c.id}
@@ -68,20 +81,6 @@ class Map extends Component {
       </ReactMapGL>
     );
   }
-
-  // renderAnotherMap() {
-  //   return (
-  //     <ReactMapGL
-  //       {...viewport} onViewportChange={updateViewport}
-  //       mapStyle="mapbox://styles/mapbox/streets-v9"
-  //       mapboxApiAccessToken={TOKEN}>
-  //       <div className="nav" style={navStyle}>
-  //         <NavigationControl onViewportChange={updateViewport}/>
-
-  //       </div>
-  //     </ReactMapGL>
-  //     );
-  // }
 }
 
 Map.propTypes = {

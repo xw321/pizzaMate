@@ -55,6 +55,10 @@ Meteor.methods({
       }
     };
     return HTTP.get(URL, options);
+  },
+
+  getMapToken() {
+    return Meteor.settings.mapbox.token;
   }
 });
 

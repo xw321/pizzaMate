@@ -36,7 +36,7 @@ Meteor.methods({
       { _id: event._id },
       {
         // push to array
-        member: [Meteor.userId()]
+        $push: { member: Meteor.userId() }
       }
     );
   }
