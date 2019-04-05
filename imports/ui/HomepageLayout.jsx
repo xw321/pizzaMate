@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import { Container, Header, Segment } from "semantic-ui-react";
 
 import "./App.css";
+import "../../client/main.css";
 
 class HomepageLayout extends Component {
   render() {
@@ -21,7 +22,7 @@ class HomepageLayout extends Component {
 
             {/* <Button size="huge">Learn more</Button> */}
           </Container>
-          <Segment vertical as="footer">
+          <Segment className="seg" vertical as="footer">
             Made by <a href="https://xw321.github.io/">Xun</a> and{" "}
             <a href="https://yzhao430.github.io/">Yan</a>.
           </Segment>

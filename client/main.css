@@ -99,3 +99,8 @@ h1 {
 h2 {
   text-align: center;
 }
+
+.seg {
+  color: white;
+  font-family: 'Ubuntu', sans-serif;
+}
