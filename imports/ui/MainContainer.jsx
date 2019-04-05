@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 // import { withTracker } from "meteor/react-meteor-data";
 // import PropTypes from "prop-types";
 import { EJSON } from "meteor/ejson";
-import { Input } from "semantic-ui-react";
+import { Input, Grid } from "semantic-ui-react";
 import BusinessItem from "./BusinessItem.jsx";
 import UserProfile from "./UserProfile.jsx";
 import Map from "./Map.jsx";
@@ -88,30 +88,46 @@ export default class MainContainer extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-2">
-          <UserProfile content={Meteor.user()} />
-        </div>
+      <Grid columns={3}>
+        <Grid.Row centered>
+          <Grid.Column width={4}>
+            <UserProfile content={Meteor.user()} />
+          </Grid.Column>
+          <Grid.Column width={7}>
+            <span>
+              <h2>
+                <span role="img" aria-label="emoji">
+                  🍕
+                </span>
+                pizzaMate
+              </h2>
+            </span>
+            <br />
+            <Grid columns={3}>
+              <Grid.Row centered>
+                <Grid.Column width={5}> &nbsp;</Grid.Column>
+                <Grid.Column width={7}>
+                  <Input
+                    fluid
+                    icon="search"
+                    type="text"
+                    placeholder="Search for restaurant"
+                    value={this.state.message}
+                    onChange={this.onChange.bind(this)}
+                    onKeyPress={this.onKey.bind(this)}
+                  />
+                </Grid.Column>
 
-        <div className="col-5">
-          <h2>Search</h2>
-          <Input
-            icon="search"
-            type="text"
-            placeholder="Search for restaurant"
-            value={this.state.message}
-            onChange={this.onChange.bind(this)}
-            onKeyPress={this.onKey.bind(this)}
-          />
-          <br />
-          <br />
-          <div>{this.renderMap()}</div>
-        </div>
-
-        <div className="col-5">
-          <div>{this.renderBusinesses()}</div>
-        </div>
-      </div>
+                <Grid.Column width={4}> &nbsp;</Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <br />
+            <br />
+            <div>{this.renderMap()}</div>
+          </Grid.Column>
+          <Grid.Column width={5}> {this.renderBusinesses()} </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }

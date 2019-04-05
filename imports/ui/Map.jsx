@@ -60,7 +60,7 @@ class Map extends Component {
           onViewportChange={v => this.handleOnViewportChange(v)}
         >
           <div
-            style={{ position: "absolute", top: 36, left: 0, padding: "10px" }}
+            style={{ position: "absolute", top: 36, left: 0, padding: "30px" }}
           >
             <NavigationControl
               onViewportChange={v => this.handleOnViewportChange(v)}

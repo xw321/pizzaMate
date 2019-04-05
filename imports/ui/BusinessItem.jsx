@@ -4,6 +4,7 @@ import { Button, Checkbox, Form, Modal } from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../api/events.js";
+import { Card, Image, List } from "semantic-ui-react";
 
 const inlineStyle = {
   modal: {
@@ -87,16 +88,21 @@ class BusinessItem extends Component {
 
   renderMyEvents() {
     return this.props.myEvents.map(c => (
-      <li key={c._id}>
-        {c.peopleLimit + " people @ " + c.appTime}
-        <button
-          type="button"
-          className="btn btn-info btn-sm float-right"
-          onClick={() => this.onJoin(c)}
-        >
-          Join the Event
-        </button>
-      </li>
+      <List.Item key={c._id}>
+        <List.Icon name="food" />
+        <List.Content>
+          {c.peopleLimit + " people @ " + c.appTime}{" "}
+          <Button
+            color="red"
+            size="tiny"
+            type="button"
+            floated="right"
+            onClick={() => this.onJoin(c)}
+          >
+            Join
+          </Button>
+        </List.Content>
+      </List.Item>
     ));
   }
   handleOpen() {
@@ -151,57 +157,51 @@ class BusinessItem extends Component {
 
   render() {
     return (
-      <div className="card">
-        <div className="card-header">
-          {" "}
-          <a href="https://www.yelp.com/">
-            <img
-              className="float-left pr-3"
+      <Card fluid>
+        <Card.Content>
+          <Card.Header>
+            <Image
               src={"imgs/Yelp_trademark_RGB.png"}
               alt="yelp-logo-img"
-              height="15%"
-              width="15%"
+              height="30%"
+              width="30%"
+              href="https://www.yelp.com/"
             />
-          </a>
-        </div>
-        <div className="card-body">
-          <img
-            className="float-left pr-3"
+          </Card.Header>
+        </Card.Content>
+        <Card.Content>
+          <Image
             src={this.props.content.image_url}
             alt="restaurant-profile-img"
-            height="30%"
-            width="30%"
+            height="60%"
+            width="60%"
           />
 
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item">
+          <List className="list-group list-group-flush">
+            <List.Item>
               <a href={this.props.content.url}>{this.props.content.name}</a>
-            </li>
-            <li className="list-group-item">
+            </List.Item>
+            <List.Item>
               <img
                 src={this.getRatingImg(this.props.content.rating)}
                 alt="rating"
               />
               &nbsp;
               <span>{this.props.content.review_count + " reviews"}</span>
-            </li>
-            <li className="list-group-item">
-              Categories: {this.displayCategories()}
-            </li>
-            <li className="list-group-item">
-              Price: {this.props.content.price}
-            </li>
-            <li className="list-group-item">
+            </List.Item>
+            <List.Item>Categories: {this.displayCategories()}</List.Item>
+            <List.Item>Price: {this.props.content.price}</List.Item>
+            <List.Item>
               Location: {this.props.content.location.display_address}
-            </li>
-            <li className="list-group-item">
-              Phone: {this.props.content.display_phone}
-            </li>
+            </List.Item>
+            <List.Item>Phone: {this.props.content.display_phone}</List.Item>
+            <div className="ui divider" />
             {this.renderMyEvents()}
-            <li className="list-group-item">
+            <div className="ui divider" />
+            <List.Item>
               <Modal
                 trigger={
-                  <Button onClick={this.handleOpen} primary>
+                  <Button size="small" onClick={this.handleOpen} primary>
                     Create New Event
                   </Button>
                 }
@@ -250,10 +250,10 @@ class BusinessItem extends Component {
                   </Button>
                 </Form>
               </Modal>
-            </li>
-          </ul>
-        </div>
-      </div>
+            </List.Item>
+          </List>
+        </Card.Content>
+      </Card>
     );
   }
 }
