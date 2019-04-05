@@ -30,6 +30,36 @@ It will allow users to join or start food sharing event in a restaurant in their
 
 * Create/join an event associated with a restaurant
 
+## Design of MongoDB
+Collection Name：events 
+
+
+| column | data type| description |
+|-------|-----|------|
+| _id | string | event id |
+| owner | string | event owner |
+| status | string | status of the event |
+| isFull | boolean | whether the event is full |
+| member | string | member registered for the event |
+| appTime | string | event time |
+| restaurantId | string | restaurant id |
+| restaurantName | string | name of restaurant |
+| peopleLimit | string | event limit |
+
+
+Collection Name：users
+
+
+| column | data type| description |
+|-------|-----|------|
+| _id | string | user id |
+| services | object | google profile |
+| interestedEvents | array | interested events |
+| joinedEvents | array | registered events |
+| profile | object | google profile |
+| status | object | online or not |
+
+
 
 ## Requires
 
