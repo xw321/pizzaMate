@@ -6,6 +6,19 @@ import { HTTP } from "meteor/http";
 import "../imports/api/events.js";
 import { ServiceConfiguration } from "meteor/service-configuration";
 
+const methodName = {
+  type: "method",
+  name: "searchYelp"
+};
+
+
+
+if (Meteor.isServer) {
+  DDPRateLimiter.addRule({
+    methodName
+  }, 4, 1000);
+}
+
 const settings = Meteor.settings.google;
 
 if (settings) {
