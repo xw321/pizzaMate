@@ -24,8 +24,8 @@ export default class MainContainer extends Component {
   }
 
   renderBusinesses() {
-    return this.state.businesses.map((c, i) => (
-      <BusinessItem key={i++} content={c} />
+    return this.state.businesses.map(c => (
+      <BusinessItem key={c._id} content={c} />
     ));
   }
 

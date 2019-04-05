@@ -13,15 +13,15 @@ class HomepageLayout extends Component {
         <Segment inverted vertical textAlign="center">
           <Container className="content">
             <Header inverted as="h1">
-              Pizza Mate
+              Single is terrible.
             </Header>
-            <p>
-              Single is terrible. Meet new friends by joining or creating new
-              food-sharing event.
-            </p>
+            <Header inverted as="h1">
+              Meet new friends by joining or creating new food-sharing event.
+            </Header>
+
             {/* <Button size="huge">Learn more</Button> */}
           </Container>
-          <Segment inverted vertical as="footer">
+          <Segment vertical as="footer">
             Made by <a href="https://xw321.github.io/">Xun</a> and{" "}
             <a href="https://yzhao430.github.io/">Yan</a>.
           </Segment>

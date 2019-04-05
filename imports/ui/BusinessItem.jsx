@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-//import { Button, Checkbox, Form, Modal } from "semantic-ui-react";
+import { Button, Checkbox, Form, Modal } from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../api/events.js";
 
-// const inlineStyle = {
-//   modal: {
-//     marginTop: "0px !important",
-//     marginLeft: "auto",
-//     marginRight: "auto",
-//     marginBottom: "50px",
-//     position: "relative"
-//   }
-// };
+const inlineStyle = {
+  modal: {
+    marginTop: "0px !important",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginBottom: "50px",
+    position: "relative"
+  }
+};
 
 // This component returns a Card which consists:
 // Basic info about current restaurant;
@@ -22,12 +22,16 @@ class BusinessItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      peopleLimit: 0,
-      appTime: "",
-      currEvent: null
+      peopleLimit: -1,
+      appTime: "1970-01-01",
+      currEvent: null,
+      modalOpen: false
     };
     this.getRatingImg = this.getRatingImg.bind(this);
     this.displayCategories = this.displayCategories.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // get rating star img src based on the rating number
@@ -68,16 +72,16 @@ class BusinessItem extends Component {
 
   onJoin(myEvent) {
     //TODO
-    console.log("this.val:   " + myEvent._id);
+    // console.log("this.val:   " + myEvent._id);
 
     Meteor.call("events.joinEvent", myEvent, (err, res) => {
       if (err) {
-        alert("Error calling Yelp API");
+        alert("Error Joining");
         console.log(err);
         return;
       }
 
-      console.log("res -- " + res);
+      console.log(res);
     });
   }
 
@@ -87,7 +91,7 @@ class BusinessItem extends Component {
         {c.peopleLimit + " people @ " + c.appTime}
         <button
           type="button"
-          className="btn btn-info btn-sm"
+          className="btn btn-info btn-sm float-right"
           onClick={() => this.onJoin(c)}
         >
           Join the Event
@@ -95,17 +99,25 @@ class BusinessItem extends Component {
       </li>
     ));
   }
+  handleOpen() {
+    this.setState({ modalOpen: true });
+  }
 
-  handleSubmit(event) {
-    const form = event.currentTarget;
-    console.log("form obj     " + form);
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    this.setState({ validated: true });
+  handleClose() {
+    this.setState({ modalOpen: false });
+  }
+
+  handleSubmit() {
+    // event.preventDefault();
+    // const form = event.currentTarget;
+    // console.log("form obj     " + form);
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
+    // this.setState({ validated: true });
     //do meteor call here
-    console.log("button clicked");
+    console.log("button clicked-----   " + this.props.content.restaurantName);
     Meteor.call(
       "events.createNewEvent",
       this.props.content,
@@ -120,21 +132,22 @@ class BusinessItem extends Component {
         console.log("return res:    " + JSON.stringify(res));
       }
     );
+    this.handleClose();
   }
 
-  onChange(evt) {
-    console.log("change", evt.target.value);
-    this.setState({
-      peopleLimit: evt.target.value
-    });
-  }
+  // onChange(evt) {
+  //   console.log("change", evt.target.value);
+  //   this.setState({
+  //     peopleLimit: evt.target.value
+  //   });
+  // }
 
-  onChangeTime(evt) {
-    console.log("change", evt.target.value);
-    this.setState({
-      appTime: evt.target.value
-    });
-  }
+  // onChangeTime(evt) {
+  //   console.log("change", evt.target.value);
+  //   this.setState({
+  //     appTime: evt.target.value
+  //   });
+  // }
 
   render() {
     return (
@@ -186,98 +199,57 @@ class BusinessItem extends Component {
             </li>
             {this.renderMyEvents()}
             <li className="list-group-item">
-              <button
-                type="button"
-                className="btn btn-primary"
-                data-toggle="modal"
-                data-target="#exampleModal"
+              <Modal
+                trigger={
+                  <Button onClick={this.handleOpen} primary>
+                    Create New Event
+                  </Button>
+                }
+                open={this.state.modalOpen}
+                onClose={this.handleClose}
+                style={inlineStyle.modal}
+                size="tiny"
+                closeIcon
               >
-                Create New Event
-              </button>
-
-              <div
-                className="modal fade"
-                id="exampleModal"
-                tabIndex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Create Your Event
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      <form onSubmit={e => this.handleSubmit(e)}>
-                        <div className="form-group">
-                          <label
-                            htmlFor="recipient-name"
-                            className="col-form-label"
-                          >
-                            Time to Eat:
-                          </label>
-                          <input
-                            className="form-control"
-                            type="datetime-local"
-                            placeholder="2019-04-05T18:45:00"
-                            id="example-datetime-local-input"
-                            required
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label
-                            htmlFor="message-text"
-                            className="col-form-label"
-                          >
-                            People Limit:
-                          </label>
-                          <input
-                            className="form-control"
-                            type="number"
-                            min="2"
-                            id="message-text"
-                            required
-                            onChange={this.onChange.bind(this)}
-                          />
-                        </div>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="defaultCheck1"
-                            required
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="defaultCheck1"
-                          >
-                            I agree to share food with new friends and have a
-                            good time.
-                          </label>
-                        </div>
-                        <div>
-                          <button type="submit" className="btn btn-primary">
-                            Submit
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                    <div className="modal-footer" />
-                  </div>
-                </div>
-              </div>
+                <Modal.Header>
+                  Create Your Event (Sorry for the ugly form, we will fix it
+                  next week :(
+                </Modal.Header>{" "}
+                <div className="ui divider" /> <div className="ui divider" />
+                <Form size={"tiny"}>
+                  <Form.Field required>
+                    <label>Time to Eat</label>
+                    <input
+                      type="datetime-local"
+                      onChange={e => this.setState({ appTime: e.target.value })}
+                    />
+                  </Form.Field>
+                  <Form.Field required>
+                    <label>Party Size Limit</label>
+                    <input
+                      type="number"
+                      min={5}
+                      placeholder="Party Size Limit"
+                      onChange={e =>
+                        this.setState({ peopleLimit: e.target.value })
+                      }
+                    />
+                  </Form.Field>
+                  <Form.Field required>
+                    <Checkbox
+                      required
+                      label="I agree to share food with new friends and have a good time"
+                    />
+                  </Form.Field>
+                  <Button
+                    positive
+                    type="submit"
+                    onClick={this.handleSubmit.bind(this)}
+                  >
+                    Submit
+                  </Button>
+                </Form>
+              </Modal>
             </li>
           </ul>
         </div>

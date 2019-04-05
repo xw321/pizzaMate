@@ -51,6 +51,8 @@ nav.ui.container .ui.inverted.compact.menu .active.item {
 .ui.inverted.vertical.segment {
   height: 100vh;
   background-color: rgb(51, 51, 51);
+  background-image: url("imgs/bg-img.jpg");
+  background-size: cover;
 }
 
 .ui.content.container {
@@ -63,7 +65,8 @@ nav.ui.container .ui.inverted.compact.menu .active.item {
   background-position: 25% 1%;
   background-repeat: no-repeat;
   background-size: cover; */
-  height: 300px;
+
+  height: 700px;
   display: block;
   position: absolute;
   top: 0;
@@ -71,8 +74,6 @@ nav.ui.container .ui.inverted.compact.menu .active.item {
   left: 0;
   right: 0;
   margin: auto;
-  /* background-image: url("https://images.unsplash.com/photo-1446080501695-8e929f879f2b?fit=crop&fm=jpg&h=725&ixjsv=2.0.0&ixlib=rb-0.3.5&q=80&w=1225");
-  background-size: cover; */
 }
 
 .ui.content.container h1.header {

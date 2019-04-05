@@ -18,14 +18,20 @@ class UserProfile extends Component {
 
   renderJoinedEvents() {
     return this.props.joinedEvents.map(c => (
-      <List.Item key={c._id}>{c.restaurantName + " @ " + c.appTime}</List.Item>
+      <List.Item key={c._id}>
+        <List.Icon name="food" />
+        <List.Content>{c.restaurantName + " @ " + c.appTime}</List.Content>
+      </List.Item>
     ));
   }
 
   render() {
     return (
       <Card>
-        <Card.Header>My profile</Card.Header>
+        <Card.Content>
+          <Card.Header>My profile</Card.Header>
+        </Card.Content>
+
         <Image
           src={this.props.content.profile.picture}
           alt="user-profile-img"

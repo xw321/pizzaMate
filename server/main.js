@@ -11,12 +11,14 @@ const methodName = {
   name: "searchYelp"
 };
 
-
-
 if (Meteor.isServer) {
-  DDPRateLimiter.addRule({
-    methodName
-  }, 4, 1000);
+  DDPRateLimiter.addRule(
+    {
+      methodName
+    },
+    4,
+    1000
+  );
 }
 
 const settings = Meteor.settings.google;

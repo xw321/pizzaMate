@@ -32,11 +32,14 @@ Meteor.methods({
 
   //TODO
   "events.joinEvent"(event) {
+    //let myEvent = Events.findOne({ _id: event._id });
+
     Events.update(
       { _id: event._id },
       {
-        // push to array
-        $push: { member: Meteor.userId() }
+        // push to array, if this user if not in the array already
+        // check if is full
+        $addToSet: { member: Meteor.userId() }
       }
     );
   }

@@ -30,7 +30,7 @@ export default class NavBar extends Component {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
                 <NavLink className="nav-link" activeClassName="active" to="/">
-                  <span className="myfont">Home</span>{" "}
+                  <span className="myfont">pizzaMate</span>{" "}
                   <span className="nav-link sr-only">(current)</span>
                 </NavLink>
               </li>
