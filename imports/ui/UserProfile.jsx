@@ -36,12 +36,12 @@ class UserProfile extends Component {
             {this.props.content.profile.name}
           </Card.Description>
           <div className="ui divider" />
-          <Card.Description>Events I created:</Card.Description>
+          {/* <Card.Description>Events I created:</Card.Description>
           <List className="list-group list-group-flush">
             {this.renderMyEvents()}
           </List>
-          <div className="ui divider" />
-          <Card.Description>Events I Joined:</Card.Description>
+          <div className="ui divider" /> */}
+          <Card.Description>My Events:</Card.Description>
           <List className="list-group list-group-flush">
             {this.renderJoinedEvents()}
           </List>

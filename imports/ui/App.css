@@ -54,15 +54,25 @@ nav.ui.container .ui.inverted.compact.menu .active.item {
 }
 
 .ui.content.container {
+  /* position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background-image: url(https://images.unsplash.com/photo-1525307967925-80bbf097f0b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60https://images.unsplash.com/photo-1525307967925-80bbf097f0b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60);
+  background-position: 25% 1%;
+  background-repeat: no-repeat;
+  background-size: cover; */
   height: 300px;
+  display: block;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
-  background-image: url("https://images.unsplash.com/photo-1446080501695-8e929f879f2b?fit=crop&fm=jpg&h=725&ixjsv=2.0.0&ixlib=rb-0.3.5&q=80&w=1225");
-  background-size: cover;
+  /* background-image: url("https://images.unsplash.com/photo-1446080501695-8e929f879f2b?fit=crop&fm=jpg&h=725&ixjsv=2.0.0&ixlib=rb-0.3.5&q=80&w=1225");
+  background-size: cover; */
 }
 
 .ui.content.container h1.header {

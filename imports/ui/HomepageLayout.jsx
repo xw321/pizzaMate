@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import NavBar from "./NavBar.jsx";
+// import NavBar from "./NavBar.jsx";
 //import "semantic-ui-css/semantic.min.css";
 
-import { Button, Container, Header, Segment } from "semantic-ui-react";
+import { Container, Header, Segment } from "semantic-ui-react";
 
 import "./App.css";
 
@@ -11,17 +11,15 @@ class HomepageLayout extends Component {
     return (
       <div className="App">
         <Segment inverted vertical textAlign="center">
-          <NavBar />
           <Container className="content">
             <Header inverted as="h1">
-              Cover your page.
+              Pizza Mate
             </Header>
             <p>
-              Cover is a one-page template for building simple and beautiful
-              home pages. Download, edit the text, and add your own fullscreen
-              background photo to make it your own.
+              Single is terrible. Meet new friends by joining or creating new
+              food-sharing event.
             </p>
-            <Button size="huge">Learn more</Button>
+            {/* <Button size="huge">Learn more</Button> */}
           </Container>
           <Segment inverted vertical as="footer">
             Made by <a href="https://xw321.github.io/">Xun</a> and{" "}

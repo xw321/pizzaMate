@@ -8,10 +8,10 @@ export default class NavBar extends Component {
   render() {
     return (
       <div className="">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <a className="navbar-brand" href="#">
-            <span role="img" aria-label="heart emoji">
-              🎨
+            <span role="img" aria-label="emoji">
+              🍕
             </span>
           </a>
           <button

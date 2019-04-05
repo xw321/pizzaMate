@@ -43,8 +43,8 @@
   background-position: center;
   background-repeat: no-repeat;
 
-  background: url(imgs/6.jpeg);
-  background-size: cover;
+  /* background: url(imgs/6.jpeg);
+  background-size: cover; */
 }
 
 body {

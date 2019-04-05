@@ -4,10 +4,9 @@ import ReactMapGL, { NavigationControl, Marker } from "react-map-gl";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import CityPin from "./city-pin.jsx";
+import mapConfig from "./mapConfig.jsx";
 
-const TOKEN =
-  "pk.eyJ1IjoiYWRvdWRvdSIsImEiOiJjanUyMWg4cW0wN3FsM3lwY2dyNTJsb3h0In0.sdXoWdlnsVa3oUEZ-BEfLw";
-
+const TOKEN = mapConfig.key;
 class Map extends Component {
   constructor(props) {
     super(props);
