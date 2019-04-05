@@ -160,6 +160,7 @@ class BusinessItem extends Component {
       <Card fluid>
         <Card.Content>
           <Card.Header>
+            <span>powered by</span>
             <Image
               src={"imgs/Yelp_trademark_RGB.png"}
               alt="yelp-logo-img"
