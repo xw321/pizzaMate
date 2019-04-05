@@ -107,15 +107,17 @@ export default class MainContainer extends Component {
               <Grid.Row centered>
                 <Grid.Column width={5}> &nbsp;</Grid.Column>
                 <Grid.Column width={7}>
-                  <Input
-                    fluid
-                    icon="search"
-                    type="text"
-                    placeholder="Search for restaurant"
-                    value={this.state.message}
-                    onChange={this.onChange.bind(this)}
-                    onKeyPress={this.onKey.bind(this)}
-                  />
+                  <label> Search restaurant
+                    <Input
+                      fluid
+                      icon="search"
+                      type="text"
+                      placeholder="Search for restaurant"
+                      value={this.state.message}
+                      onChange={this.onChange.bind(this)}
+                      onKeyPress={this.onKey.bind(this)}
+                    />
+                  </label>
                 </Grid.Column>
 
                 <Grid.Column width={4}> &nbsp;</Grid.Column>
