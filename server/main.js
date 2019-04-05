@@ -5,6 +5,9 @@ import { check } from "meteor/check";
 import { HTTP } from "meteor/http";
 import "../imports/api/events.js";
 import { ServiceConfiguration } from "meteor/service-configuration";
+import { WebApp } from "meteor/webapp";
+
+WebApp.addHtmlAttributeHook(() => ({ lang: "en" }));
 
 const methodName = {
   type: "method",
