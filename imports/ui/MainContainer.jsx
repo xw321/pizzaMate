@@ -29,6 +29,10 @@ export default class MainContainer extends Component {
     ));
   }
 
+  renderMap() {
+    return <Map key={2019} markers={this.state.businesses} />;
+  }
+
   //Update state.message upon input update
   onChange(evt) {
     console.log("change", evt.target.value);
@@ -101,7 +105,7 @@ export default class MainContainer extends Component {
           />
           <br />
           <br />
-          <Map />
+          <div>{this.renderMap()}</div>
         </div>
 
         <div className="col-5">

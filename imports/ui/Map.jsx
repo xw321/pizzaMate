@@ -1,17 +1,14 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 //import MapGL, {NavigationControl} from "react-map-gl";
-import ReactMapGL, {NavigationControl,} from "react-map-gl";
+import ReactMapGL, { NavigationControl, Marker } from "react-map-gl";
+import { withTracker } from "meteor/react-meteor-data";
+import PropTypes from "prop-types";
+import CityPin from "./city-pin.jsx";
 
-const TOKEN = "pk.eyJ1IjoiYWRvdWRvdSIsImEiOiJjanUyMWg4cW0wN3FsM3lwY2dyNTJsb3h0In0.sdXoWdlnsVa3oUEZ-BEfLw";
-// const navStyle = {
-//   position: "absolute",
-//   top: 0,
-//   left: 0,
-//   padding: "10px"
-// };
+const TOKEN =
+  "pk.eyJ1IjoiYWRvdWRvdSIsImEiOiJjanUyMWg4cW0wN3FsM3lwY2dyNTJsb3h0In0.sdXoWdlnsVa3oUEZ-BEfLw";
 
-
-export default class Map extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,32 +19,52 @@ export default class Map extends Component {
         bearing: 0,
         pitch: 0,
         width: 600,
-        height: 600,
-      }
+        height: 600
+      },
+      popupInfo: null
     };
   }
 
-  // renderMap() {
-  //   return (
-      
-  //   );
-  // }
+  componentDidMount() {
+    this.renderMarker();
+  }
+
+  renderMarker() {
+    return this.props.markers.map(c => (
+      <Marker
+        key={c.id}
+        longitude={c.coordinates.longitude}
+        latitude={c.coordinates.latitude}
+      >
+        <CityPin
+          size={20}
+          onClick={() => this.setState({ popupInfo: "city" })}
+        />
+      </Marker>
+    ));
+  }
 
   handleOnViewportChange(viewport) {
-    this.setState({viewport: viewport});
+    this.setState({ viewport: viewport });
   }
 
   render() {
-    // const {viewport, updateViewport} = this.state;
     return (
       <ReactMapGL
         {...this.state.viewport}
         mapboxApiAccessToken={TOKEN}
-        mapstyle = {"mapbox://styles/mapbox/streets-v9"}
-        onViewportChange={(v) => this.handleOnViewportChange(v)}>
-        <div style={{position: "absolute", top: 36, left: 0, padding: "10px"}}>
-          <NavigationControl onViewportChange={(v) => this.handleOnViewportChange(v)}/>
+        mapstyle={"mapbox://styles/mapbox/streets-v9"}
+        onViewportChange={v => this.handleOnViewportChange(v)}
+      >
+        <div
+          style={{ position: "absolute", top: 36, left: 0, padding: "10px" }}
+        >
+          <NavigationControl
+            onViewportChange={v => this.handleOnViewportChange(v)}
+          />
         </div>
+
+        {this.renderMarker()}
       </ReactMapGL>
     );
   }
@@ -66,3 +83,17 @@ export default class Map extends Component {
   //     );
   // }
 }
+
+Map.propTypes = {
+  markers: PropTypes.arrayOf(PropTypes.object).isRequired
+  // myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
+};
+
+export default withTracker(() => {
+  // TODO: error subscribing using props
+  //Meteor.subscribe("restaurantEvents");
+
+  return {
+    //myEvents: Events.find({}).fetch()
+  };
+})(Map);
