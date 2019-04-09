@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Card, Icon, Image, List } from "semantic-ui-react";
+import { Popup, Button, Card, Icon, Image, List } from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../api/events.js";
@@ -20,9 +20,41 @@ class UserProfile extends Component {
     return this.props.joinedEvents.map(c => (
       <List.Item key={c._id}>
         <List.Icon name="food" />
-        <List.Content>{c.restaurantName + " @ " + c.appTime}</List.Content>
+        <List.Content>
+          {c.restaurantName + " @ " + c.appTime}
+          <Popup
+            trigger={
+              <Button
+                icon
+                color="red"
+                size="tiny"
+                type="button"
+                floated="right"
+                onClick={() => this.handleCancel(c)}
+              >
+                <Icon name="cancel" />
+              </Button>
+            }
+            content="Cancel this event"
+            basic
+          />
+        </List.Content>
       </List.Item>
     ));
+  }
+
+  handleCancel(myEvent) {
+    console.log("join called  " + myEvent._id);
+
+    Meteor.call("events.leaveEvent", myEvent, (err, res) => {
+      if (err) {
+        alert("Error leaving");
+        console.log(err);
+        return;
+      }
+
+      console.log(res);
+    });
   }
 
   render() {

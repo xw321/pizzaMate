@@ -73,7 +73,7 @@ class BusinessItem extends Component {
 
   onJoin(myEvent) {
     //TODO
-    // console.log("this.val:   " + myEvent._id);
+    console.log("join called  " + myEvent._id);
 
     Meteor.call("events.joinEvent", myEvent, (err, res) => {
       if (err) {
@@ -91,7 +91,7 @@ class BusinessItem extends Component {
       <List.Item key={c._id}>
         <List.Icon name="food" />
         <List.Content>
-          {c.peopleLimit + " people @ " + c.appTime}{" "}
+          {c.peopleLimit + " people @ " + c.appTime}
           <Button
             color="red"
             size="tiny"
@@ -215,7 +215,7 @@ class BusinessItem extends Component {
                 <Modal.Header>
                   Create Your Event (Sorry for the ugly form, we will fix it
                   next week :(
-                </Modal.Header>{" "}
+                </Modal.Header>
                 <div className="ui divider" /> <div className="ui divider" />
                 <Form size={"tiny"}>
                   <Form.Field required>

@@ -33,13 +33,26 @@ Meteor.methods({
   //TODO
   "events.joinEvent"(event) {
     //let myEvent = Events.findOne({ _id: event._id });
-
+    console.log("server join events" + event._id);
     Events.update(
       { _id: event._id },
       {
         // push to array, if this user if not in the array already
         // check if is full
         $addToSet: { member: Meteor.userId() }
+      }
+    );
+  },
+
+  "events.leaveEvent"(event) {
+    //let myEvent = Events.findOne({ _id: event._id });
+    console.log("server leave events" + event._id);
+    Events.update(
+      { _id: event._id },
+      {
+        // push to array, if this user if not in the array already
+        // check if is full
+        $pull: { member: Meteor.userId() }
       }
     );
   }
