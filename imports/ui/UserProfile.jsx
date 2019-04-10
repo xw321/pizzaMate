@@ -17,7 +17,7 @@ class UserProfile extends Component {
       <List.Item key={c._id}>
         <List.Icon name="food" />
         <List.Content>
-          {c.restaurantName + " @ " + c.appTime}
+          <a href="/message">{c.restaurantName + " @ " + c.appTime}</a>
           <Popup
             trigger={
               <Button

@@ -10,6 +10,7 @@ const inlineStyle = {
   modal: {
     marginTop: "0px !important",
     marginLeft: "auto",
+    display: "inline-block !important",
     marginRight: "auto",
     marginBottom: "50px",
     position: "relative"
@@ -72,7 +73,6 @@ class BusinessItem extends Component {
   }
 
   onJoin(myEvent) {
-    //TODO
     console.log("join called  " + myEvent._id);
 
     Meteor.call("events.joinEvent", myEvent, (err, res) => {
@@ -217,44 +217,45 @@ class BusinessItem extends Component {
                 size="tiny"
                 closeIcon
               >
-                <Modal.Header>
-                  Create Your Event (Sorry for the ugly form, we will fix it
-                  next week :(
-                </Modal.Header>
-                <div className="ui divider" /> <div className="ui divider" />
-                <Form size={"tiny"}>
-                  <Form.Field required>
-                    <label>Time to Eat</label>
-                    <input
-                      type="datetime-local"
-                      onChange={e => this.setState({ appTime: e.target.value })}
-                    />
-                  </Form.Field>
-                  <Form.Field required>
-                    <label>Party Size Limit</label>
-                    <input
-                      type="number"
-                      min={5}
-                      placeholder="Party Size Limit"
-                      onChange={e =>
-                        this.setState({ peopleLimit: e.target.value })
-                      }
-                    />
-                  </Form.Field>
-                  <Form.Field required>
-                    <Checkbox
-                      required
-                      label="I agree to share food with new friends and have a good time"
-                    />
-                  </Form.Field>
-                  <Button
-                    positive
-                    type="submit"
-                    onClick={this.handleSubmit.bind(this)}
-                  >
-                    Submit
-                  </Button>
-                </Form>
+                <Modal.Header>Create Your Event</Modal.Header>
+                <Modal.Content>
+                  <Form size={"tiny"}>
+                    <Form.Field required>
+                      <label>Time to Eat</label>
+                      <input
+                        type="datetime-local"
+                        value="2018-06-12T19:30"
+                        onChange={e =>
+                          this.setState({ appTime: e.target.value })
+                        }
+                      />
+                    </Form.Field>
+                    <Form.Field required>
+                      <label>Party Size Limit</label>
+                      <input
+                        type="number"
+                        min={5}
+                        placeholder="Party Size Limit"
+                        onChange={e =>
+                          this.setState({ peopleLimit: e.target.value })
+                        }
+                      />
+                    </Form.Field>
+                    <Form.Field required>
+                      <Checkbox
+                        required
+                        label="I agree to share food with new friends and have a good time"
+                      />
+                    </Form.Field>
+                    <Button
+                      positive
+                      type="submit"
+                      onClick={this.handleSubmit.bind(this)}
+                    >
+                      Submit
+                    </Button>
+                  </Form>
+                </Modal.Content>
               </Modal>
             </List.Item>
           </List>
