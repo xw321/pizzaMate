@@ -82,7 +82,7 @@ class BusinessItem extends Component {
         return;
       }
 
-      console.log(res);
+      console.log("return from join evt:  " + res);
     });
   }
 
@@ -198,7 +198,12 @@ class BusinessItem extends Component {
             <List.Item>Phone: {this.props.content.display_phone}</List.Item>
             <div className="ui divider" />
             {this.renderMyEvents()}
-            <div className="ui divider" />
+            {this.props.myEvents.length === 0 ? (
+              <div />
+            ) : (
+              <div className="ui divider" />
+            )}
+
             <List.Item>
               <Modal
                 trigger={

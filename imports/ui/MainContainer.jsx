@@ -53,12 +53,12 @@ export default class MainContainer extends Component {
           let longt = position.coords.longitude;
           console.log("latitude:  " + lat + "    longitude:  " + longt);
 
-          this.setState({
-            lat: lat,
-            longt: longt,
-            message: "",
-            businesses: []
-          });
+          // this.setState({
+          //   lat: lat,
+          //   longt: longt,
+          //   message: "",
+          //   businesses: []
+          // });
         });
 
         // call backend yelp api
@@ -107,7 +107,9 @@ export default class MainContainer extends Component {
               <Grid.Row centered>
                 <Grid.Column width={5}> &nbsp;</Grid.Column>
                 <Grid.Column width={7}>
-                  <label> Search restaurant
+                  <label>
+                    {" "}
+                    Search restaurant
                     <Input
                       fluid
                       icon="search"
