@@ -266,7 +266,7 @@ class BusinessItem extends Component {
 }
 
 BusinessItem.propTypes = {
-  content: PropTypes.PropTypes.object.isRequired,
+  content: PropTypes.object.isRequired,
   myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 

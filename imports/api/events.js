@@ -9,7 +9,6 @@ if (Meteor.isServer) {
     return Events.find({ member: Meteor.userId() });
   });
 
-  // todo change querry
   Meteor.publish("restaurantEvents", function(restaurantObj) {
     return Events.find({ restaurantId: restaurantObj.id });
   });
@@ -31,32 +30,78 @@ Meteor.methods({
   },
 
   "events.joinEvent"(event) {
-    //let myEvent = Events.findOne({ _id: event._id });
     console.log("server join events   " + event._id);
     console.log("join events called by:  " + this.userId);
-    Events.update(
-      { _id: event._id },
-      {
-        $addToSet: { member: this.userId }
+    let myEvent = Events.findOne({ _id: event._id });
+    if (myEvent !== undefined) {
+      let currMemberSize = myEvent.member.length;
+      let sizeLimit = myEvent.peopleLimit;
+      if (currMemberSize === sizeLimit) {
+        // event full, cannot join
+        Events.update(
+          { _id: event._id },
+          {
+            isFull: true
+          }
+        );
+        console.log("event is FULL!");
+      } else if (sizeLimit - currMemberSize === 1) {
+        // only one slot left
+        Events.update(
+          { _id: event._id },
+          {
+            $addToSet: { member: this.userId },
+            $set: { isFull: true }
+          }
+        );
+        Meteor.users.update(
+          { _id: this.userId },
+          {
+            $addToSet: { joinedEvents: this.userId }
+          }
+        );
+      } else {
+        Events.update(
+          { _id: event._id },
+          {
+            $addToSet: { member: this.userId }
+          }
+        );
+        Meteor.users.update(
+          { _id: this.userId },
+          {
+            $addToSet: { joinedEvents: this.userId }
+          }
+        );
       }
-    );
-
-    Meteor.users.update(
-      { _id: this.userId },
-      {
-        $addToSet: { joinedEvents: this.userId }
-      }
-    );
+    } else {
+      console.log("event nor found!");
+    }
   },
 
   "events.leaveEvent"(event) {
-    //let myEvent = Events.findOne({ _id: event._id });
     console.log("server leave events   " + event._id);
-    Events.update(
-      { _id: event._id },
-      {
-        $pull: { member: Meteor.userId() }
+
+    let myEvent = Events.findOne({ _id: event._id });
+    if (myEvent !== undefined) {
+      let currMemberSize = myEvent.member.length;
+
+      if (currMemberSize <= 0) {
+        // empty event, need remove
+        Events.remove({ _id: event._id });
+      } else if (currMemberSize === 1 && event.member[0] === this.userId) {
+        // only curr user left in this event
+        Events.remove({ _id: event._id });
+      } else {
+        Events.update(
+          { _id: event._id },
+          {
+            $pull: { member: Meteor.userId() }
+          }
+        );
       }
-    );
+    } else {
+      console.log("event not found in CANCEL EVENT !");
+    }
   }
 });
