@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 // import { withTracker } from "meteor/react-meteor-data";
 // import PropTypes from "prop-types";
 import { EJSON } from "meteor/ejson";
-import { Input, Grid } from "semantic-ui-react";
+import { Segment, Input, Grid } from "semantic-ui-react";
 import BusinessItem from "./BusinessItem.jsx";
 import UserProfile from "./UserProfile.jsx";
 import Map from "./Map.jsx";
@@ -108,7 +108,6 @@ export default class MainContainer extends Component {
                 <Grid.Column width={5}> &nbsp;</Grid.Column>
                 <Grid.Column width={7}>
                   <label>
-                    {" "}
                     Search restaurant
                     <Input
                       fluid
@@ -129,7 +128,12 @@ export default class MainContainer extends Component {
             <br />
             <div>{this.renderMap()}</div>
           </Grid.Column>
-          <Grid.Column width={5}> {this.renderBusinesses()} </Grid.Column>
+          <Grid.Column width={5}>
+            {" "}
+            <Segment style={{ overflow: "auto", maxHeight: 1000 }}>
+              {this.renderBusinesses()}
+            </Segment>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     );

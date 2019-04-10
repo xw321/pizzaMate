@@ -42,7 +42,7 @@ class GroupChat extends Component {
         <Grid.Row centered>
           <Grid.Column width={6}>
             <h3>My Events Channels</h3>
-            <Menu pointing vertical>
+            <Menu fluid pointing vertical floated="right">
               {this.renderMyEvents()}
             </Menu>
           </Grid.Column>

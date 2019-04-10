@@ -8,6 +8,7 @@ import { Card, Image, List } from "semantic-ui-react";
 
 const inlineStyle = {
   modal: {
+    height: 400,
     marginTop: "0px !important",
     marginLeft: "auto",
     display: "inline-block !important",
@@ -27,7 +28,9 @@ class BusinessItem extends Component {
       peopleLimit: -1,
       appTime: "1970-01-01",
       currEvent: null,
-      modalOpen: false
+      modalOpen: false,
+      joinButton: "join",
+      joinButtonColor: "red"
     };
     this.getRatingImg = this.getRatingImg.bind(this);
     this.displayCategories = this.displayCategories.bind(this);
@@ -81,7 +84,7 @@ class BusinessItem extends Component {
         console.log(err);
         return;
       }
-
+      this.setState({ joinButton: "joined!", joinButtonColor: "green" });
       console.log("return from join evt:  " + res);
     });
   }
@@ -92,15 +95,20 @@ class BusinessItem extends Component {
         <List.Icon name="food" />
         <List.Content>
           {c.peopleLimit + " people @ " + c.appTime}
-          <Button
-            color="red"
-            size="tiny"
-            type="button"
-            floated="right"
-            onClick={() => this.onJoin(c)}
-          >
-            Join
-          </Button>
+
+          {c.isFull ? (
+            <Button disabled>Full</Button>
+          ) : (
+            <Button
+              color={this.state.joinButtonColor}
+              size="tiny"
+              type="button"
+              floated="right"
+              onClick={() => this.onJoin(c)}
+            >
+              {this.state.joinButton}
+            </Button>
+          )}
         </List.Content>
       </List.Item>
     ));
