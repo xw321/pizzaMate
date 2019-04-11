@@ -12,7 +12,6 @@ class UserProfile extends Component {
   }
 
   renderMyEvents() {
-    console.log("my props.events:  " + this.props.myEvents.length);
     return this.props.myEvents.map(c => (
       <List.Item key={c._id}>
         <List.Icon name="food" />

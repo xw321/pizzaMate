@@ -12,6 +12,10 @@ if (Meteor.isServer) {
   Meteor.publish("restaurantEvents", function(restaurantObj) {
     return Events.find({ restaurantId: restaurantObj.id });
   });
+
+  Meteor.publish("newEvents", function() {
+    return Events.find({}, { sort: { createAt: -1 } });
+  });
 }
 
 Meteor.methods({

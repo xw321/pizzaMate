@@ -9,6 +9,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 const TOKEN =
   "pk.eyJ1IjoiYWRvdWRvdSIsImEiOiJjanUyMWg4cW0wN3FsM3lwY2dyNTJsb3h0In0.sdXoWdlnsVa3oUEZ-BEfLw";
+
+const mapStyle = { position: "absolute", top: 36, left: 0, padding: "10px" };
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -52,24 +54,20 @@ class Map extends Component {
 
   render() {
     return (
-      <div>
-        <ReactMapGL
-          {...this.state.viewport}
-          mapboxApiAccessToken={TOKEN}
-          mapstyle={"mapbox://styles/mapbox/streets-v9"}
-          onViewportChange={v => this.handleOnViewportChange(v)}
-        >
-          <div
-            style={{ position: "absolute", top: 36, left: 0, padding: "30px" }}
-          >
-            <NavigationControl
-              onViewportChange={v => this.handleOnViewportChange(v)}
-            />
-          </div>
+      <ReactMapGL
+        {...this.state.viewport}
+        mapboxApiAccessToken={TOKEN}
+        mapstyle={"mapbox://styles/mapbox/streets-v9"}
+        onViewportChange={v => this.handleOnViewportChange(v)}
+      >
+        <div style={mapStyle}>
+          <NavigationControl
+            onViewportChange={v => this.handleOnViewportChange(v)}
+          />
+        </div>
 
-          {this.renderMarker()}
-        </ReactMapGL>
-      </div>
+        {this.renderMarker()}
+      </ReactMapGL>
     );
   }
 }
