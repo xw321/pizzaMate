@@ -8,10 +8,6 @@
   }
 }
 */
-#pizza {
-  font-family: "Space Mono", monospace;
-}
-
 .myfont-bold {
   font-family: "Raleway";
   font-weight: 900;
@@ -106,7 +102,7 @@ h2 {
 
 .seg {
   color: white;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 .pin-picture {

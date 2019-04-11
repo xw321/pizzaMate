@@ -14,24 +14,7 @@ Messages DB:
 
 */
 if (Meteor.isServer) {
-  Meteor.publish("myMessages", function(eventId) {
-    return Messages.find({ event: eventId }, { sort: { createAt: 1 } });
+  Meteor.publish("myMessages", function(currEvent) {
+    return Messages.find({ event: currEvent._id });
   });
 }
-
-Meteor.methods({
-  "messages.sendMessage"(eventId, message) {
-    //check(newText, String);
-
-    if (!Meteor.userId()) {
-      throw new Meteor.Error("not-authorized");
-    }
-
-    Messages.insert({
-      event: eventId,
-      user: Meteor.user(),
-      message: message,
-      createAt: Date.now()
-    });
-  }
-});

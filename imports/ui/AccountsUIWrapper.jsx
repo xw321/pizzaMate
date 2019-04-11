@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
-import "./google.css";
 
 export default class AccountsUIWrapper extends Component {
   componentDidMount() {

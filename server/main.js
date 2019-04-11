@@ -4,7 +4,6 @@ import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { HTTP } from "meteor/http";
 import "../imports/api/events.js";
-import "../imports/api/messages.js";
 import { ServiceConfiguration } from "meteor/service-configuration";
 import { WebApp } from "meteor/webapp";
 

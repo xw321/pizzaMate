@@ -8,15 +8,20 @@ import { Events } from "../api/events.js";
 class UserProfile extends Component {
   constructor(props) {
     super(props);
-    this.renderMyEvents = this.renderMyEvents.bind(this);
   }
 
   renderMyEvents() {
     return this.props.myEvents.map(c => (
+      <List.Item key={c._id}>{c.restaurantName + " @ " + c.appTime}</List.Item>
+    ));
+  }
+
+  renderJoinedEvents() {
+    return this.props.joinedEvents.map(c => (
       <List.Item key={c._id}>
         <List.Icon name="food" />
         <List.Content>
-          <a href="/message">{c.restaurantName + " @ " + c.appTime}</a>
+          {c.restaurantName + " @ " + c.appTime}
           <Popup
             trigger={
               <Button
@@ -39,7 +44,7 @@ class UserProfile extends Component {
   }
 
   handleCancel(myEvent) {
-    console.log("cancel called  " + myEvent._id);
+    console.log("join called  " + myEvent._id);
 
     Meteor.call("events.leaveEvent", myEvent, (err, res) => {
       if (err) {
@@ -54,7 +59,7 @@ class UserProfile extends Component {
 
   render() {
     return (
-      <Card fluid>
+      <Card>
         <Card.Content>
           <Card.Header>My profile</Card.Header>
         </Card.Content>
@@ -75,8 +80,8 @@ class UserProfile extends Component {
           </List>
           <div className="ui divider" /> */}
           <Card.Description>My Events:</Card.Description>
-          <List key={"listevent"} className="list-group list-group-flush">
-            {this.renderMyEvents()}
+          <List className="list-group list-group-flush">
+            {this.renderJoinedEvents()}
           </List>
         </Card.Content>
       </Card>
@@ -86,12 +91,15 @@ class UserProfile extends Component {
 // add subscribe
 UserProfile.propTypes = {
   content: PropTypes.PropTypes.object.isRequired,
-  myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
+  myEvents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  joinedEvents: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 export default withTracker(() => {
   Meteor.subscribe("MyEvents");
 
+  //TODO: wrong info displayed
   return {
-    myEvents: Events.find({ member: Meteor.userId() }).fetch()
+    myEvents: Events.find({ owner: this.userId }).fetch(),
+    joinedEvents: Events.find({ owner: { $ne: this.userId } }).fetch()
   };
 })(UserProfile);
