@@ -20,6 +20,8 @@ const degreeToPixels = [ { zoom: 0, pixels: 1.7492 }, { zoom: 1, pixels: 3.4984 
 
 const TOKEN =
   "pk.eyJ1IjoiYWRvdWRvdSIsImEiOiJjanUyMWg4cW0wN3FsM3lwY2dyNTJsb3h0In0.sdXoWdlnsVa3oUEZ-BEfLw";
+
+const mapStyle = { position: "absolute", top: 36, left: 0, padding: "10px" };
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -132,6 +134,7 @@ class Map extends Component {
   render() {
     console.log("render");
     return (
+
       <div>
         <ReactMapGL
           {...this.state.viewport}
@@ -140,7 +143,7 @@ class Map extends Component {
           onViewportChange={v => this.handleOnViewportChange(v)}
         >
           <div
-            style={{ position: "absolute", top: 36, left: 0, padding: "30px" }}
+            style={mapStyle}
           >
             <NavigationControl
               onViewportChange={v => this.handleOnViewportChange(v)}
@@ -148,9 +151,9 @@ class Map extends Component {
           </div>
           {this.renderCurrentPosition()}
 
-          {this.renderMarker()}
-        </ReactMapGL>
-      </div>
+
+        {this.renderMarker()}
+      </ReactMapGL>
     );
   }
 }

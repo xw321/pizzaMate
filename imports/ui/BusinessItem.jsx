@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Checkbox, Form, Modal } from "semantic-ui-react";
+import { Message, Button, Checkbox, Form, Modal } from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../api/events.js";
@@ -8,8 +8,10 @@ import { Card, Image, List } from "semantic-ui-react";
 
 const inlineStyle = {
   modal: {
+    height: 500,
     marginTop: "0px !important",
     marginLeft: "auto",
+    display: "inline-block !important",
     marginRight: "auto",
     marginBottom: "50px",
     position: "relative"
@@ -23,11 +25,21 @@ class BusinessItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      peopleLimit: -1,
-      appTime: "1970-01-01",
+      peopleLimit: 2,
+      appDate: "",
+      appTime: "",
       currEvent: null,
-      modalOpen: false
+      modalOpen: false,
+      joinButton: "join",
+      joinButtonColor: "red",
+      partySizeError: false,
+      timeError: false,
+      dateError: false,
+      formError: false,
+      checked: false
     };
+    this.getTime = this.getTime.bind(this);
+    this.getDate = this.getDate.bind(this);
     this.getRatingImg = this.getRatingImg.bind(this);
     this.displayCategories = this.displayCategories.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
@@ -72,7 +84,6 @@ class BusinessItem extends Component {
   }
 
   onJoin(myEvent) {
-    //TODO
     console.log("join called  " + myEvent._id);
 
     Meteor.call("events.joinEvent", myEvent, (err, res) => {
@@ -81,8 +92,8 @@ class BusinessItem extends Component {
         console.log(err);
         return;
       }
-
-      console.log(res);
+      this.setState({ joinButton: "joined!", joinButtonColor: "green" });
+      console.log("return from join evt:  " + res);
     });
   }
 
@@ -92,15 +103,20 @@ class BusinessItem extends Component {
         <List.Icon name="food" />
         <List.Content>
           {c.peopleLimit + " people @ " + c.appTime}
-          <Button
-            color="red"
-            size="tiny"
-            type="button"
-            floated="right"
-            onClick={() => this.onJoin(c)}
-          >
-            Join
-          </Button>
+
+          {c.isFull ? (
+            <Button disabled>Full</Button>
+          ) : (
+            <Button
+              color={this.state.joinButtonColor}
+              size="tiny"
+              type="button"
+              floated="right"
+              onClick={() => this.onJoin(c)}
+            >
+              {this.state.joinButton}
+            </Button>
+          )}
         </List.Content>
       </List.Item>
     ));
@@ -113,22 +129,86 @@ class BusinessItem extends Component {
     this.setState({ modalOpen: false });
   }
 
+  getDate() {
+    let today = new Date();
+    let date = today.getFullYear() + "-";
+    let mon =
+      today.getMonth() + 1 >= 10
+        ? today.getMonth() + 1
+        : "0" + (today.getMonth() + 1);
+
+    date += mon;
+    date += "-" + today.getDate();
+    return date;
+  }
+
+  getTime() {
+    var today = new Date();
+    var time = today.getHours() + ":" + today.getMinutes();
+    return time;
+  }
+
   handleSubmit() {
-    // event.preventDefault();
-    // const form = event.currentTarget;
-    // console.log("form obj     " + form);
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    // }
-    // this.setState({ validated: true });
-    //do meteor call here
     console.log("button clicked-----   " + this.props.content.restaurantName);
+    let error = false;
+
+    if (this.state.appTime === "" || this.state.appDate === "") {
+      this.setState({ dateError: true });
+      error = true;
+      console.log("check error 1:   " + error);
+    } else if (this.state.appDate < this.getDate()) {
+      this.setState({ dateError: true });
+      error = true;
+      console.log("state date:   " + this.state.appDate);
+      console.log("curr date:   " + this.getDate());
+      console.log("check error 2:   " + error);
+    } else if (
+      this.state.appDate == this.getDate() &&
+      this.state.appTime < this.getTime()
+    ) {
+      this.setState({ timeError: true });
+      error = true;
+      console.log("check error 3:   " + error);
+    } else {
+      this.setState({ timeError: false, dateError: false });
+      error = false || error;
+      console.log("check error 4:   " + error);
+    }
+
+    if (this.state.peopleLimit < 2 || this.state.peopleLimit > 42) {
+      this.setState({ partySizeError: true });
+      error = true;
+      console.log("check error 5:   " + error);
+    } else {
+      this.setState({ partySizeError: false });
+      error = false || error;
+      console.log("check error 6 -- partySize correct:   " + error);
+    }
+
+    if (!this.state.checked) {
+      error = true;
+      console.log("check error 7:   " + error);
+    } else {
+      error = false || error;
+      console.log("check error :  8  -- checked correct" + error);
+    }
+
+    console.log("form error state after validation:" + error);
+    ///check if still has error
+    if (error) {
+      console.log("formError----");
+      this.setState({ formError: true });
+      return;
+    } else {
+      console.log("Clean----");
+      this.setState({ formError: false });
+    }
+
     Meteor.call(
       "events.createNewEvent",
       this.props.content,
       this.state.peopleLimit,
-      this.state.appTime,
+      this.state.appDate + " " + this.state.appTime,
       (err, res) => {
         if (err) {
           console.log("Error calling createEvent    " + err);
@@ -140,20 +220,6 @@ class BusinessItem extends Component {
     );
     this.handleClose();
   }
-
-  // onChange(evt) {
-  //   console.log("change", evt.target.value);
-  //   this.setState({
-  //     peopleLimit: evt.target.value
-  //   });
-  // }
-
-  // onChangeTime(evt) {
-  //   console.log("change", evt.target.value);
-  //   this.setState({
-  //     appTime: evt.target.value
-  //   });
-  // }
 
   render() {
     return (
@@ -198,7 +264,12 @@ class BusinessItem extends Component {
             <List.Item>Phone: {this.props.content.display_phone}</List.Item>
             <div className="ui divider" />
             {this.renderMyEvents()}
-            <div className="ui divider" />
+            {this.props.myEvents.length === 0 ? (
+              <div />
+            ) : (
+              <div className="ui divider" />
+            )}
+
             <List.Item>
               <Modal
                 trigger={
@@ -212,44 +283,80 @@ class BusinessItem extends Component {
                 size="tiny"
                 closeIcon
               >
-                <Modal.Header>
-                  Create Your Event (Sorry for the ugly form, we will fix it
-                  next week :(
-                </Modal.Header>
-                <div className="ui divider" /> <div className="ui divider" />
-                <Form size={"tiny"}>
-                  <Form.Field required>
-                    <label>Time to Eat</label>
-                    <input
-                      type="datetime-local"
-                      onChange={e => this.setState({ appTime: e.target.value })}
-                    />
-                  </Form.Field>
-                  <Form.Field required>
-                    <label>Party Size Limit</label>
-                    <input
-                      type="number"
-                      min={5}
-                      placeholder="Party Size Limit"
-                      onChange={e =>
-                        this.setState({ peopleLimit: e.target.value })
+                <Modal.Header>Create Your Event</Modal.Header>
+                <Modal.Content>
+                  <Form size={"tiny"} error={this.state.formError}>
+                    {this.state.formError ? (
+                      <Message negative>
+                        <Message.Header>Sorry</Message.Header>
+                        <p>That offer has expired</p>
+                      </Message>
+                    ) : null}
+                    <Form.Field required>
+                      <Form.Input
+                        required
+                        label="Date to Eat"
+                        type="date"
+                        value={this.state.appDate}
+                        onChange={e =>
+                          this.setState({ appDate: e.target.value })
+                        }
+                        error={this.state.dateError}
+                      />
+                    </Form.Field>
+                    <Form.Field required>
+                      <Form.Input
+                        required
+                        label="Time to Eat"
+                        type="time"
+                        value={this.state.appTime}
+                        onChange={e =>
+                          this.setState({ appTime: e.target.value })
+                        }
+                        error={this.state.timeError}
+                      />
+                    </Form.Field>
+                    <Form.Field required>
+                      <Form.Input
+                        required
+                        label="Party Size Limit"
+                        type="number"
+                        min={2}
+                        max={42}
+                        value={this.state.peopleLimit}
+                        placeholder="Party Size Limit"
+                        onChange={e =>
+                          this.setState({ peopleLimit: e.target.value })
+                        }
+                        error={this.state.partySizeError}
+                      />
+                    </Form.Field>
+                    <Form.Field required>
+                      <Checkbox
+                        required
+                        label="I agree to share food with new friends and have a good time"
+                        onChange={() =>
+                          this.setState({
+                            checked: !this.state.checked
+                          })
+                        }
+                      />
+                    </Form.Field>
+                    <Button
+                      positive
+                      type="submit"
+                      disabled={
+                        !this.state.appDate ||
+                        !this.state.appTime ||
+                        !this.state.peopleLimit ||
+                        !this.state.checked
                       }
-                    />
-                  </Form.Field>
-                  <Form.Field required>
-                    <Checkbox
-                      required
-                      label="I agree to share food with new friends and have a good time"
-                    />
-                  </Form.Field>
-                  <Button
-                    positive
-                    type="submit"
-                    onClick={this.handleSubmit.bind(this)}
-                  >
-                    Submit
-                  </Button>
-                </Form>
+                      onClick={this.handleSubmit.bind(this)}
+                    >
+                      Submit
+                    </Button>
+                  </Form>
+                </Modal.Content>
               </Modal>
             </List.Item>
           </List>
@@ -260,7 +367,7 @@ class BusinessItem extends Component {
 }
 
 BusinessItem.propTypes = {
-  content: PropTypes.PropTypes.object.isRequired,
+  content: PropTypes.object.isRequired,
   myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
