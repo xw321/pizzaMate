@@ -8,6 +8,7 @@ import "../../client/main.css";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomepageLayout from "./HomepageLayout.jsx";
+import GroupChat from "./GroupChat.jsx";
 // <div>
 //   <div>
 //     <h1 className="myfont"> Drawing Battle</h1>
@@ -51,7 +52,7 @@ class App extends Component {
           <NavBar />
           <Switch>
             <Route exact path="/" component={HomeComponent} />
-            {/* <Route exact path="/play/" component={PlayComponent} /> */}
+            <Route exact path="/message" component={GroupChat} />
             <Route component={NotFoundPage} />
           </Switch>
           <br />
