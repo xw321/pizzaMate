@@ -9,6 +9,7 @@ import UserProfile from "./UserProfile.jsx";
 import Map from "./Map.jsx";
 import "../../client/main.css";
 
+
 export default class MainContainer extends Component {
   constructor(props) {
     super(props);
@@ -24,9 +25,18 @@ export default class MainContainer extends Component {
   }
 
   renderBusinesses() {
-    return this.state.businesses.map(c => (
-      <BusinessItem key={c._id} content={c} />
-    ));
+    return this.state.businesses.map((c,index) => {
+      const className = c.highLight ? "res-hover" : "res-item";
+      //const resInfo = c.info;
+      return (
+        <BusinessItem key={c._id} 
+          content={c} 
+          className={className}
+          onMouseOver={() => this.handleOnMouseOverOrOut(index)}
+          onMouseOut={() => this.handleOnMouseOverOrOut(index)}
+        />
+      );
+    });
   }
 
   renderMap() {
@@ -47,7 +57,7 @@ export default class MainContainer extends Component {
   onKey(evt) {
     if (evt.key === "Enter") {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition((position) => {
           // get current location
           let lat = position.coords.latitude;
           let longt = position.coords.longitude;

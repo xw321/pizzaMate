@@ -104,3 +104,31 @@ h2 {
   color: white;
   font-family: 'Ubuntu', sans-serif;
 }
+
+.pin-picture {
+    position: absolute;
+    cursor: pointer;
+    top: -34px;
+    left: -17px;
+    width: 34px;
+    height: 34px;
+    transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s;
+}
+
+.pin-picture-hover {
+    position: absolute;
+    top: -44px;
+    left: -22px;
+    width: 44px;
+    height: 44px;
+    transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s;
+}
+
+.res-item {
+    transition: background-color 0.2s;
+}
+
+.res-hover {
+    background-color: gold;
+    transition: background-color 0.2s;
+}
