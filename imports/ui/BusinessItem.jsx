@@ -42,7 +42,8 @@ class BusinessItem extends Component {
       timeError: false,
       dateError: false,
       formError: false,
-      checked: false
+      checked: false,
+      errorMessage: ""
     };
     this.getTime = this.getTime.bind(this);
     this.getDate = this.getDate.bind(this);
@@ -164,6 +165,7 @@ class BusinessItem extends Component {
       console.log("state date:   " + this.state.appDate);
       console.log("curr date:   " + this.getDate());
       console.log("check error 2:   " + error);
+      this.setState({ errorMessage: "Cannot select a past date or time;" });
     } else if (
       this.state.appDate == this.getDate() &&
       this.state.appTime < this.getTime()
@@ -171,6 +173,7 @@ class BusinessItem extends Component {
       this.setState({ timeError: true });
       error = true;
       console.log("check error 3:   " + error);
+      this.setState({ errorMessage: "Cannot select a past date or time;" });
     } else {
       this.setState({ timeError: false, dateError: false });
       error = false || error;
@@ -181,6 +184,10 @@ class BusinessItem extends Component {
       this.setState({ partySizeError: true });
       error = true;
       console.log("check error 5:   " + error);
+      this.setState({
+        errorMessage:
+          "Please select a party size number between 2 and 42. (don't ask why)"
+      });
     } else {
       this.setState({ partySizeError: false });
       error = false || error;
@@ -217,6 +224,19 @@ class BusinessItem extends Component {
           return;
         }
 
+        this.setState({
+          peopleLimit: 2,
+          appDate: "",
+          appTime: "",
+          currEvent: null,
+          modalOpen: false,
+          partySizeError: false,
+          timeError: false,
+          dateError: false,
+          formError: false,
+          checked: false,
+          errorMessage: ""
+        });
         console.log("return res:    " + JSON.stringify(res));
       }
     );
@@ -228,9 +248,8 @@ class BusinessItem extends Component {
       <Card fluid>
         <Card.Content>
           <Card.Header>
-            <span>powered by</span>
+            <span floated="left">powered by</span>
             <Image
-              floated="right"
               src={"imgs/Yelp_trademark_RGB.png"}
               alt="yelp-logo-img"
               size="tiny"
@@ -279,7 +298,7 @@ class BusinessItem extends Component {
             <List.Item>
               <Modal
                 trigger={
-                  <Button size="small" onClick={this.handleOpen} primary>
+                  <Button size="small" onClick={this.handleOpen} color={"red"}>
                     Create New Event
                   </Button>
                 }
@@ -294,8 +313,8 @@ class BusinessItem extends Component {
                   <Form size={"tiny"} error={this.state.formError}>
                     {this.state.formError ? (
                       <Message negative>
-                        <Message.Header>Sorry</Message.Header>
-                        <p>That offer has expired</p>
+                        <Message.Header>Opps</Message.Header>
+                        {this.state.errorMessage}
                       </Message>
                     ) : null}
                     <Form.Field required>
@@ -303,6 +322,8 @@ class BusinessItem extends Component {
                         required
                         label="Date to Eat"
                         type="date"
+                        min={"2019-01-01"}
+                        max={"2030-12-31"}
                         value={this.state.appDate}
                         onChange={e =>
                           this.setState({ appDate: e.target.value })
@@ -315,6 +336,8 @@ class BusinessItem extends Component {
                         required
                         label="Time to Eat"
                         type="time"
+                        min={"00:00"}
+                        max={"23:59"}
                         value={this.state.appTime}
                         onChange={e =>
                           this.setState({ appTime: e.target.value })

@@ -28,6 +28,7 @@ Meteor.methods({
       member: [this.userId],
       appTime: appTime,
       restaurantId: business.id,
+      restaurantUrl: business.url,
       restaurantName: business.name,
       peopleLimit: sizeLimit
     });

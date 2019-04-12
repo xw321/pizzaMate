@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 //import { Events } from "../api/events.js";
 import { Messages } from "../api/messages.js";
+import { check } from "meteor/check";
 import "../../client/main.css";
 
 class ChatBoard extends Component {
@@ -43,6 +44,10 @@ class ChatBoard extends Component {
 
   handleKeyPress(event) {
     console.log("message sent: " + this.state.message);
+    check(this.state.message, String);
+    if (/^\s+$/.test(this.state.message)) {
+      return;
+    }
     if (event.key === "Enter") {
       Meteor.call(
         "messages.sendMessage",

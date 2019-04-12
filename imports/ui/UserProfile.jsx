@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Popup, Button, Card, Icon, Image, List } from "semantic-ui-react";
+import {
+  Popup,
+  Button,
+  Card,
+  Icon,
+  Image,
+  List,
+  Segment
+} from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../api/events.js";
@@ -25,12 +33,21 @@ class UserProfile extends Component {
                 size="tiny"
                 type="button"
                 floated="right"
-                onClick={() => this.handleCancel(c)}
               >
                 <Icon name="cancel" />
               </Button>
             }
-            content="Cancel this event"
+            on="click"
+            content={
+              <Segment>
+                <p>Are your sure you want to cancel?</p>
+                <Button
+                  color="yellow"
+                  content="Confirm Cancel"
+                  onClick={() => this.handleCancel(c)}
+                />
+              </Segment>
+            }
             basic
           />
         </List.Content>

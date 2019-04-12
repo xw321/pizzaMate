@@ -4,7 +4,7 @@ import React, { Component } from "react";
 
 import { Container, Header, Segment } from "semantic-ui-react";
 
-import "./App.css";
+import "../style/App.css";
 import "../../client/main.css";
 
 class HomepageLayout extends Component {

@@ -34,18 +34,20 @@ export default class EventItem extends Component {
       <Item key={this.props.myEvent._id}>
         <Icon name="food" />
         <Item.Content>
-          {this.props.myEvent.peopleLimit +
-            " people @ " +
-            this.props.myEvent.restaurantName +
-            " @ " +
-            this.props.myEvent.appTime}
+          {this.props.myEvent.peopleLimit + " people @ "}
+          <a href={this.props.myEvent.restaurantUrl}>
+            {this.props.myEvent.restaurantName}
+          </a>
+          {" @ " + this.props.myEvent.appTime}
 
           {this.props.myEvent.isFull ? (
-            <Button disabled>Full</Button>
+            <Button floated="right" disabled>
+              Full
+            </Button>
           ) : (
             <Button
               disabled={this.checkJoined()}
-              color={this.checkJoined() ? "green" : "red"}
+              color={this.checkJoined() ? "orange" : "red"}
               size="tiny"
               type="button"
               floated="right"

@@ -1,0 +1,25 @@
+#login-buttons .login-button {
+  color: black;
+  background: white;
+  border: white;
+}
+
+/* #login-buttons .login-image {
+  display: inline-block;
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+} */
+
+#login-buttons-image-google {
+  background-image: url("imgs/gg.png");
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+}
+
+#login-buttons .login-button:hover {
+  background-color: #4285f4;
+  color: white;
+}
