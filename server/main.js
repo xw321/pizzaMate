@@ -40,9 +40,9 @@ if (settings) {
 }
 
 Accounts.onCreateUser((options, user) => {
-  user.interestedEvents = [];
-  user.joinedEvents = [];
   user.profile = user.services.google;
+  user.profile.interestedEvents = [];
+  user.profile.joinedEvents = [];
   return user;
 });
 

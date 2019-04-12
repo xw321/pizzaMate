@@ -11,16 +11,13 @@ import Map from "./Map.jsx";
 import { Events } from "../api/events.js";
 import "../../client/main.css";
 
-
-
 class MainContainer extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      lat: 0.0,
-      longt: 0.0,
+      lat: 0,
+      longt: 0,
       message: "",
       businesses: []
       // myJoinButton: "join",
@@ -31,12 +28,13 @@ class MainContainer extends Component {
   }
 
   renderBusinesses() {
-    return this.state.businesses.map((c,index) => {
+    return this.state.businesses.map((c, index) => {
       const className = c.highLight ? "res-hover" : "res-item";
       //const resInfo = c.info;
       return (
-        <BusinessItem key={c._id} 
-          content={c} 
+        <BusinessItem
+          key={c._id}
+          content={c}
           className={className}
           onMouseOver={() => this.handleOnMouseOverOrOut(index)}
           onMouseOut={() => this.handleOnMouseOverOrOut(index)}
@@ -49,6 +47,21 @@ class MainContainer extends Component {
     return <Map markers={this.state.businesses} />;
   }
 
+  componentDidMount() {
+    let lat = 0.0;
+    let longt = 0.0;
+    navigator.geolocation.getCurrentPosition(position => {
+      // get current location
+      lat = position.coords.latitude;
+      longt = position.coords.longitude;
+      console.log("--------latitude:  " + lat + "    longitude:  " + longt);
+      this.setState({
+        lat: lat,
+        longt: longt
+      });
+      console.log("latitude:  " + lat + "    longitude:  " + longt);
+    });
+  }
   //Update state.message upon input update
   onChange(evt) {
     console.log("change", evt.target.value);
@@ -56,6 +69,19 @@ class MainContainer extends Component {
       message: evt.target.value
     });
     console.log("After change  ", this.state.message);
+    let lat = 0.0;
+    let longt = 0.0;
+    navigator.geolocation.getCurrentPosition(position => {
+      // get current location
+      lat = position.coords.latitude;
+      longt = position.coords.longitude;
+      console.log("--------latitude:  " + lat + "    longitude:  " + longt);
+      this.setState({
+        lat: lat,
+        longt: longt
+      });
+      console.log("latitude:  " + lat + "    longitude:  " + longt);
+    });
   }
 
   // When user press Enter, get current location, and send location, input text to server.
@@ -63,21 +89,10 @@ class MainContainer extends Component {
   onKey(evt) {
     if (evt.key === "Enter") {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          // get current location
-          let lat = position.coords.latitude;
-          let longt = position.coords.longitude;
-          console.log("latitude:  " + lat + "    longitude:  " + longt);
-
-          // this.setState({
-          //   lat: lat,
-          //   longt: longt,
-          //   message: "",
-          //   businesses: []
-          // });
-        });
-
         // call backend yelp api
+        console.log(
+          "latitude:  " + this.state.lat + "    longitude:  " + this.state.longt
+        );
         Meteor.call(
           "searchYelp",
           this.state.lat,
@@ -139,9 +154,17 @@ class MainContainer extends Component {
           </Grid.Column>
           <Grid.Column width={7}>{this.renderMap()}</Grid.Column>
           <Grid.Column width={5}>
-            <Segment style={{ overflow: "auto", maxHeight: 900 }}>
+            <Segment style={{ overflow: "auto", maxHeight: 800 }}>
               {this.state.businesses.length === 0 ? (
-                <Item.Group>{this.renderNewEvents()}</Item.Group>
+                <Item.Group>
+                  <Item>
+                    <Item.Content verticalAlign="middle">
+                      <Item.Header>New Events Near You</Item.Header>
+                    </Item.Content>
+                  </Item>
+                  <div className="ui divider" />
+                  {this.renderNewEvents()}
+                </Item.Group>
               ) : (
                 this.renderBusinesses()
               )}

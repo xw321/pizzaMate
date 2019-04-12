@@ -36,7 +36,8 @@ class BusinessItem extends Component {
       timeError: false,
       dateError: false,
       formError: false,
-      checked: false
+      checked: false,
+      isJoined: false
     };
     this.getTime = this.getTime.bind(this);
     this.getDate = this.getDate.bind(this);
@@ -97,6 +98,23 @@ class BusinessItem extends Component {
     });
   }
 
+  checkJoined(evt) {
+    console.log("called here");
+    //let res = false;
+
+    Meteor.call("events.isJoined", evt._id, (err, res) => {
+      if (err) {
+        alert("Error calling check joined");
+        console.log(err);
+        return;
+      }
+
+      console.log("res length:  " + res);
+
+      this.setState({ isJoined: res });
+    });
+  }
+
   renderMyEvents() {
     return this.props.myEvents.map(c => (
       <List.Item key={c._id}>
@@ -108,13 +126,14 @@ class BusinessItem extends Component {
             <Button disabled>Full</Button>
           ) : (
             <Button
-              color={this.state.joinButtonColor}
+              disabled={this.state.isJoined}
+              color={this.state.isJoined ? "green" : this.state.joinButtonColor}
               size="tiny"
               type="button"
               floated="right"
               onClick={() => this.onJoin(c)}
             >
-              {this.state.joinButton}
+              {this.state.isJoined ? "joined" : this.state.joinButton}
             </Button>
           )}
         </List.Content>
@@ -221,6 +240,10 @@ class BusinessItem extends Component {
     this.handleClose();
   }
 
+  componentDidMount() {
+    this.props.myEvents.map(c => this.checkJoined(c));
+  }
+
   render() {
     return (
       <Card fluid>
@@ -228,20 +251,20 @@ class BusinessItem extends Component {
           <Card.Header>
             <span>powered by</span>
             <Image
+              floated="right"
               src={"imgs/Yelp_trademark_RGB.png"}
               alt="yelp-logo-img"
-              height="30%"
-              width="30%"
+              size="tiny"
               href="https://www.yelp.com/"
             />
           </Card.Header>
         </Card.Content>
         <Card.Content>
           <Image
+            floated="left"
             src={this.props.content.image_url}
             alt="restaurant-profile-img"
-            height="60%"
-            width="60%"
+            size="small"
           />
 
           <List className="list-group list-group-flush">

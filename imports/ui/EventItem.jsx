@@ -10,8 +10,30 @@ export default class EventItem extends Component {
     super(props);
     this.state = {
       myJoinButton: "join",
-      myJoinButtonColor: "red"
+      myJoinButtonColor: "red",
+      isJoined: false
     };
+  }
+
+  componentDidMount() {
+    this.checkJoined(this.props.myEvent);
+  }
+
+  checkJoined(evt) {
+    console.log("called here");
+    //let res = false;
+
+    Meteor.call("events.isJoined", evt._id, (err, res) => {
+      if (err) {
+        alert("Error calling check joined");
+        console.log(err);
+        return;
+      }
+
+      console.log("res length:  " + res);
+
+      this.setState({ isJoined: res });
+    });
   }
 
   onJoin(myEvent) {
@@ -29,6 +51,7 @@ export default class EventItem extends Component {
   }
 
   render() {
+    console.log("render-----is jon?   " + this.state.isJoined);
     return (
       <Item key={this.props.myEvent._id}>
         <Item.Content>
@@ -42,13 +65,16 @@ export default class EventItem extends Component {
             <Button disabled>Full</Button>
           ) : (
             <Button
-              color={this.state.myJoinButtonColor}
+              disabled={this.state.isJoined}
+              color={
+                this.state.isJoined ? "green" : this.state.myJoinButtonColor
+              }
               size="tiny"
               type="button"
               floated="right"
               onClick={() => this.onJoin(this.props.myEvent)}
             >
-              {this.state.myJoinButton}
+              {this.state.isJoined ? "joined" : this.state.myJoinButton}
             </Button>
           )}
         </Item.Content>

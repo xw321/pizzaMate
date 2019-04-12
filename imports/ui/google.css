@@ -4,8 +4,8 @@
 }
 
 #login-buttons-image-google {
-  background-image: url("imgs/google-1.png");
+  background-image: url("imgs/google-signin.png");
   background-repeat: no-repeat;
-  background-size: 25px 25px;
-  margin-bottom: 50px;
+  /* background-size: 25px 25px; */
+  /* margin-bottom: 50px; */
 }

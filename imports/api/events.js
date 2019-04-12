@@ -59,9 +59,9 @@ Meteor.methods({
           }
         );
         Meteor.users.update(
-          { _id: this.userId },
+          { _id: Meteor.userId() },
           {
-            $addToSet: { joinedEvents: this.userId }
+            $addToSet: { "profile.joinedEvents": event._id }
           }
         );
       } else {
@@ -72,9 +72,9 @@ Meteor.methods({
           }
         );
         Meteor.users.update(
-          { _id: this.userId },
+          { _id: Meteor.userId() },
           {
-            $addToSet: { joinedEvents: this.userId }
+            $addToSet: { "profile.joinedEvents": event._id }
           }
         );
       }
@@ -96,6 +96,12 @@ Meteor.methods({
       } else if (currMemberSize === 1 && event.member[0] === this.userId) {
         // only curr user left in this event
         Events.remove({ _id: event._id });
+        Meteor.users.update(
+          { _id: Meteor.userId() },
+          {
+            $pull: { "profile.joinedEvents": event._id }
+          }
+        );
       } else {
         Events.update(
           { _id: event._id },
@@ -103,9 +109,21 @@ Meteor.methods({
             $pull: { member: Meteor.userId() }
           }
         );
+
+        Meteor.users.update(
+          { _id: Meteor.userId() },
+          {
+            $pull: { "profile.joinedEvents": event._id }
+          }
+        );
       }
     } else {
       console.log("event not found in CANCEL EVENT !");
     }
+  },
+  "events.isJoined"(eventId) {
+    let eventMemberArray = Events.find({ _id: eventId }).fetch()[0].member;
+
+    return eventMemberArray.includes(Meteor.userId());
   }
 });
