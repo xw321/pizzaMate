@@ -82,7 +82,12 @@ class ChatBoard extends Component {
     return (
       <Segment>
         <Segment style={{ overflow: "auto", height: 600 }}>
-          <Feed>{this.renderChatInfo()}</Feed>
+          {this.props.chatInfo.length === 0 ? (
+            <p>No message yet. You guys are SHY.</p>
+          ) : (
+            <Feed>{this.renderChatInfo()}</Feed>
+          )}
+
           <div
             style={{ float: "left", clear: "both" }}
             ref={el => {

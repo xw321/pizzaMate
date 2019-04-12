@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Icon, Button, Item } from "semantic-ui-react";
+import { Breadcrumb, Button, Item } from "semantic-ui-react";
 // import { Events } from "../api/events.js";
 // import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
@@ -32,13 +32,25 @@ export default class EventItem extends Component {
   render() {
     return (
       <Item key={this.props.myEvent._id}>
-        <Icon name="food" />
         <Item.Content>
-          {this.props.myEvent.peopleLimit + " people @ "}
-          <a href={this.props.myEvent.restaurantUrl}>
-            {this.props.myEvent.restaurantName}
-          </a>
-          {" @ " + this.props.myEvent.appTime}
+          <Breadcrumb size={"small"}>
+            <Breadcrumb.Section active>
+              {this.props.myEvent.peopleLimit}
+            </Breadcrumb.Section>
+            <Breadcrumb.Divider icon="user" />
+            <Breadcrumb.Divider icon="angle double right" />
+            <Breadcrumb.Section>
+              <a href={this.props.myEvent.restaurantUrl}>
+                {this.props.myEvent.restaurantName}
+              </a>
+            </Breadcrumb.Section>
+            <Breadcrumb.Divider icon="food" />
+            <Breadcrumb.Divider icon="angle double right" />
+            <Breadcrumb.Section active>
+              {this.props.myEvent.appTime}
+            </Breadcrumb.Section>
+            <Breadcrumb.Divider icon="clock" />
+          </Breadcrumb>
 
           {this.props.myEvent.isFull ? (
             <Button floated="right" disabled>

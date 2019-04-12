@@ -4,6 +4,7 @@ import {
   Popup,
   Button,
   Card,
+  Breadcrumb,
   Icon,
   Image,
   List,
@@ -22,9 +23,19 @@ class UserProfile extends Component {
   renderMyEvents() {
     return this.props.myEvents.map(c => (
       <List.Item key={c._id}>
-        <List.Icon name="food" />
         <List.Content>
-          <a href="/message">{c.restaurantName + " @ " + c.appTime}</a>
+          <Breadcrumb size={"small"}>
+            <Breadcrumb.Section active>{c.peopleLimit}</Breadcrumb.Section>
+            <Breadcrumb.Divider icon="user" />
+            <Breadcrumb.Divider icon="angle double right" />
+            <Breadcrumb.Section>
+              <a href={c.restaurantUrl}>{c.restaurantName}</a>
+            </Breadcrumb.Section>
+            <Breadcrumb.Divider icon="food" />
+            <Breadcrumb.Divider icon="angle double right" />
+            <Breadcrumb.Section active>{c.appTime}</Breadcrumb.Section>
+            <Breadcrumb.Divider icon="clock" />
+          </Breadcrumb>
           <Popup
             trigger={
               <Button
@@ -71,7 +82,7 @@ class UserProfile extends Component {
 
   render() {
     return (
-      <Card fluid>
+      <Card fluid color={"red"}>
         <Card.Content>
           <Card.Header>My profile</Card.Header>
         </Card.Content>

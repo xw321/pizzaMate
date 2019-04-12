@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { EJSON } from "meteor/ejson";
-import { Button, Item, Segment, Input, Grid } from "semantic-ui-react";
+import { Image, Button, Item, Segment, Input, Grid } from "semantic-ui-react";
 import BusinessItem from "./BusinessItem.jsx";
 import EventItem from "./EventItem.jsx";
 import UserProfile from "./UserProfile.jsx";
@@ -157,6 +157,8 @@ class MainContainer extends Component {
               />
               {this.state.businesses.length === 0 ? null : (
                 <Button
+                  basic
+                  color={"red"}
                   content="Clear Results"
                   onClick={this.handleClear.bind(this)}
                 />
@@ -172,7 +174,9 @@ class MainContainer extends Component {
           <Grid.Column width={7}>{this.renderMap()}</Grid.Column>
           <Grid.Column width={5}>
             <Segment style={{ overflow: "auto", maxHeight: 800 }}>
-              {this.state.businesses.length === 0 ? (
+              {this.state.isloading ? (
+                <Image size={"large"} src={"imgs/loading.gif"} centered />
+              ) : this.state.businesses.length === 0 ? (
                 <Item.Group>
                   <Item>
                     <Item.Content verticalAlign="middle">
