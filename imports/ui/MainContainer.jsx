@@ -21,7 +21,7 @@ class MainContainer extends Component {
       message: "",
       businesses: [],
       isloading: false,
-
+      location: "",
       mouseOver: []
     };
     this.onChange = this.onChange.bind(this);
@@ -89,12 +89,12 @@ class MainContainer extends Component {
       // get current location
       lat = position.coords.latitude;
       longt = position.coords.longitude;
-      console.log("--------latitude:  " + lat + "    longitude:  " + longt);
+      //console.log("--------latitude:  " + lat + "    longitude:  " + longt);
       this.setState({
         lat: lat,
         longt: longt
       });
-      console.log("latitude:  " + lat + "    longitude:  " + longt);
+      //console.log("latitude:  " + lat + "    longitude:  " + longt);
     });
   }
 
@@ -116,26 +116,44 @@ class MainContainer extends Component {
           mouseOver: []
         });
 
-        Meteor.call(
-          "searchYelp",
-          this.state.lat,
-          this.state.longt,
-          this.state.message,
-          (err, res) => {
-            if (err) {
-              alert("Error calling Yelp API");
-              console.log(err);
-              return;
-            }
-            // Format returned result, and set it in the state
-            let businessesArr = EJSON.parse(res["content"])["businesses"];
-            this.setState({
-              businesses: businessesArr,
-              isloading: false,
-              mouseOver: Array(businessesArr.length).fill(false)
-            });
+        let params = {
+          latitude: this.state.lat,
+          longitude: this.state.longt,
+          radius: 30000,
+          term: this.state.message
+        };
+
+        if (this.state.location.length === 0) {
+          params = {
+            latitude: this.state.lat,
+            longitude: this.state.longt,
+            radius: 30000,
+            term: this.state.message
+          };
+        } else {
+          params = {
+            location: this.state.location,
+            radius: 30000,
+            term: this.state.message
+          };
+        }
+        console.log("here!!" + this.state.location);
+        //refactorr call
+        Meteor.call("searchYelp", params, (err, res) => {
+          console.log("API");
+          if (err) {
+            alert("Error calling Yelp API");
+            console.log(err);
+            return;
           }
-        );
+          // Format returned result, and set it in the state
+          let businessesArr = EJSON.parse(res["content"])["businesses"];
+          this.setState({
+            businesses: businessesArr,
+            isloading: false,
+            mouseOver: Array(businessesArr.length).fill(false)
+          });
+        });
       } else {
         alert("Geolocation is not supported by this browser.");
       }
@@ -166,14 +184,26 @@ class MainContainer extends Component {
 
             <div>
               <Input
+                label={"Search"}
                 loading={this.state.isloading}
                 icon="search"
                 type="text"
-                placeholder="Search for restaurant"
+                placeholder="restaurants"
                 value={this.state.message}
                 onChange={this.onChange.bind(this)}
                 onKeyPress={this.onKey.bind(this)}
                 aria-label="search"
+              />
+              <Input
+                label={"Near"}
+                loading={this.state.isloading}
+                icon="search"
+                type="text"
+                placeholder="location"
+                value={this.state.location}
+                onChange={e => this.setState({ location: e.target.value })}
+                onKeyPress={this.onKey.bind(this)}
+                aria-label="search-location"
               />
               {this.state.businesses.length === 0 ? null : (
                 <Button

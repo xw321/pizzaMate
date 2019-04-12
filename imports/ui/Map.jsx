@@ -4,7 +4,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 //import CityPin from "./city-pin.jsx";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Meteor } from "meteor/meteor";
+//import { Meteor } from "meteor/meteor";
 //import mapConfig from "./mapConfig.jsx";
 //import { Meteor } from "meteor/meteor";
 import "../../client/main.css";
@@ -71,44 +71,65 @@ class Map extends Component {
   //   this.renderMarker();
   // }
   componentDidMount() {
-    Meteor.call("token.getMapToken", (error, result) => {
-      this.setState({
-        token: result
-      });
-    });
-    for (let i = 0; i < degreeToPixels.length; i++) {
-      const obj = degreeToPixels[i];
-      this.yRange.push(this.state.viewport.height / obj.pixels);
-      this.xRange.push(this.state.viewport.width / obj.pixels);
-    }
     // console.log("SearchBoard did mount");
-    navigator.geolocation.getCurrentPosition(position => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const newViewport = Object.assign({}, this.state.viewport);
-      newViewport.latitude = latitude;
-      newViewport.longitude = longitude;
+
+    if (this.props.markers && this.props.markers.length !== 0) {
+      let newViewport0 = Object.assign({}, this.state.viewport);
+      console.log("markers is :  " + this.props.markers.length);
+      newViewport0.latitude = this.props.markers[0].coordinates.latitude;
+      newViewport0.longitude = this.props.markers[0].coordinates.longitude;
       this.setState({
-        viewport: newViewport,
-        currentLat: latitude,
-        currentLon: longitude
+        viewport: newViewport0,
+        currentLat: this.props.markers[0].coordinates.latitude,
+        currentLon: this.props.markers[0].coordinates.longitude
       });
-    });
+      console.log(
+        "-------first viewport" + JSON.stringify(this.state.viewport)
+      );
+    } else {
+      for (let i = 0; i < degreeToPixels.length; i++) {
+        const obj = degreeToPixels[i];
+        this.yRange.push(this.state.viewport.height / obj.pixels);
+        this.xRange.push(this.state.viewport.width / obj.pixels);
+      }
+      navigator.geolocation.getCurrentPosition(position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const newViewport = Object.assign({}, this.state.viewport);
+        newViewport.latitude = latitude;
+        newViewport.longitude = longitude;
+        this.setState({
+          viewport: newViewport,
+          currentLat: latitude,
+          currentLon: longitude
+        });
+      });
+    }
   }
 
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   const newRes = [];
-  //   for (let i = 0; i < nextProps.markers.length; i++) {
-  //     newRes.push(false);
-  //   }
-  //   this.setState({
-  //     res: newRes,
-  //     markers: nextProps.markers
-  //   });
-  // }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    // const newRes = [];
+    // for (let i = 0; i < nextProps.markers.length; i++) {
+    //   newRes.push(false);
+    // }
+    // this.setState({
+    //   res: newRes,
+    //   markers: nextProps.markers
+    // });
+    console.log("markers is :  " + nextProps.markers.length);
+    const newViewport0 = Object.assign({}, this.state.viewport);
+    if (nextProps.markers && nextProps.markers.length !== 0) {
+      newViewport0.latitude = nextProps.markers[0].coordinates.latitude;
+      newViewport0.longitude = nextProps.markers[0].coordinates.longitude;
+      this.setState({
+        viewport: newViewport0
+        // currentLat: nextProps.markers[0].coordinates.latitude,
+        // currentLon: nextProps.markers[0].coordinates.longitude
+      });
+    }
+  }
 
   renderMarker() {
-    //console.log("render markers");
     return this.props.markers.map((c, index) => {
       const className = this.props.isMouseOverArray[index]
         ? "pin-picture-hover"
@@ -170,7 +191,6 @@ class Map extends Component {
           />
         </div>
         {this.renderCurrentPosition()}
-
         {this.renderMarker()}
       </ReactMapGL>
     );
@@ -179,7 +199,7 @@ class Map extends Component {
 
 Map.propTypes = {
   markers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isMouseOverArray: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isMouseOverArray: PropTypes.arrayOf(PropTypes.bool).isRequired,
   changeFunction: PropTypes.func
   // myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
 };

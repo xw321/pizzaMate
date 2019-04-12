@@ -253,7 +253,7 @@ class BusinessItem extends Component {
 
   render() {
     const className = this.props.isMouseOver ? "res-hover" : "res-item";
-    console.log(className);
+    //console.log(className);
     return (
       <Card
         fluid
