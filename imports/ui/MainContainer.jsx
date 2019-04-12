@@ -20,7 +20,9 @@ class MainContainer extends Component {
       longt: 0,
       message: "",
       businesses: [],
-      isloading: false
+      isloading: false,
+      businesses: [],
+      mouseOver:[],
     };
     this.onChange = this.onChange.bind(this);
     this.onKey = this.onKey.bind(this);
@@ -28,23 +30,30 @@ class MainContainer extends Component {
   }
 
   renderBusinesses() {
-    return this.state.businesses.map((c, index) => {
-      const className = c.highLight ? "res-hover" : "res-item";
+    return this.state.businesses.map((c, index) => (
+      // const className = c.highLight ? "res-hover" : "res-item";
       //const resInfo = c.info;
-      return (
+      // return (
         <BusinessItem
           key={c._id}
           content={c}
-          className={className}
-          onMouseOver={() => this.handleOnMouseOverOrOut(index)}
-          onMouseOut={() => this.handleOnMouseOverOrOut(index)}
-        />
-      );
+          isMouseOver={this.state.mouseOver[index]}
+          changeFunction={() => this.changeMouseOverStatus(index)} />
+      
+    ));
+  }
+
+  changeMouseOverStatus(index) {
+    const newArray = this.state.mouseOver.slice();
+    newArray[index] = !newArray[index];
+    this.setState({
+      mouseOver: newArray,
     });
   }
 
   renderMap() {
-    return <Map markers={this.state.businesses} />;
+    return <Map markers={this.state.businesses} isMouseOverArray={this.state.mouseOver} 
+      changeFunction={(i) => this.changeMouseOverStatus(i)}/>;
   }
 
   componentDidMount() {
@@ -97,6 +106,11 @@ class MainContainer extends Component {
             "    longitude:  " +
             this.state.longt
         );
+        this.setState({
+          businesses: [],
+          mouseOver: [],
+        });
+
         Meteor.call(
           "searchYelp",
           this.state.lat,
@@ -112,7 +126,8 @@ class MainContainer extends Component {
             let businessesArr = EJSON.parse(res["content"])["businesses"];
             this.setState({
               businesses: businessesArr,
-              isloading: false
+              isloading: false,
+              mouseOver: Array(businessesArr.length).fill(false),
             });
           }
         );

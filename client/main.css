@@ -137,6 +137,6 @@ h2 {
 }
 
 .res-hover {
-  background-color: gold;
+  background-color: gold ! important;
   transition: background-color 0.2s;
 }
