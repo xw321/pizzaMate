@@ -13,6 +13,7 @@ import { Meteor } from "meteor/meteor";
 import { Events } from "../api/events.js";
 import EventItem from "./EventItem.jsx";
 import { Card, Image, List } from "semantic-ui-react";
+import "../../client/main.css";
 
 const inlineStyle = {
   modal: {
@@ -43,7 +44,8 @@ class BusinessItem extends Component {
       dateError: false,
       formError: false,
       checked: false,
-      errorMessage: ""
+      errorMessage: "",
+      res: []
     };
     this.getTime = this.getTime.bind(this);
     this.getDate = this.getDate.bind(this);
@@ -130,6 +132,12 @@ class BusinessItem extends Component {
 
   handleClose() {
     this.setState({ modalOpen: false });
+  }
+
+  handleOnMouseOverOrOut(index){
+    const newRes = this.state.res.slice();
+    newRes[index] = !newRes[index];
+    this.setState({res: newRes});
   }
 
   getDate() {
@@ -244,8 +252,15 @@ class BusinessItem extends Component {
   }
 
   render() {
+    const className = this.props.isMouseOver ? "res-hover" : "res-item";
+    console.log(className);
     return (
-      <Card fluid>
+      <Card 
+        fluid
+        className={className}
+        key={this.props.content._id}
+        onMouseOver={() => this.props.changeFunction()}
+        onMouseOut={() => this.props.changeFunction()}>
         <Card.Content>
           <Card.Header>
             <span floated="left">powered by</span>

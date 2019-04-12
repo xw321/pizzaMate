@@ -74,7 +74,7 @@ class Map extends Component {
   componentDidMount() {
     Meteor.call("token.getMapToken", (error, result) => {
       this.setState({
-        token: result
+        token: result,
       });
     });
     for (let i = 0; i < degreeToPixels.length; i++) {
@@ -97,21 +97,21 @@ class Map extends Component {
     });
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const newRes = [];
-    for (let i = 0; i < nextProps.markers.length; i++) {
-      newRes.push(false);
-    }
-    this.setState({
-      res: newRes,
-      markers: nextProps.markers
-    });
-  }
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   const newRes = [];
+  //   for (let i = 0; i < nextProps.markers.length; i++) {
+  //     newRes.push(false);
+  //   }
+  //   this.setState({
+  //     res: newRes,
+  //     markers: nextProps.markers
+  //   });
+  // }
 
   renderMarker() {
     //console.log("render markers");
-    return this.state.markers.map((c, index) => {
-      const className = this.state.res[index]
+    return this.props.markers.map((c, index) => {
+      const className = this.props.isMouseOverArray[index]
         ? "pin-picture-hover"
         : "pin-picture";
       //const resInfo = c.info;
@@ -126,8 +126,8 @@ class Map extends Component {
             src={"/imgs/mark.png"}
             alt={"icon of res "}
             //onClick={() => this.setState({ popupInfo: "city" })}
-            onMouseOver={() => this.handleOnMouseOverOrOut(index)}
-            onMouseOut={() => this.handleOnMouseOverOrOut(index)}
+            onMouseOver={() => this.props.changeFunction(index)}
+            onMouseOut={() => this.props.changeFunction(index)}
           />
         </Marker>
       );
