@@ -47,7 +47,6 @@ class Map extends Component {
     this.state = {
       res: [],
       search: false,
-      searchField: "",
       viewport: {
         latitude: 37.3355,
         longitude: -121.893,
@@ -74,7 +73,7 @@ class Map extends Component {
   componentDidMount() {
     Meteor.call("token.getMapToken", (error, result) => {
       this.setState({
-        token: result,
+        token: result
       });
     });
     for (let i = 0; i < degreeToPixels.length; i++) {
@@ -123,7 +122,7 @@ class Map extends Component {
         >
           <img
             className={className}
-            src={"/imgs/mark.png"}
+            src={"/imgs/food-pin.png"}
             alt={"icon of res "}
             //onClick={() => this.setState({ popupInfo: "city" })}
             onMouseOver={() => this.props.changeFunction(index)}
@@ -162,7 +161,7 @@ class Map extends Component {
       <ReactMapGL
         {...this.state.viewport}
         mapboxApiAccessToken={TOKEN}
-        mapstyle={"mapbox://styles/mapbox/navigation-guidance-day-v4"}
+        mapStyle={"mapbox://styles/mapbox/navigation-guidance-day-v4"}
         onViewportChange={v => this.handleOnViewportChange(v)}
       >
         <div style={mapStyle}>
@@ -179,7 +178,9 @@ class Map extends Component {
 }
 
 Map.propTypes = {
-  markers: PropTypes.arrayOf(PropTypes.object).isRequired
+  markers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isMouseOverArray: PropTypes.arrayOf(PropTypes.object).isRequired,
+  changeFunction: PropTypes.func
   // myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 

@@ -44,6 +44,16 @@ const NotFoundPage = () => (
   </div>
 );
 
+const chatPage = () => (
+  <div>
+    {Meteor.user() ? (
+      <GroupChat />
+    ) : (
+      <h2 className="myfont">Please login first</h2>
+    )}
+  </div>
+);
+
 class App extends Component {
   render() {
     return (
@@ -52,7 +62,7 @@ class App extends Component {
           <NavBar />
           <Switch>
             <Route exact path="/" component={HomeComponent} />
-            <Route exact path="/message" component={GroupChat} />
+            <Route exact path="/message" component={chatPage} />
             <Route component={NotFoundPage} />
           </Switch>
           <br />

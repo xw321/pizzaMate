@@ -81,7 +81,7 @@ class ChatBoard extends Component {
   render() {
     return (
       <Segment>
-        <Segment style={{ overflow: "auto", height: 600 }}>
+        <Segment style={{ overflow: "auto", height: 800 }}>
           {this.props.chatInfo.length === 0 ? (
             <p>No message yet. You guys are SHY.</p>
           ) : (

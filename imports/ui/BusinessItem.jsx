@@ -134,10 +134,10 @@ class BusinessItem extends Component {
     this.setState({ modalOpen: false });
   }
 
-  handleOnMouseOverOrOut(index){
+  handleOnMouseOverOrOut(index) {
     const newRes = this.state.res.slice();
     newRes[index] = !newRes[index];
-    this.setState({res: newRes});
+    this.setState({ res: newRes });
   }
 
   getDate() {
@@ -255,12 +255,13 @@ class BusinessItem extends Component {
     const className = this.props.isMouseOver ? "res-hover" : "res-item";
     console.log(className);
     return (
-      <Card 
+      <Card
         fluid
         className={className}
         key={this.props.content._id}
         onMouseOver={() => this.props.changeFunction()}
-        onMouseOut={() => this.props.changeFunction()}>
+        onMouseOut={() => this.props.changeFunction()}
+      >
         <Card.Content>
           <Card.Header>
             <span floated="left">powered by</span>
@@ -412,7 +413,9 @@ class BusinessItem extends Component {
 
 BusinessItem.propTypes = {
   content: PropTypes.object.isRequired,
-  myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
+  myEvents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isMouseOver: PropTypes.bool,
+  changeFunction: PropTypes.func
 };
 
 export default withTracker(props => {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Statistic, Menu, Grid } from "semantic-ui-react";
+import { Icon, Statistic, Menu, Grid } from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
@@ -34,7 +34,11 @@ class GroupChat extends Component {
         }
       >
         <span id="eventList">
-          {c.peopleLimit + " people @ " + c.restaurantName + " @ " + c.appTime}
+          {c.peopleLimit} <Icon name="user" />
+          <Icon name="angle double right" /> {c.restaurantName}
+          <Icon name="food" /> <Icon name="angle double right" />
+          {c.appTime}
+          <Icon name="clock" />
         </span>
       </Menu.Item>
     ));

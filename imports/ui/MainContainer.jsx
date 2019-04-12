@@ -21,8 +21,8 @@ class MainContainer extends Component {
       message: "",
       businesses: [],
       isloading: false,
-      businesses: [],
-      mouseOver:[],
+
+      mouseOver: []
     };
     this.onChange = this.onChange.bind(this);
     this.onKey = this.onKey.bind(this);
@@ -34,12 +34,12 @@ class MainContainer extends Component {
       // const className = c.highLight ? "res-hover" : "res-item";
       //const resInfo = c.info;
       // return (
-        <BusinessItem
-          key={c._id}
-          content={c}
-          isMouseOver={this.state.mouseOver[index]}
-          changeFunction={() => this.changeMouseOverStatus(index)} />
-      
+      <BusinessItem
+        key={c._id}
+        content={c}
+        isMouseOver={this.state.mouseOver[index]}
+        changeFunction={() => this.changeMouseOverStatus(index)}
+      />
     ));
   }
 
@@ -47,13 +47,18 @@ class MainContainer extends Component {
     const newArray = this.state.mouseOver.slice();
     newArray[index] = !newArray[index];
     this.setState({
-      mouseOver: newArray,
+      mouseOver: newArray
     });
   }
 
   renderMap() {
-    return <Map markers={this.state.businesses} isMouseOverArray={this.state.mouseOver} 
-      changeFunction={(i) => this.changeMouseOverStatus(i)}/>;
+    return (
+      <Map
+        markers={this.state.businesses}
+        isMouseOverArray={this.state.mouseOver}
+        changeFunction={i => this.changeMouseOverStatus(i)}
+      />
+    );
   }
 
   componentDidMount() {
@@ -108,7 +113,7 @@ class MainContainer extends Component {
         );
         this.setState({
           businesses: [],
-          mouseOver: [],
+          mouseOver: []
         });
 
         Meteor.call(
@@ -127,7 +132,7 @@ class MainContainer extends Component {
             this.setState({
               businesses: businessesArr,
               isloading: false,
-              mouseOver: Array(businessesArr.length).fill(false),
+              mouseOver: Array(businessesArr.length).fill(false)
             });
           }
         );
@@ -188,7 +193,7 @@ class MainContainer extends Component {
           </Grid.Column>
           <Grid.Column width={7}>{this.renderMap()}</Grid.Column>
           <Grid.Column width={5}>
-            <Segment style={{ overflow: "auto", maxHeight: 800 }}>
+            <Segment style={{ overflow: "auto", maxHeight: 900 }}>
               {this.state.isloading ? (
                 <Image size={"large"} src={"imgs/loading.gif"} centered />
               ) : this.state.businesses.length === 0 ? (

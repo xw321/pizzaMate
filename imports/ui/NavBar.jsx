@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { Meteor } from "meteor/meteor";
 
 import AccountsUIWrapper from "./AccountsUIWrapper.jsx";
 
@@ -15,7 +16,7 @@ export default class NavBar extends Component {
   render() {
     return (
       // <Segment color={"red"} inverted size={"mini"}>
-      <Menu color={"red"} inverted pointing secondary>
+      <Menu color={Meteor.user() ? "red" : "grey"} inverted pointing secondary>
         <Menu.Item
           name="  pizzaMate"
           active={this.state.activeItem === "   pizzaMate"}

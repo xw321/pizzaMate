@@ -24,11 +24,11 @@ class UserProfile extends Component {
     return this.props.myEvents.map(c => (
       <List.Item key={c._id}>
         <List.Content>
-          <Breadcrumb size={"small"}>
+          <Breadcrumb size={"tiny"}>
             <Breadcrumb.Section active>{c.peopleLimit}</Breadcrumb.Section>
             <Breadcrumb.Divider icon="user" />
             <Breadcrumb.Divider icon="angle double right" />
-            <Breadcrumb.Section>
+            <Breadcrumb.Section active>
               <a href={c.restaurantUrl}>{c.restaurantName}</a>
             </Breadcrumb.Section>
             <Breadcrumb.Divider icon="food" />
