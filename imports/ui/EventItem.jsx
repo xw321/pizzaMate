@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Button, Item } from "semantic-ui-react";
-//import { withTracker } from "meteor/react-meteor-data";
+import { Icon, Button, Item } from "semantic-ui-react";
+// import { Events } from "../api/events.js";
+// import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import "../../client/main.css";
@@ -8,32 +9,10 @@ import "../../client/main.css";
 export default class EventItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      myJoinButton: "join",
-      myJoinButtonColor: "red",
-      isJoined: false
-    };
   }
 
-  componentDidMount() {
-    this.checkJoined(this.props.myEvent);
-  }
-
-  checkJoined(evt) {
-    console.log("called here");
-    //let res = false;
-
-    Meteor.call("events.isJoined", evt._id, (err, res) => {
-      if (err) {
-        alert("Error calling check joined");
-        console.log(err);
-        return;
-      }
-
-      console.log("res length:  " + res);
-
-      this.setState({ isJoined: res });
-    });
+  checkJoined() {
+    return this.props.myEvent.member.includes(Meteor.userId());
   }
 
   onJoin(myEvent) {
@@ -45,15 +24,15 @@ export default class EventItem extends Component {
         console.log(err);
         return;
       }
-      this.setState({ myJoinButton: "joined!", myJoinButtonColor: "green" });
+
       console.log("return from join evt:  " + res);
     });
   }
 
   render() {
-    console.log("render-----is jon?   " + this.state.isJoined);
     return (
       <Item key={this.props.myEvent._id}>
+        <Icon name="food" />
         <Item.Content>
           {this.props.myEvent.peopleLimit +
             " people @ " +
@@ -65,16 +44,14 @@ export default class EventItem extends Component {
             <Button disabled>Full</Button>
           ) : (
             <Button
-              disabled={this.state.isJoined}
-              color={
-                this.state.isJoined ? "green" : this.state.myJoinButtonColor
-              }
+              disabled={this.checkJoined()}
+              color={this.checkJoined() ? "green" : "red"}
               size="tiny"
               type="button"
               floated="right"
               onClick={() => this.onJoin(this.props.myEvent)}
             >
-              {this.state.isJoined ? "joined" : this.state.myJoinButton}
+              {this.checkJoined() ? "joined!" : "join"}
             </Button>
           )}
         </Item.Content>

@@ -20,7 +20,7 @@ class ChatBoard extends Component {
       return (
         <Feed.Event key={myChat._id}>
           <Feed.Label>
-            <Image src={Meteor.user().profile.picture} />
+            <Image src={myChat.user.profile.picture} />
           </Feed.Label>
           <Feed.Content>
             <Feed.Date>{myChat.user.profile.name}</Feed.Date>
@@ -76,7 +76,7 @@ class ChatBoard extends Component {
   render() {
     return (
       <Segment>
-        <Segment style={{ overflow: "auto", height: 900 }}>
+        <Segment style={{ overflow: "auto", height: 600 }}>
           <Feed>{this.renderChatInfo()}</Feed>
           <div
             style={{ float: "left", clear: "both" }}

@@ -1,9 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Message, Button, Checkbox, Form, Modal } from "semantic-ui-react";
+import {
+  Item,
+  Message,
+  Button,
+  Checkbox,
+  Form,
+  Modal
+} from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../api/events.js";
+import EventItem from "./EventItem.jsx";
 import { Card, Image, List } from "semantic-ui-react";
 
 const inlineStyle = {
@@ -30,14 +38,11 @@ class BusinessItem extends Component {
       appTime: "",
       currEvent: null,
       modalOpen: false,
-      joinButton: "join",
-      joinButtonColor: "red",
       partySizeError: false,
       timeError: false,
       dateError: false,
       formError: false,
-      checked: false,
-      isJoined: false
+      checked: false
     };
     this.getTime = this.getTime.bind(this);
     this.getDate = this.getDate.bind(this);
@@ -93,52 +98,30 @@ class BusinessItem extends Component {
         console.log(err);
         return;
       }
-      this.setState({ joinButton: "joined!", joinButtonColor: "green" });
+      //this.setState({ joinButton: "joined!", joinButtonColor: "green" });
       console.log("return from join evt:  " + res);
     });
   }
 
-  checkJoined(evt) {
-    console.log("called here");
-    //let res = false;
-
-    Meteor.call("events.isJoined", evt._id, (err, res) => {
-      if (err) {
-        alert("Error calling check joined");
-        console.log(err);
-        return;
-      }
-
-      console.log("res length:  " + res);
-
-      this.setState({ isJoined: res });
-    });
+  renderAddress(addressArr) {
+    // let res = "";
+    // addressArr.forEach(element => {
+    //   res += element + "\n";
+    // });
+    return (
+      <div>
+        {addressArr.map((element, i) => {
+          return (
+            <p className="text-right" key={i++}>
+              {element}
+            </p>
+          );
+        })}
+      </div>
+    );
   }
-
   renderMyEvents() {
-    return this.props.myEvents.map(c => (
-      <List.Item key={c._id}>
-        <List.Icon name="food" />
-        <List.Content>
-          {c.peopleLimit + " people @ " + c.appTime}
-
-          {c.isFull ? (
-            <Button disabled>Full</Button>
-          ) : (
-            <Button
-              disabled={this.state.isJoined}
-              color={this.state.isJoined ? "green" : this.state.joinButtonColor}
-              size="tiny"
-              type="button"
-              floated="right"
-              onClick={() => this.onJoin(c)}
-            >
-              {this.state.isJoined ? "joined" : this.state.joinButton}
-            </Button>
-          )}
-        </List.Content>
-      </List.Item>
-    ));
+    return this.props.myEvents.map(c => <EventItem key={c._id} myEvent={c} />);
   }
   handleOpen() {
     this.setState({ modalOpen: true });
@@ -240,10 +223,6 @@ class BusinessItem extends Component {
     this.handleClose();
   }
 
-  componentDidMount() {
-    this.props.myEvents.map(c => this.checkJoined(c));
-  }
-
   render() {
     return (
       <Card fluid>
@@ -260,13 +239,23 @@ class BusinessItem extends Component {
           </Card.Header>
         </Card.Content>
         <Card.Content>
-          <Image
-            floated="left"
-            src={this.props.content.image_url}
-            alt="restaurant-profile-img"
-            size="small"
-          />
-
+          <Item>
+            <Item.Image
+              floated="left"
+              src={this.props.content.image_url}
+              alt="restaurant-profile-img"
+              size="small"
+            />
+            <Item.Extra>
+              <div>
+                <p className="text-right">{this.props.content.display_phone}</p>
+              </div>
+              <br />
+              {this.renderAddress(this.props.content.location.display_address)}
+            </Item.Extra>
+          </Item>
+        </Card.Content>
+        <Card.Content>
           <List className="list-group list-group-flush">
             <List.Item>
               <a href={this.props.content.url}>{this.props.content.name}</a>
@@ -281,15 +270,9 @@ class BusinessItem extends Component {
             </List.Item>
             <List.Item>Categories: {this.displayCategories()}</List.Item>
             <List.Item>Price: {this.props.content.price}</List.Item>
-            <List.Item>
-              Location: {this.props.content.location.display_address}
-            </List.Item>
-            <List.Item>Phone: {this.props.content.display_phone}</List.Item>
             <div className="ui divider" />
             {this.renderMyEvents()}
-            {this.props.myEvents.length === 0 ? (
-              <div />
-            ) : (
+            {this.props.myEvents.length === 0 ? null : (
               <div className="ui divider" />
             )}
 

@@ -29,8 +29,12 @@ class GroupChat extends Component {
   }
 
   renderChatBoard() {
+    let myProp =
+      this.props.myEvents.length === 0
+        ? "You don't have an event yet :("
+        : "Select an event to chat";
     return this.state.activeItem === "default" ? (
-      <div>Select an event to chat</div>
+      <div>{myProp}</div>
     ) : (
       <ChatBoard event={this.state.activeItem} />
     );
@@ -38,17 +42,27 @@ class GroupChat extends Component {
 
   render() {
     return (
-      <Grid columns={2}>
-        <Grid.Row centered>
-          <Grid.Column width={6}>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={4} />
+          <Grid.Column width={8}>
+            <h1>Greet before you eat</h1>
+          </Grid.Column>
+          <Grid.Column width={4} />
+        </Grid.Row>
+
+        <Grid.Row>
+          <Grid.Column width={3} />
+          <Grid.Column width={5}>
             <h3>My Events Channels</h3>
             <Menu fluid pointing vertical floated="right">
               {this.renderMyEvents()}
             </Menu>
           </Grid.Column>
-          <Grid.Column stretched width={10}>
+          <Grid.Column stretched width={5}>
             {this.renderChatBoard()}
           </Grid.Column>
+          <Grid.Column width={3} />
         </Grid.Row>
       </Grid>
     );
