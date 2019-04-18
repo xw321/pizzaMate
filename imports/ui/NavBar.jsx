@@ -30,11 +30,15 @@ export default class NavBar extends Component {
             </h4>
           </Link>
         </Menu.Item>
-        <Menu.Item name="mess" active={this.state.activeItem === "mess"}>
-          <Link to="/message">
-            <h4>Message</h4>
-          </Link>
-        </Menu.Item>
+
+        {Meteor.user() ? (
+          <Menu.Item name="mess" active={this.state.activeItem === "mess"}>
+            <Link to="/message">
+              <h4>Message</h4>
+            </Link>
+          </Menu.Item>
+        ) : null}
+
         <Menu.Menu position="right">
           <Menu.Item>
             <AccountsUIWrapper />

@@ -25,12 +25,14 @@ class UserProfile extends Component {
     return this.props.myEvents.map(c => (
       <List.Item key={c._id}>
         <List.Content>
-          <Breadcrumb size={"tiny"}>
+          <Breadcrumb size={"mini"}>
             <Breadcrumb.Section active>{c.peopleLimit}</Breadcrumb.Section>
             <Breadcrumb.Divider icon="user" />
             <Breadcrumb.Divider icon="angle double right" />
             <Breadcrumb.Section active>
-              <a href={c.restaurantUrl}>{c.restaurantName}</a>
+              <a href={c.restaurantUrl} target={"_blank"}>
+                {c.restaurantName}
+              </a>
             </Breadcrumb.Section>
             <Breadcrumb.Divider icon="food" />
             <Breadcrumb.Divider icon="angle double right" />
@@ -42,7 +44,7 @@ class UserProfile extends Component {
               <Button
                 icon
                 color="red"
-                size="tiny"
+                size="mini"
                 type="button"
                 floated="right"
               >
@@ -55,6 +57,7 @@ class UserProfile extends Component {
                 <p>Are your sure you want to cancel?</p>
                 <Button
                   color="yellow"
+                  size="mini"
                   content="Confirm Cancel"
                   onClick={() => this.handleCancel(c)}
                 />
@@ -85,24 +88,17 @@ class UserProfile extends Component {
     return (
       <Card fluid color={"red"}>
         <Card.Content>
-          <Card.Header>My profile</Card.Header>
+          <Image
+            floated={"right"}
+            size={"tiny"}
+            src={this.props.content.profile.picture}
+            alt="user-profile-img"
+          />
+
+          <Card.Header>{this.props.content.profile.name}</Card.Header>
         </Card.Content>
 
-        <Image
-          src={this.props.content.profile.picture}
-          alt="user-profile-img"
-        />
         <Card.Content>
-          <Card.Description>
-            <Icon name="user" />
-            {this.props.content.profile.name}
-          </Card.Description>
-          <div className="ui divider" />
-          {/* <Card.Description>Events I created:</Card.Description>
-          <List className="list-group list-group-flush">
-            {this.renderMyEvents()}
-          </List>
-          <div className="ui divider" /> */}
           <Card.Description>My Events:</Card.Description>
           <List key={"listevent"} className="list-group list-group-flush">
             {this.renderMyEvents()}

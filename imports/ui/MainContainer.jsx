@@ -203,48 +203,89 @@ class MainContainer extends Component {
                 pizzaMate
               </h1>
             </span>
-
-            <div>
-              <Input
-                label={"Find"}
-                loading={this.state.isloading}
-                icon="search"
-                type="text"
-                placeholder="restaurants"
-                value={this.state.message}
-                onChange={this.onChange.bind(this)}
-                onKeyPress={this.onKey.bind(this)}
-                aria-label="search"
-              />
-              <Input
-                label={"Near"}
-                loading={this.state.isloading}
-                icon="search"
-                type="text"
-                placeholder="location"
-                value={this.state.location}
-                onChange={e => this.setState({ location: e.target.value })}
-                onKeyPress={this.onKey.bind(this)}
-                aria-label="search-location"
-              />
-              {this.state.businesses.length === 0 ? null : (
-                <Button
-                  basic
-                  color={"red"}
-                  content="Clear Results"
-                  onClick={this.handleClear.bind(this)}
-                />
-              )}
-            </div>
           </Grid.Column>
+
+          {/* <div>
+            <Input
+              label={"Find"}
+              loading={this.state.isloading}
+              icon="search"
+              type="text"
+              placeholder="restaurants"
+              value={this.state.message}
+              onChange={this.onChange.bind(this)}
+              onKeyPress={this.onKey.bind(this)}
+              aria-label="search"
+            />
+            <Input
+              label={"Near"}
+              loading={this.state.isloading}
+              icon="search"
+              type="text"
+              placeholder="location"
+              value={this.state.location}
+              onChange={e => this.setState({ location: e.target.value })}
+              onKeyPress={this.onKey.bind(this)}
+              aria-label="search-location"
+            />
+            {this.state.businesses.length === 0 ? null : (
+              <Button
+                basic
+                color={"red"}
+                content="Clear Results"
+                onClick={this.handleClear.bind(this)}
+              />
+            )}
+          </div> */}
+        </Grid.Row>
+        <Grid.Row centered>
+          <Grid.Column width={4} />
+          <Grid.Column width={4}>
+            <Input
+              fluid
+              label={"Find"}
+              loading={this.state.isloading}
+              icon="search"
+              type="text"
+              placeholder="restaurants"
+              value={this.state.message}
+              onChange={this.onChange.bind(this)}
+              onKeyPress={this.onKey.bind(this)}
+              aria-label="search"
+            />
+          </Grid.Column>
+          <Grid.Column width={4}>
+            <Input
+              fluid
+              label={"Near"}
+              loading={this.state.isloading}
+              icon="search"
+              type="text"
+              placeholder="location"
+              value={this.state.location}
+              onChange={e => this.setState({ location: e.target.value })}
+              onKeyPress={this.onKey.bind(this)}
+              aria-label="search-location"
+            />
+          </Grid.Column>
+          <Grid.Column width={4} />
         </Grid.Row>
 
         <Grid.Row centered>
           <Grid.Column width={4}>
             <UserProfile content={Meteor.user()} />
           </Grid.Column>
-          <Grid.Column width={7}>{this.renderMap()}</Grid.Column>
-          <Grid.Column width={5}>
+          <Grid.Column width={6}>{this.renderMap()}</Grid.Column>
+          <Grid.Column width={6}>
+            {this.state.businesses.length === 0 ? null : (
+              <Button
+                fluid
+                basic
+                color={"red"}
+                content="Clear Results"
+                onClick={this.handleClear.bind(this)}
+              />
+            )}
             <Segment style={{ overflow: "auto", maxHeight: 700 }}>
               {this.state.isloading ? (
                 <Image size={"large"} src={"imgs/loading.gif"} centered />

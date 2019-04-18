@@ -80,7 +80,7 @@ class GroupChat extends Component {
               <Statistic size={"tiny"}>
                 <Statistic.Label>You are talking event @:</Statistic.Label>
                 <Statistic.Value>
-                  <a href={this.state.restaurantUrl}>
+                  <a href={this.state.restaurantUrl} target={"_blank"}>
                     {this.state.restaurantName}
                   </a>
                 </Statistic.Value>

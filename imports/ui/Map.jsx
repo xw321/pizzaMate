@@ -47,8 +47,8 @@ class Map extends Component {
         zoom: 12,
         bearing: 0,
         pitch: 0,
-        width: 600,
-        height: 600
+        width: 450,
+        height: 450
       },
       currentLat: 0.0,
       currentLon: 0.0,

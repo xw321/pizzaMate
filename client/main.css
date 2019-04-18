@@ -138,7 +138,7 @@ h2 {
 
 .res-hover {
   border: 1px solid red !important;
-  /* background-color: gold !important; */
+  background-color: ghostwhite !important;
   transition: border 0.2s;
 }
 

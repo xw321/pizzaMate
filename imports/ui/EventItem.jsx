@@ -35,14 +35,14 @@ export default class EventItem extends Component {
     return (
       <Item key={this.props.myEvent._id}>
         <Item.Content>
-          <Breadcrumb size={"small"}>
+          <Breadcrumb size={"mini"}>
             <Breadcrumb.Section active>
               {this.props.myEvent.peopleLimit}
             </Breadcrumb.Section>
             <Breadcrumb.Divider icon="user" />
             <Breadcrumb.Divider icon="angle double right" />
             <Breadcrumb.Section>
-              <a href={this.props.myEvent.restaurantUrl}>
+              <a href={this.props.myEvent.restaurantUrl} target={"_blank"}>
                 {this.props.myEvent.restaurantName}
               </a>
             </Breadcrumb.Section>
@@ -55,7 +55,7 @@ export default class EventItem extends Component {
           </Breadcrumb>
 
           {this.props.myEvent.isFull ? (
-            <Button floated="right" disabled>
+            <Button floated="right" disabled size="tiny">
               Full
             </Button>
           ) : (
@@ -67,7 +67,7 @@ export default class EventItem extends Component {
               floated="right"
               onClick={() => this.onJoin(this.props.myEvent)}
             >
-              {this.checkJoined() ? "joined!" : "join"}
+              {this.checkJoined() ? "Joined!" : "Join"}
             </Button>
           )}
         </Item.Content>

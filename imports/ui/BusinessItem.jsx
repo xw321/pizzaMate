@@ -265,15 +265,13 @@ class BusinessItem extends Component {
         onMouseOut={() => this.props.changeFunction()}
       >
         <Card.Content>
-          <Card.Header>
-            <span floated="left">powered by</span>
-            <Image
-              src={"imgs/Yelp_trademark_RGB.png"}
-              alt="yelp-logo-img"
-              size="tiny"
-              href="https://www.yelp.com/"
-            />
-          </Card.Header>
+          <span className="floated right">powered by</span>
+          <Image
+            src={"imgs/Yelp_trademark_RGB.png"}
+            alt="yelp-logo-img"
+            size="mini"
+            href="https://www.yelp.com/"
+          />
         </Card.Content>
         <Card.Content>
           <Item>
