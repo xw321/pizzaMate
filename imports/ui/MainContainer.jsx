@@ -62,7 +62,6 @@ class MainContainer extends Component {
         return;
       }
 
-      console.log("res from map call:   " + res);
       this.setState({ token: res });
     });
   }
@@ -89,12 +88,10 @@ class MainContainer extends Component {
       // get current location
       lat = position.coords.latitude;
       longt = position.coords.longitude;
-      //console.log("--------latitude:  " + lat + "    longitude:  " + longt);
       this.setState({
         lat: lat,
         longt: longt
       });
-      //console.log("latitude:  " + lat + "    longitude:  " + longt);
     });
   }
 
@@ -112,12 +109,11 @@ class MainContainer extends Component {
       // get current location
       lat = position.coords.latitude;
       longt = position.coords.longitude;
-      //console.log("--------latitude:  " + lat + "    longitude:  " + longt);
+
       this.setState({
         lat: lat,
         longt: longt
       });
-      //console.log("latitude:  " + lat + "    longitude:  " + longt);
     });
   }
 
@@ -162,7 +158,7 @@ class MainContainer extends Component {
             term: this.state.message
           };
         }
-        //console.log("here!!" + this.state.location);
+
         // call yelp API
         Meteor.call("searchYelp", params, (err, res) => {
           console.log("API");
@@ -185,6 +181,7 @@ class MainContainer extends Component {
     }
   }
 
+  // clear searched results
   handleClear() {
     this.setState({ businesses: [], message: "" });
   }
