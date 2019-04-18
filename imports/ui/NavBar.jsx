@@ -21,8 +21,8 @@ export default class NavBar extends Component {
           name="  pizzaMate"
           active={this.state.activeItem === "   pizzaMate"}
         >
-          <Link to="/" id="pizza">
-            <h4 id="pizza">
+          <Link to="/" id="pizza2">
+            <h4 id="pizza2">
               <span role="img" aria-label="emoji">
                 🍕
               </span>
