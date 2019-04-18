@@ -34,11 +34,6 @@ const degreeToPixels = [
   { zoom: 24, pixels: 29346706.2272 }
 ];
 
-// it really doesn't matter if we store it in a unpublished file and use some tedious
-// method call to retireve the token
-const TOKEN =
-  "pk.eyJ1IjoiYWRvdWRvdSIsImEiOiJjanUyMWg4cW0wN3FsM3lwY2dyNTJsb3h0In0.sdXoWdlnsVa3oUEZ-BEfLw";
-
 const mapStyle = { position: "absolute", top: 36, left: 0, padding: "10px" };
 class Map extends Component {
   constructor(props) {
@@ -165,11 +160,11 @@ class Map extends Component {
   }
 
   render() {
-    //console.log("render");
+    //console.log("render--->" + this.props.token);
     return (
       <ReactMapGL
         {...this.state.viewport}
-        mapboxApiAccessToken={TOKEN}
+        mapboxApiAccessToken={this.props.token}
         mapStyle={"mapbox://styles/mapbox/navigation-guidance-day-v4"}
         onViewportChange={v => this.handleOnViewportChange(v)}
       >
@@ -188,7 +183,8 @@ class Map extends Component {
 Map.propTypes = {
   markers: PropTypes.arrayOf(PropTypes.object).isRequired,
   isMouseOverArray: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  changeFunction: PropTypes.func
+  changeFunction: PropTypes.func,
+  token: PropTypes.string.isRequired
   // myEvents: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 

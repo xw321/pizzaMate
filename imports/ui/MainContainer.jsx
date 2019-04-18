@@ -22,7 +22,8 @@ class MainContainer extends Component {
       businesses: [],
       isloading: false,
       location: "",
-      mouseOver: []
+      mouseOver: [],
+      token: ""
     };
     this.onChange = this.onChange.bind(this);
     this.onKey = this.onKey.bind(this);
@@ -52,15 +53,32 @@ class MainContainer extends Component {
     });
   }
 
+  UNSAFE_componentWillMount() {
+    Meteor.call("getMapToken", (err, res) => {
+      console.log("API");
+      if (err) {
+        alert("Error calling MAp API");
+        console.log(err);
+        return;
+      }
+
+      console.log("res from map call:   " + res);
+      this.setState({ token: res });
+    });
+  }
+
   // return a mapbox instance
   renderMap() {
-    return (
-      <Map
-        markers={this.state.businesses}
-        isMouseOverArray={this.state.mouseOver}
-        changeFunction={i => this.changeMouseOverStatus(i)}
-      />
-    );
+    if (this.state.token !== "") {
+      return (
+        <Map
+          markers={this.state.businesses}
+          isMouseOverArray={this.state.mouseOver}
+          changeFunction={i => this.changeMouseOverStatus(i)}
+          token={this.state.token}
+        />
+      );
+    }
   }
 
   componentDidMount() {
