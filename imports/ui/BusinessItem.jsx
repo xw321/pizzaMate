@@ -29,7 +29,6 @@ const inlineStyle = {
 
 // This component returns a Card which consists:
 // Basic info about current restaurant;
-// (TODO) Event info associated with this restaurant
 class BusinessItem extends Component {
   constructor(props) {
     super(props);
@@ -92,6 +91,7 @@ class BusinessItem extends Component {
     return res;
   }
 
+  // when clicked join button, call method
   onJoin(myEvent) {
     console.log("join called  " + myEvent._id);
 
@@ -106,11 +106,8 @@ class BusinessItem extends Component {
     });
   }
 
+  // return fomatted restaurant address
   renderAddress(addressArr) {
-    // let res = "";
-    // addressArr.forEach(element => {
-    //   res += element + "\n";
-    // });
     return (
       <div>
         {addressArr.map((element, i) => {
@@ -140,6 +137,7 @@ class BusinessItem extends Component {
     this.setState({ res: newRes });
   }
 
+  // get formatted current date
   getDate() {
     let today = new Date();
     let date = today.getFullYear() + "-";
@@ -153,21 +151,25 @@ class BusinessItem extends Component {
     return date;
   }
 
+  // get formatted current time
   getTime() {
     var today = new Date();
     var time = today.getHours() + ":" + today.getMinutes();
     return time;
   }
 
+  // Create new event form handler
   handleSubmit() {
     console.log("button clicked-----   " + this.props.content.restaurantName);
     let error = false;
 
+    // Cannot be empty date
     if (this.state.appTime === "" || this.state.appDate === "") {
       this.setState({ dateError: true });
       error = true;
       console.log("check error 1:   " + error);
     } else if (this.state.appDate < this.getDate()) {
+      //cannot be past date
       this.setState({ dateError: true });
       error = true;
       console.log("state date:   " + this.state.appDate);

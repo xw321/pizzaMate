@@ -11,10 +11,12 @@ export default class EventItem extends Component {
     super(props);
   }
 
+  // return true if current user already joined this event
   checkJoined() {
     return this.props.myEvent.member.includes(Meteor.userId());
   }
 
+  // When click join button, call method
   onJoin(myEvent) {
     console.log("join called  " + myEvent._id);
 

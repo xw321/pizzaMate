@@ -20,6 +20,7 @@ class UserProfile extends Component {
     this.renderMyEvents = this.renderMyEvents.bind(this);
   }
 
+  //return a list of current user's events
   renderMyEvents() {
     return this.props.myEvents.map(c => (
       <List.Item key={c._id}>

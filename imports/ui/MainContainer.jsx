@@ -43,6 +43,7 @@ class MainContainer extends Component {
     ));
   }
 
+  // function handles mouse over business/marker effect
   changeMouseOverStatus(index) {
     const newArray = this.state.mouseOver.slice();
     newArray[index] = !newArray[index];
@@ -51,6 +52,7 @@ class MainContainer extends Component {
     });
   }
 
+  // return a mapbox instance
   renderMap() {
     return (
       <Map
@@ -62,20 +64,22 @@ class MainContainer extends Component {
   }
 
   componentDidMount() {
+    // get user location onload
     let lat = 0.0;
     let longt = 0.0;
     navigator.geolocation.getCurrentPosition(position => {
       // get current location
       lat = position.coords.latitude;
       longt = position.coords.longitude;
-      console.log("--------latitude:  " + lat + "    longitude:  " + longt);
+      //console.log("--------latitude:  " + lat + "    longitude:  " + longt);
       this.setState({
         lat: lat,
         longt: longt
       });
-      console.log("latitude:  " + lat + "    longitude:  " + longt);
+      //console.log("latitude:  " + lat + "    longitude:  " + longt);
     });
   }
+
   //Update state.message upon input update
   onChange(evt) {
     console.log("change", evt.target.value);
@@ -85,6 +89,7 @@ class MainContainer extends Component {
     console.log("After change  ", this.state.message);
     let lat = 0.0;
     let longt = 0.0;
+    // Just a safer way to ensure we have user lcoation
     navigator.geolocation.getCurrentPosition(position => {
       // get current location
       lat = position.coords.latitude;
@@ -123,6 +128,8 @@ class MainContainer extends Component {
           term: this.state.message
         };
 
+        // Depending on the location input, if user didn't specify a location,
+        // then we search by user current location; else we search by user input location
         if (this.state.location.length === 0) {
           params = {
             latitude: this.state.lat,
@@ -137,8 +144,8 @@ class MainContainer extends Component {
             term: this.state.message
           };
         }
-        console.log("here!!" + this.state.location);
-        //refactorr call
+        //console.log("here!!" + this.state.location);
+        // call yelp API
         Meteor.call("searchYelp", params, (err, res) => {
           console.log("API");
           if (err) {
@@ -184,7 +191,7 @@ class MainContainer extends Component {
 
             <div>
               <Input
-                label={"Search"}
+                label={"Find"}
                 loading={this.state.isloading}
                 icon="search"
                 type="text"
@@ -223,7 +230,7 @@ class MainContainer extends Component {
           </Grid.Column>
           <Grid.Column width={7}>{this.renderMap()}</Grid.Column>
           <Grid.Column width={5}>
-            <Segment style={{ overflow: "auto", maxHeight: 900 }}>
+            <Segment style={{ overflow: "auto", maxHeight: 700 }}>
               {this.state.isloading ? (
                 <Image size={"large"} src={"imgs/loading.gif"} centered />
               ) : this.state.businesses.length === 0 ? (

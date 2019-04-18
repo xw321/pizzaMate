@@ -1,5 +1,5 @@
 import { Mongo } from "meteor/mongo";
-//import { check } from "meteor/check";
+import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 
 export const Messages = new Mongo.Collection("messages");
@@ -8,10 +8,9 @@ export const Messages = new Mongo.Collection("messages");
 Messages DB:
     _id: default
     event : event._id
-    member : [] of customUserObj (i.e., only id and name)
-    messages: [] of messageObj => {text, owner, createAt}
-
-
+    user: whoever sent this message
+    createAt: current time
+    messages: message
 */
 if (Meteor.isServer) {
   Meteor.publish("myMessages", function(eventId) {
@@ -20,18 +19,20 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
+  // insert new message to db
   "messages.sendMessage"(eventId, message) {
-    //check(newText, String);
+    if (Meteor.isServer) {
+      check(message, String);
+      if (!Meteor.userId()) {
+        throw new Meteor.Error("not-authorized");
+      }
 
-    if (!Meteor.userId()) {
-      throw new Meteor.Error("not-authorized");
+      Messages.insert({
+        event: eventId,
+        user: Meteor.user(),
+        message: message,
+        createAt: Date.now()
+      });
     }
-
-    Messages.insert({
-      event: eventId,
-      user: Meteor.user(),
-      message: message,
-      createAt: Date.now()
-    });
   }
 });

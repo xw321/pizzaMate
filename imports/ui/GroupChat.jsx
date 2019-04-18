@@ -16,10 +16,8 @@ class GroupChat extends Component {
       restaurantUrl: ""
     };
     this.renderMyEvents = this.renderMyEvents.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {}
   renderMyEvents() {
     return this.props.myEvents.map(c => (
       <Menu.Item

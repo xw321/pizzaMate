@@ -2,13 +2,10 @@ import React, { Component } from "react";
 import ReactMapGL, { NavigationControl, Marker } from "react-map-gl";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
-//import CityPin from "./city-pin.jsx";
 import "mapbox-gl/dist/mapbox-gl.css";
-//import { Meteor } from "meteor/meteor";
-//import mapConfig from "./mapConfig.jsx";
-//import { Meteor } from "meteor/meteor";
 import "../../client/main.css";
 
+// used to compute map viewport
 const degreeToPixels = [
   { zoom: 0, pixels: 1.7492 },
   { zoom: 1, pixels: 3.4984 },
@@ -37,6 +34,8 @@ const degreeToPixels = [
   { zoom: 24, pixels: 29346706.2272 }
 ];
 
+// it really doesn't matter if we store it in a unpublished file and use some tedious
+// method call to retireve the token
 const TOKEN =
   "pk.eyJ1IjoiYWRvdWRvdSIsImEiOiJjanUyMWg4cW0wN3FsM3lwY2dyNTJsb3h0In0.sdXoWdlnsVa3oUEZ-BEfLw";
 
@@ -67,12 +66,10 @@ class Map extends Component {
     console.log("constructor");
   }
 
-  // componentDidMount() {
-  //   this.renderMarker();
-  // }
   componentDidMount() {
     // console.log("SearchBoard did mount");
 
+    // set viewport and current position marker
     if (this.props.markers && this.props.markers.length !== 0) {
       let newViewport0 = Object.assign({}, this.state.viewport);
       console.log("markers is :  " + this.props.markers.length);
@@ -107,15 +104,8 @@ class Map extends Component {
     }
   }
 
+  // change viewport location to newly searched results
   UNSAFE_componentWillReceiveProps(nextProps) {
-    // const newRes = [];
-    // for (let i = 0; i < nextProps.markers.length; i++) {
-    //   newRes.push(false);
-    // }
-    // this.setState({
-    //   res: newRes,
-    //   markers: nextProps.markers
-    // });
     console.log("markers is :  " + nextProps.markers.length);
     const newViewport0 = Object.assign({}, this.state.viewport);
     if (nextProps.markers && nextProps.markers.length !== 0) {
@@ -123,8 +113,6 @@ class Map extends Component {
       newViewport0.longitude = nextProps.markers[0].coordinates.longitude;
       this.setState({
         viewport: newViewport0
-        // currentLat: nextProps.markers[0].coordinates.latitude,
-        // currentLon: nextProps.markers[0].coordinates.longitude
       });
     }
   }

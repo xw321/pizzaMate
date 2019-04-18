@@ -16,32 +16,39 @@ class ChatBoard extends Component {
     };
   }
 
+  // render chat message info: name, content, picture
+  renderOtherChart(myChat) {
+    return (
+      <Feed.Event key={myChat._id}>
+        <Feed.Label>
+          <Image src={myChat.user.profile.picture} />
+        </Feed.Label>
+        <Feed.Content>
+          <Feed.Date>{myChat.user.profile.name}</Feed.Date>
+          <Feed.Summary>
+            <Label basic pointing={"left"}>
+              <p>{myChat.message}</p>
+            </Label>
+          </Feed.Summary>
+        </Feed.Content>
+      </Feed.Event>
+    );
+  }
+
   renderChatInfo() {
     return this.props.chatInfo.map(myChat => {
-      return (
-        <Feed.Event key={myChat._id}>
-          <Feed.Label>
-            <Image src={myChat.user.profile.picture} />
-          </Feed.Label>
-          <Feed.Content>
-            <Feed.Date>{myChat.user.profile.name}</Feed.Date>
-            <Feed.Summary>
-              <Label basic pointing="left">
-                <p>{myChat.message}</p>
-              </Label>
-            </Feed.Summary>
-          </Feed.Content>
-        </Feed.Event>
-      );
+      return this.renderOtherChart(myChat);
     });
   }
 
+  // update message content
   handleOnChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
+  // call method to insert new message
   handleKeyPress(event) {
     console.log("message sent: " + this.state.message);
     check(this.state.message, String);
@@ -66,14 +73,15 @@ class ChatBoard extends Component {
     }
   }
 
+  // auto-scroll-to-bottom
   scrollToBottom() {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
-
+  // auto-scroll-to-bottom
   componentDidMount() {
     this.scrollToBottom();
   }
-
+  // auto-scroll-to-bottom
   componentDidUpdate() {
     this.scrollToBottom();
   }
@@ -81,7 +89,7 @@ class ChatBoard extends Component {
   render() {
     return (
       <Segment>
-        <Segment style={{ overflow: "auto", height: 800 }}>
+        <Segment style={{ overflow: "auto", height: 600 }}>
           {this.props.chatInfo.length === 0 ? (
             <p>No message yet. You guys are SHY.</p>
           ) : (
