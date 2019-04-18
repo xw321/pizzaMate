@@ -196,7 +196,7 @@ class MainContainer extends Component {
         <Grid.Row centered>
           <Grid.Column textAlign="center">
             <span>
-              <h1 id="pizza">
+              <h1 id="pizza1">
                 <span role="img" aria-label="emoji">
                   🍕
                 </span>
