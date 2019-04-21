@@ -4,7 +4,6 @@ import {
   Popup,
   Button,
   Card,
-  Breadcrumb,
   Icon,
   Image,
   List,
@@ -25,7 +24,16 @@ class UserProfile extends Component {
     return this.props.myEvents.map(c => (
       <List.Item key={c._id}>
         <List.Content>
-          <Breadcrumb size={"mini"}>
+          <List.Header>
+            <a href={c.restaurantUrl} target={"_blank"}>
+              {c.restaurantName}
+            </a>
+          </List.Header>
+          <List.Description>
+            {"Party of " + c.peopleLimit + ", on "}
+            {c.appTime}
+          </List.Description>
+          {/* <Breadcrumb size={"mini"}>
             <Breadcrumb.Section active>{c.peopleLimit}</Breadcrumb.Section>
             <Breadcrumb.Divider icon="user" />
             <Breadcrumb.Divider icon="angle double right" />
@@ -38,7 +46,7 @@ class UserProfile extends Component {
             <Breadcrumb.Divider icon="angle double right" />
             <Breadcrumb.Section active>{c.appTime}</Breadcrumb.Section>
             <Breadcrumb.Divider icon="clock" />
-          </Breadcrumb>
+          </Breadcrumb> */}
           <Popup
             trigger={
               <Button
@@ -100,7 +108,13 @@ class UserProfile extends Component {
 
         <Card.Content>
           <Card.Description>My Events:</Card.Description>
-          <List key={"listevent"} className="list-group list-group-flush">
+
+          <List
+            className="list-group list-group-flush"
+            animated
+            divided
+            verticalAlign="middle"
+          >
             {this.renderMyEvents()}
           </List>
         </Card.Content>

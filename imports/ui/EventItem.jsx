@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Breadcrumb, Button, Item } from "semantic-ui-react";
+import { Button, List } from "semantic-ui-react";
 // import { Events } from "../api/events.js";
 // import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
@@ -14,6 +14,34 @@ export default class EventItem extends Component {
   // return true if current user already joined this event
   checkJoined() {
     return this.props.myEvent.member.includes(Meteor.userId());
+  }
+
+  getDate() {
+    let today = new Date();
+    let date = today.getFullYear() + "-";
+    let mon =
+      today.getMonth() + 1 >= 10
+        ? today.getMonth() + 1
+        : "0" + (today.getMonth() + 1);
+
+    date += mon;
+    date += "-" + today.getDate();
+    return date;
+  }
+
+  // get formatted current time
+  getTime() {
+    let today = new Date();
+    let time = today.getHours() + ":" + today.getMinutes();
+    return time;
+  }
+
+  isExpired() {
+    const nowDate = this.getDate() + " " + this.getTime();
+    if (nowDate > this.props.myEvent.appTime) {
+      return true;
+    }
+    return false;
   }
 
   // When click join button, call method
@@ -33,45 +61,40 @@ export default class EventItem extends Component {
 
   render() {
     return (
-      <Item key={this.props.myEvent._id}>
-        <Item.Content>
-          <Breadcrumb size={"mini"}>
-            <Breadcrumb.Section active>
-              {this.props.myEvent.peopleLimit}
-            </Breadcrumb.Section>
-            <Breadcrumb.Divider icon="user" />
-            <Breadcrumb.Divider icon="angle double right" />
-            <Breadcrumb.Section>
-              <a href={this.props.myEvent.restaurantUrl} target={"_blank"}>
-                {this.props.myEvent.restaurantName}
-              </a>
-            </Breadcrumb.Section>
-            <Breadcrumb.Divider icon="food" />
-            <Breadcrumb.Divider icon="angle double right" />
-            <Breadcrumb.Section active>
-              {this.props.myEvent.appTime}
-            </Breadcrumb.Section>
-            <Breadcrumb.Divider icon="clock" />
-          </Breadcrumb>
+      <List.Item>
+        <List.Content>
+          <List.Header>
+            <a href={this.props.myEvent.restaurantUrl} target={"_blank"}>
+              {this.props.myEvent.restaurantName}
+            </a>
+          </List.Header>
+          <List.Description>
+            {"Party of " + this.props.myEvent.peopleLimit + ", on "}
+            {this.props.myEvent.appTime}
+          </List.Description>
+        </List.Content>
 
-          {this.props.myEvent.isFull ? (
-            <Button floated="right" disabled size="tiny">
-              Full
-            </Button>
-          ) : (
-            <Button
-              disabled={this.checkJoined()}
-              color={this.checkJoined() ? "orange" : "red"}
-              size="tiny"
-              type="button"
-              floated="right"
-              onClick={() => this.onJoin(this.props.myEvent)}
-            >
-              {this.checkJoined() ? "Joined!" : "Join"}
-            </Button>
-          )}
-        </Item.Content>
-      </Item>
+        {this.isExpired() ? (
+          <Button floated={"right"} disabled size="tiny">
+            Expired
+          </Button>
+        ) : this.props.myEvent.isFull ? (
+          <Button floated={"right"} disabled size="tiny">
+            Full
+          </Button>
+        ) : (
+          <Button
+            disabled={this.checkJoined()}
+            color={this.checkJoined() ? "orange" : "red"}
+            size="tiny"
+            floated={"right"}
+            type="button"
+            onClick={() => this.onJoin(this.props.myEvent)}
+          >
+            {this.checkJoined() ? "Joined!" : "Join"}
+          </Button>
+        )}
+      </List.Item>
     );
   }
 }

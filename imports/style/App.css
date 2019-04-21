@@ -48,8 +48,8 @@ nav.ui.container .ui.inverted.compact.menu .active.item {
   border-bottom-width: 2px;
 }
 
-.ui.inverted.vertical.segment {
-  height: 100vh;
+#big-bg {
+  height: 73vh;
   background-color: rgb(51, 51, 51);
   background-image: url("imgs/bg-img.jpg");
   background-size: cover;

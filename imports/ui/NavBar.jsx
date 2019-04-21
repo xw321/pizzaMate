@@ -16,13 +16,13 @@ export default class NavBar extends Component {
   render() {
     return (
       // <Segment color={"red"} inverted size={"mini"}>
-      <Menu color={Meteor.user() ? "red" : "grey"} inverted pointing secondary>
+      <Menu inverted color={Meteor.user() ? "red" : "black"} pointing>
         <Menu.Item
           name="  pizzaMate"
           active={this.state.activeItem === "   pizzaMate"}
         >
-          <Link to="/" id="pizza2">
-            <h4 id="pizza2">
+          <Link to="/">
+            <h4 className="pizza-logo">
               <span role="img" aria-label="emoji">
                 🍕
               </span>

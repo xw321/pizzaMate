@@ -153,8 +153,8 @@ class BusinessItem extends Component {
 
   // get formatted current time
   getTime() {
-    var today = new Date();
-    var time = today.getHours() + ":" + today.getMinutes();
+    let today = new Date();
+    let time = today.getHours() + ":" + today.getMinutes();
     return time;
   }
 

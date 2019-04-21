@@ -8,18 +8,16 @@
   }
 }
 */
-#pizza1 {
-  font-family: "Space Mono", monospace;
-}
-
-#pizza2 {
-  font-family: "Space Mono", monospace;
+.pizza-logo {
+  font-family: "Righteous", cursive;
 }
 
 #eventList {
   color: red;
 }
-
+.chat-label {
+  max-width: 280px;
+}
 .myfont-bold {
   font-family: "Raleway";
   font-weight: 900;

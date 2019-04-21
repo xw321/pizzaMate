@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Segment, Label, Image, Feed, Input } from "semantic-ui-react";
+import {
+  Segment,
+  Button,
+  Label,
+  Image,
+  Feed,
+  Input,
+  Popup,
+  Container,
+  Icon
+} from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
@@ -7,12 +17,14 @@ import { Meteor } from "meteor/meteor";
 import { Messages } from "../api/messages.js";
 import { check } from "meteor/check";
 import "../../client/main.css";
+import { Events } from "../api/events.js";
 
 class ChatBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: ""
+      message: "",
+      isOpen: false
     };
   }
 
@@ -26,7 +38,7 @@ class ChatBoard extends Component {
         <Feed.Content>
           <Feed.Date>{myChat.user.profile.name}</Feed.Date>
           <Feed.Summary>
-            <Label basic pointing={"left"}>
+            <Label className="chat-label" basic pointing={"left"}>
               <p>{myChat.message}</p>
             </Label>
           </Feed.Summary>
@@ -73,6 +85,10 @@ class ChatBoard extends Component {
     }
   }
 
+  handleBook(evt) {
+    evt.preventDefault();
+    alert("book reservation feature - coming soon!");
+  }
   // auto-scroll-to-bottom
   scrollToBottom() {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
@@ -86,9 +102,28 @@ class ChatBoard extends Component {
     this.scrollToBottom();
   }
 
+  handleOpen() {
+    this.setState({ isOpen: true });
+
+    this.timeout = setTimeout(() => {
+      this.setState({ isOpen: false });
+    }, 3500);
+  }
+
+  handleClose() {
+    this.setState({ isOpen: false });
+    clearTimeout(this.timeout);
+  }
+
   render() {
     return (
       <Segment>
+        <Container textAlign={"center"}>
+          <Icon name="user" />
+          {this.props.currEventObj.member.length +
+            "/" +
+            this.props.currEventObj.peopleLimit}
+        </Container>
         <Segment style={{ overflow: "auto", height: 600 }}>
           {this.props.chatInfo.length === 0 ? (
             <p>No message yet. You guys are SHY.</p>
@@ -105,9 +140,36 @@ class ChatBoard extends Component {
         </Segment>
         <Input
           fluid
-          icon="send"
+          action={
+            this.props.currEventObj.isFull ? (
+              <Button
+                color="teal"
+                icon="calendar check"
+                content="Let's Book!"
+                onClick={e => {
+                  this.handleBook(e);
+                }}
+              />
+            ) : (
+              <Popup
+                trigger={
+                  <Button
+                    color="teal"
+                    icon="calendar check"
+                    content="Let's Book!"
+                  />
+                }
+                on="click"
+                open={this.state.isOpen}
+                onClose={this.handleClose.bind(this)}
+                onOpen={this.handleOpen.bind(this)}
+                content={"You can book a reservation when the group is full."}
+                basic
+              />
+            )
+          }
           type="text"
-          placeholder="message group"
+          placeholder="Message group"
           value={this.state.message}
           onChange={e => this.setState({ message: e.target.value })}
           onKeyPress={e => {
@@ -121,12 +183,15 @@ class ChatBoard extends Component {
 
 ChatBoard.propTypes = {
   event: PropTypes.string.isRequired,
-  chatInfo: PropTypes.array
+  chatInfo: PropTypes.array,
+  currEventObj: PropTypes.object
 };
 export default withTracker(props => {
   Meteor.subscribe("myMessages", props.event);
+  Meteor.subscribe("currEventObj", props.event);
 
   return {
-    chatInfo: Messages.find({}).fetch()
+    chatInfo: Messages.find({}).fetch(),
+    currEventObj: Events.find({ _id: props.event }).fetch()[0]
   };
 })(ChatBoard);

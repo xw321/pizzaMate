@@ -16,13 +16,16 @@ if (Meteor.isServer) {
   Meteor.publish("newEvents", function() {
     return Events.find({}, { sort: { createAt: -1 } });
   });
+  Meteor.publish("currEventObj", function(eventId) {
+    return Events.find({ _id: eventId });
+  });
 }
 
 Meteor.methods({
   // Create new event specified by restaurant, party size, and time
   "events.createNewEvent"(business, sizeLimit, appTime) {
     check(appTime, String);
-    check(sizeLimit, Number);
+    check(sizeLimit, String);
     if (Meteor.isServer) {
       Events.insert({
         createAt: Date.now(),
@@ -124,7 +127,8 @@ Meteor.methods({
           Events.update(
             { _id: event._id },
             {
-              $pull: { member: Meteor.userId() }
+              $pull: { member: Meteor.userId() },
+              $set: { isFull: false }
             }
           );
 

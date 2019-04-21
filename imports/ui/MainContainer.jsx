@@ -3,7 +3,15 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { EJSON } from "meteor/ejson";
-import { Image, Button, Item, Segment, Input, Grid } from "semantic-ui-react";
+import {
+  Image,
+  Button,
+  Item,
+  Segment,
+  Input,
+  List,
+  Grid
+} from "semantic-ui-react";
 import BusinessItem from "./BusinessItem.jsx";
 import EventItem from "./EventItem.jsx";
 import UserProfile from "./UserProfile.jsx";
@@ -196,7 +204,7 @@ class MainContainer extends Component {
         <Grid.Row centered>
           <Grid.Column textAlign="center">
             <span>
-              <h1 id="pizza1">
+              <h1 className="pizza-logo">
                 <span role="img" aria-label="emoji">
                   🍕
                 </span>
@@ -297,7 +305,9 @@ class MainContainer extends Component {
                     </Item.Content>
                   </Item>
                   <div className="ui divider" />
-                  {this.renderNewEvents()}
+                  <List animated divided verticalAlign="middle">
+                    {this.renderNewEvents()}
+                  </List>
                 </Item.Group>
               ) : (
                 this.renderBusinesses()
