@@ -31,22 +31,9 @@ class UserProfile extends Component {
           </List.Header>
           <List.Description>
             {"Party of " + c.peopleLimit + ", on "}
-            {c.appTime}
+            {c.displayDate}
+            {", at " + c.displayTime}
           </List.Description>
-          {/* <Breadcrumb size={"mini"}>
-            <Breadcrumb.Section active>{c.peopleLimit}</Breadcrumb.Section>
-            <Breadcrumb.Divider icon="user" />
-            <Breadcrumb.Divider icon="angle double right" />
-            <Breadcrumb.Section active>
-              <a href={c.restaurantUrl} target={"_blank"}>
-                {c.restaurantName}
-              </a>
-            </Breadcrumb.Section>
-            <Breadcrumb.Divider icon="food" />
-            <Breadcrumb.Divider icon="angle double right" />
-            <Breadcrumb.Section active>{c.appTime}</Breadcrumb.Section>
-            <Breadcrumb.Divider icon="clock" />
-          </Breadcrumb> */}
           <Popup
             trigger={
               <Button
@@ -131,6 +118,6 @@ export default withTracker(() => {
   Meteor.subscribe("MyEvents");
 
   return {
-    myEvents: Events.find({ member: Meteor.userId() }).fetch()
+    myEvents: Events.find({ "member.id": Meteor.userId() }).fetch()
   };
 })(UserProfile);

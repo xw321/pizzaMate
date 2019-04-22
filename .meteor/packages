@@ -26,3 +26,4 @@ google-config-ui
 service-configuration
 percolate:google-api
 ddp-rate-limiter@1.0.6
+email

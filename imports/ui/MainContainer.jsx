@@ -191,7 +191,7 @@ class MainContainer extends Component {
 
   // clear searched results
   handleClear() {
-    this.setState({ businesses: [], message: "" });
+    this.setState({ businesses: [], message: "", location: "" });
   }
 
   renderNewEvents() {
@@ -212,39 +212,6 @@ class MainContainer extends Component {
               </h1>
             </span>
           </Grid.Column>
-
-          {/* <div>
-            <Input
-              label={"Find"}
-              loading={this.state.isloading}
-              icon="search"
-              type="text"
-              placeholder="restaurants"
-              value={this.state.message}
-              onChange={this.onChange.bind(this)}
-              onKeyPress={this.onKey.bind(this)}
-              aria-label="search"
-            />
-            <Input
-              label={"Near"}
-              loading={this.state.isloading}
-              icon="search"
-              type="text"
-              placeholder="location"
-              value={this.state.location}
-              onChange={e => this.setState({ location: e.target.value })}
-              onKeyPress={this.onKey.bind(this)}
-              aria-label="search-location"
-            />
-            {this.state.businesses.length === 0 ? null : (
-              <Button
-                basic
-                color={"red"}
-                content="Clear Results"
-                onClick={this.handleClear.bind(this)}
-              />
-            )}
-          </div> */}
         </Grid.Row>
         <Grid.Row centered>
           <Grid.Column width={4} />
@@ -283,8 +250,8 @@ class MainContainer extends Component {
           <Grid.Column width={4}>
             <UserProfile content={Meteor.user()} />
           </Grid.Column>
-          <Grid.Column width={6}>{this.renderMap()}</Grid.Column>
-          <Grid.Column width={6}>
+          <Grid.Column width={7}>{this.renderMap()}</Grid.Column>
+          <Grid.Column width={5}>
             {this.state.businesses.length === 0 ? null : (
               <Button
                 fluid

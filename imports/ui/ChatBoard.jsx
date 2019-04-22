@@ -24,10 +24,35 @@ class ChatBoard extends Component {
     super(props);
     this.state = {
       message: "",
-      isOpen: false
+      isOpen: false,
+      voted: false
     };
   }
+  // auto-scroll-to-bottom
+  scrollToBottom() {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+  // auto-scroll-to-bottom
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+  // auto-scroll-to-bottom
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
 
+  handleOpen() {
+    this.setState({ isOpen: true });
+
+    this.timeout = setTimeout(() => {
+      this.setState({ isOpen: false });
+    }, 3500);
+  }
+
+  handleClose() {
+    this.setState({ isOpen: false });
+    clearTimeout(this.timeout);
+  }
   // render chat message info: name, content, picture
   renderOtherChart(myChat) {
     return (
@@ -85,46 +110,115 @@ class ChatBoard extends Component {
     }
   }
 
+  readySentEmail() {
+    Meteor.call("sendConfirmationEmail", this.props.currEventObj);
+  }
+
+  didIVote() {
+    console.log("called here--didIvote");
+    for (let i = 0; i < this.props.currEventObj.member.length; i++) {
+      if (
+        this.props.currEventObj.member[i].id === Meteor.userId() &&
+        this.props.currEventObj.member[i].vote !== -1
+      ) {
+        console.log("i voted");
+        return true;
+      }
+    }
+    return false;
+  }
+
+  allVoted() {
+    for (let i = 0; i < this.props.currEventObj.member.length; i++) {
+      if (this.props.currEventObj.member[i].vote === -1) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  numberOfVotes() {
+    let res = 0;
+    for (let i = 0; i < this.props.currEventObj.member.length; i++) {
+      if (this.props.currEventObj.member[i].vote !== -1) {
+        res++;
+      }
+    }
+    return res;
+  }
+
+  allVotedYes() {
+    for (let i = 0; i < this.props.currEventObj.member.length; i++) {
+      if (this.props.currEventObj.member[i].vote !== 1) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   handleBook(evt) {
     evt.preventDefault();
-    alert("book reservation feature - coming soon!");
-  }
-  // auto-scroll-to-bottom
-  scrollToBottom() {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-  }
-  // auto-scroll-to-bottom
-  componentDidMount() {
-    this.scrollToBottom();
-  }
-  // auto-scroll-to-bottom
-  componentDidUpdate() {
-    this.scrollToBottom();
+    // change event status to "booking", which indicates there is a voting for finalizing event
+    Meteor.call("events.booking", this.props.currEventObj._id);
+
+    /*
+    after clicking the button, all member in the group should have a message leting user choose confim going or not;
+
+
+    Flow is like this:
+    - call method, then voting button pop up;
+    - Within a time frame, ideally, waiting for all member voted, then trigger check funcion;
+        - if at least one user choose not to go, remove that user from group by calling "leaveEvent" method, 
+          set back the event status, and isFull flag;
+        - if all user choose CONFIRM, prompt payment window, if payment success, call the send email method, 
+          and set the "let's book" button to disabled "BOOKED!" button, change event status to "booked";
+    */
   }
 
-  handleOpen() {
-    this.setState({ isOpen: true });
+  // para: isGoing is a bool, TRUE means going to book, false otherwise
+  handleVote(evt, isGoing) {
+    evt.preventDefault();
+    this.setState({ voted: true });
 
-    this.timeout = setTimeout(() => {
-      this.setState({ isOpen: false });
-    }, 3500);
-  }
+    if (isGoing) {
+      //do things
+      Meteor.call("events.vote", this.props.currEventObj._id, 1, (err, res) => {
+        if (err) {
+          alert("Error vote");
+          console.log(err);
+          return;
+        }
 
-  handleClose() {
-    this.setState({ isOpen: false });
-    clearTimeout(this.timeout);
+        console.log("return from join evt:  " + res);
+      });
+    } else {
+      // do other things
+      Meteor.call("events.vote", this.props.currEventObj._id, 0, (err, res) => {
+        if (err) {
+          alert("Error vote");
+          console.log(err);
+          return;
+        }
+
+        console.log("return from join evt:  " + res);
+      });
+      //Meteor.call("events.leaveEvent", this.props.currEventObj);
+    }
+    //alert("book reservation feature - coming soon!");
   }
 
   render() {
     return (
       <Segment>
         <Container textAlign={"center"}>
-          <Icon name="user" />
-          {this.props.currEventObj.member.length +
-            "/" +
-            this.props.currEventObj.peopleLimit}
+          <Label color={this.props.currEventObj.isFull ? "teal" : null}>
+            <Icon name="user" />
+            {this.props.currEventObj.member.length +
+              "/" +
+              this.props.currEventObj.peopleLimit}
+          </Label>
         </Container>
-        <Segment style={{ overflow: "auto", height: 600 }}>
+        <Segment style={{ overflow: "auto", height: 500 }}>
           {this.props.chatInfo.length === 0 ? (
             <p>No message yet. You guys are SHY.</p>
           ) : (
@@ -138,32 +232,92 @@ class ChatBoard extends Component {
             }}
           />
         </Segment>
+        {this.allVoted() && this.allVotedYes() ? (
+          <div>All voted. You guys good to go.</div>
+        ) : this.allVoted() && !this.allVotedYes() ? (
+          <div>All voted. But some voted NO.</div>
+        ) : this.didIVote() ? (
+          <div>
+            Waiting for group to vote... Currently {this.numberOfVotes()} of{" "}
+            {this.props.currEventObj.peopleLimit} voted.
+            <Button
+              disabled
+              size={"tiny"}
+              floated={"right"}
+              color={"teal"}
+              content={"Vooted!"}
+            />
+          </div>
+        ) : this.props.currEventObj.status === "booking" ? (
+          <div>
+            Waiting for group to vote... Currently {this.numberOfVotes()} of{" "}
+            {this.props.currEventObj.peopleLimit} voted.
+            <Button.Group>
+              <Button
+                disabled={this.state.voted}
+                color={"teal"}
+                onClick={e => {
+                  this.handleVote(e, true);
+                }}
+              >
+                Book!
+              </Button>
+              <Button.Or />
+              <Button
+                disabled={this.state.voted}
+                negative
+                onClick={e => {
+                  this.handleVote(e, false);
+                }}
+              >
+                Im not ready
+              </Button>
+            </Button.Group>
+          </div>
+        ) : null}
         <Input
           fluid
           action={
             this.props.currEventObj.isFull ? (
-              <Button
-                color="teal"
-                icon="calendar check"
-                content="Let's Book!"
-                onClick={e => {
-                  this.handleBook(e);
-                }}
-              />
-            ) : (
               <Popup
                 trigger={
                   <Button
+                    disabled={this.props.currEventObj.status === "booking"}
                     color="teal"
                     icon="calendar check"
                     content="Let's Book!"
                   />
                 }
                 on="click"
+                content={
+                  <Segment>
+                    <p>
+                      You are about to start a vote in the group. Once all
+                      members agree to book, each member will place a deposit
+                      for reserving this event. There will be NO refund if you
+                      want to cancel. Are your sure you want to proceed?
+                    </p>
+                    <Button
+                      color="teal"
+                      content="Confirm"
+                      onClick={e => {
+                        this.handleBook(e);
+                      }}
+                    />
+                  </Segment>
+                }
+                basic
+              />
+            ) : (
+              <Popup
+                trigger={<Button icon="calendar check" content="Let's Book!" />}
+                on="click"
                 open={this.state.isOpen}
                 onClose={this.handleClose.bind(this)}
                 onOpen={this.handleOpen.bind(this)}
-                content={"You can book a reservation when the group is full."}
+                content={
+                  "You can start to book a reservation when the group is full."
+                }
                 basic
               />
             )

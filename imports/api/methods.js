@@ -3,6 +3,7 @@ import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
 import { ServiceConfiguration } from "meteor/service-configuration";
 import { Accounts } from "meteor/accounts-base";
+import { Email } from "meteor/email";
 export const Users = Meteor.users;
 
 const settings = Meteor.settings.google;
@@ -34,6 +35,9 @@ const API_KEY = Meteor.settings.yelp.apiKey;
 Meteor.methods({
   // Search businesses with terms and location
   searchYelp(params) {
+    if (!Meteor.userId()) {
+      throw new Meteor.Error("not-authorized");
+    }
     console.log("para" + params);
     const URL = "https://api.yelp.com/v3/businesses/search";
     const options = {
@@ -47,6 +51,9 @@ Meteor.methods({
   //Search specific business with budiness Id
   getYelpDetail(id) {
     check(id, String);
+    if (!Meteor.userId()) {
+      throw new Meteor.Error("not-authorized");
+    }
     const URL = `https://api.yelp.com/v3/businesses/${id}`;
     const options = {
       headers: {
@@ -55,9 +62,71 @@ Meteor.methods({
     };
     return HTTP.get(URL, options);
   },
+
   getMapToken() {
     if (Meteor.isServer) {
       return Meteor.settings.mapbox.token;
     }
+  },
+
+  sendConfirmationEmail(event) {
+    // Let other method calls from the same client start running,
+    // without waiting for the email sending to complete.
+    this.unblock();
+
+    // don’t allow sending email unless the user is logged in
+    if (!Meteor.user()) throw new Meteor.Error(403, "not logged in");
+
+    // and here is where you can throttle the number of emails this user
+    // is allowed to send per day
+    let receiverArr = [];
+
+    event.member.forEach(function(user) {
+      let emailAddress = Meteor.users.find({ _id: user.id }).fetch()[0].profile
+        .email;
+      receiverArr.push(emailAddress);
+    });
+
+    Email.send({
+      to: receiverArr,
+      from: "pizzamate.usa@gmail.com",
+      subject: "Your Reservation Confirmation for " + event.restaurantName,
+      text: "Thanks for using pizzaMate." + event.restaurantName
+    });
+  },
+
+  sendExpirationEmail(event) {
+    // Let other method calls from the same client start running,
+    // without waiting for the email sending to complete.
+    this.unblock();
+
+    // don’t allow sending email unless the user is logged in
+    if (!Meteor.user()) throw new Meteor.Error(403, "not logged in");
+
+    // and here is where you can throttle the number of emails this user
+    // is allowed to send per day
+    let receiverArr = [];
+
+    event.member.forEach(function(user) {
+      let emailAddress = Meteor.users.find({ _id: user.id }).fetch()[0].profile
+        .email;
+      receiverArr.push(emailAddress);
+    });
+
+    Email.send({
+      to: receiverArr,
+      from: "pizzamate.usa@gmail.com",
+      subject: "Your Event at " + event.restaurantName + " was expired",
+      text:
+        "We are sorry to inform you that your event at " +
+        event.restaurantName +
+        " on " +
+        event.displayDate +
+        ", at " +
+        event.displayTime +
+        ", party of " +
+        event.peopleLimit +
+        " was expired. Good luck on your future events!"
+    });
   }
 });

@@ -13,7 +13,14 @@ export default class EventItem extends Component {
 
   // return true if current user already joined this event
   checkJoined() {
-    return this.props.myEvent.member.includes(Meteor.userId());
+    for (let i = 0; i < this.props.myEvent.member.length; i++) {
+      if (this.props.myEvent.member[i].id == Meteor.userId()) {
+        return true;
+      }
+    }
+    return false;
+
+    //return this.props.myEvent.member.includes(Meteor.userId());
   }
 
   getDate() {
@@ -37,8 +44,9 @@ export default class EventItem extends Component {
   }
 
   isExpired() {
-    const nowDate = this.getDate() + " " + this.getTime();
-    if (nowDate > this.props.myEvent.appTime) {
+    const nowDate = new Date();
+    //console.log("test get time:  " + nowDate.getTime());
+    if (nowDate.getTime() > this.props.myEvent.appTime.getTime()) {
       return true;
     }
     return false;
@@ -70,7 +78,8 @@ export default class EventItem extends Component {
           </List.Header>
           <List.Description>
             {"Party of " + this.props.myEvent.peopleLimit + ", on "}
-            {this.props.myEvent.appTime}
+            {this.props.myEvent.displayDate}
+            {", at " + this.props.myEvent.displayTime}
           </List.Description>
         </List.Content>
 
@@ -79,7 +88,7 @@ export default class EventItem extends Component {
             Expired
           </Button>
         ) : this.props.myEvent.isFull ? (
-          <Button floated={"right"} disabled size="tiny">
+          <Button color={"teal"} floated={"right"} disabled size="tiny">
             Full
           </Button>
         ) : (

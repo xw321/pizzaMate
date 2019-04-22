@@ -44,11 +44,11 @@ class Map extends Component {
       viewport: {
         latitude: 37.3355,
         longitude: -121.893,
-        zoom: 12,
+        zoom: 11,
         bearing: 0,
         pitch: 0,
-        width: 450,
-        height: 450
+        width: 550,
+        height: 550
       },
       currentLat: 0.0,
       currentLon: 0.0,

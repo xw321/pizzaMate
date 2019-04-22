@@ -32,11 +32,11 @@ class GroupChat extends Component {
         }
       >
         <span id="eventList">
-          {c.peopleLimit} <Icon name="user" />
-          <Icon name="angle double right" /> {c.restaurantName}
-          <Icon name="food" /> <Icon name="angle double right" />
-          {c.appTime}
-          <Icon name="clock" />
+          <Icon name="food" />
+          {c.restaurantName}
+          {"   -   Party of " + c.peopleLimit + ", on "}
+          {c.displayDate}
+          {", at " + c.displayTime}
         </span>
       </Menu.Item>
     ));
@@ -102,6 +102,6 @@ export default withTracker(() => {
   Meteor.subscribe("MyEvents");
 
   return {
-    myEvents: Events.find({ member: Meteor.userId() }).fetch()
+    myEvents: Events.find({ "member.id": Meteor.userId() }).fetch()
   };
 })(GroupChat);

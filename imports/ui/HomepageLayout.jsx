@@ -1,19 +1,16 @@
 import React, { Component } from "react";
-// import NavBar from "./NavBar.jsx";
-//import "semantic-ui-css/semantic.min.css";
-
-import AccountsUIWrapper from "./AccountsUIWrapper.jsx";
-
 import {
   Container,
   Header,
   Segment,
   Grid,
-  List,
   Icon,
   Button
 } from "semantic-ui-react";
+// import NavBar from "./NavBar.jsx";
+//import "semantic-ui-css/semantic.min.css";
 
+// import AccountsUIWrapper from "./AccountsUIWrapper.jsx";
 import "../style/App.css";
 import "../../client/main.css";
 
@@ -29,29 +26,28 @@ class HomepageLayout extends Component {
             <Header inverted as="h1">
               Meet new friends by joining or creating new food-sharing event.
             </Header>
-
-            <AccountsUIWrapper />
           </Container>
-          <Segment className="seg" vertical as="footer" />
         </Segment>
-        <Segment inverted vertical style={{ padding: "5em 0em" }}>
+        <Segment inverted centered vertical style={{ padding: "2em 0em" }}>
           <Container>
-            <Grid textAlign={"center"} divided inverted stackable centered>
-              <Grid.Row textAlign={"center"}>
-                <Grid.Column width={3}>
+            <Grid divided inverted stackable centered>
+              <Grid.Row>
+                <Grid.Column textAlign={"center"} width={3}>
                   <Header inverted as="h4" content="About" />
-                  <List link inverted>
-                    <List.Item as="a">Sitemap</List.Item>
-                  </List>
                 </Grid.Column>
-
                 <Grid.Column width={7} textAlign={"center"}>
                   <Header as="h4" inverted>
-                    Made by <a href="https://xw321.github.io/">Xun</a> and{" "}
-                    <a href="https://yzhao430.github.io/">Yan</a>.
+                    Made by{" "}
+                    <a href="https://xw321.github.io/" target={"_blank"}>
+                      Xun
+                    </a>{" "}
+                    and{" "}
+                    <a href="https://yzhao430.github.io/" target={"_blank"}>
+                      Yan
+                    </a>
                   </Header>
                 </Grid.Column>
-                <Grid.Column width={3}>
+                <Grid.Column textAlign={"center"} width={3}>
                   <Header inverted as="h4">
                     <a
                       href="https://github.com/xw321/pizzaMate"

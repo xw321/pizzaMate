@@ -158,7 +158,7 @@ class BusinessItem extends Component {
     return time;
   }
 
-  // Create new event form handler
+  // Create new event form handler and do a messy validation
   handleSubmit() {
     console.log("button clicked-----   " + this.props.content.restaurantName);
     let error = false;
@@ -222,12 +222,17 @@ class BusinessItem extends Component {
       console.log("Clean----");
       this.setState({ formError: false });
     }
+    const appTimeObj = new Date(this.state.appDate + "T" + this.state.appTime);
+    console.log("date--" + appTimeObj);
+    console.log("format date:" + appTimeObj.toDateString());
 
     Meteor.call(
       "events.createNewEvent",
       this.props.content,
       this.state.peopleLimit,
-      this.state.appDate + " " + this.state.appTime,
+      appTimeObj,
+      appTimeObj.toDateString(),
+      this.state.appTime,
       (err, res) => {
         if (err) {
           console.log("Error calling createEvent    " + err);

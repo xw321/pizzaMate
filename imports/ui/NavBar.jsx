@@ -15,7 +15,6 @@ export default class NavBar extends Component {
 
   render() {
     return (
-      // <Segment color={"red"} inverted size={"mini"}>
       <Menu inverted color={Meteor.user() ? "red" : "black"} pointing>
         <Menu.Item
           name="  pizzaMate"

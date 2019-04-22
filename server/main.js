@@ -13,6 +13,8 @@ const methodName = {
   name: "searchYelp"
 };
 
+//const emailPass = Meteor.settings.email.password;
+
 if (Meteor.isServer) {
   DDPRateLimiter.addRule(
     {
@@ -23,4 +25,8 @@ if (Meteor.isServer) {
   );
 }
 
-Meteor.startup(() => {});
+Meteor.startup(() => {
+  /* Uncomment lines below when reservation feature is complete */
+  // process.env.MAIL_URL =
+  //   "smtps://pizzamate.usa@gmail.com:" + emailPass + "@smtp.gmail.com:465/";
+});
