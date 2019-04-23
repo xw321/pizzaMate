@@ -222,7 +222,7 @@ class MainContainer extends Component {
               loading={this.state.isloading}
               icon="search"
               type="text"
-              placeholder="restaurants"
+              placeholder="Restaurants"
               value={this.state.message}
               onChange={this.onChange.bind(this)}
               onKeyPress={this.onKey.bind(this)}
@@ -236,7 +236,7 @@ class MainContainer extends Component {
               loading={this.state.isloading}
               icon="search"
               type="text"
-              placeholder="location"
+              placeholder="Location"
               value={this.state.location}
               onChange={e => this.setState({ location: e.target.value })}
               onKeyPress={this.onKey.bind(this)}

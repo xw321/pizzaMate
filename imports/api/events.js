@@ -185,21 +185,53 @@ Meteor.methods({
       );
     }
   },
+  "events.booked"(eventId) {
+    if (Meteor.isServer) {
+      if (!Meteor.userId()) {
+        throw new Meteor.Error("not-authorized");
+      }
+      Events.update(
+        { _id: eventId },
+        {
+          $set: { status: "booked" }
+        }
+      );
+    }
+  },
+
+  "events.bookingFailed"(eventId) {
+    if (Meteor.isServer) {
+      if (!Meteor.userId()) {
+        throw new Meteor.Error("not-authorized");
+      }
+      Events.update(
+        { _id: eventId },
+        {
+          $pull: { member: { vote: 0 } }
+        },
+        { multi: true }
+      );
+
+      Events.update(
+        { _id: eventId },
+        {
+          $set: { status: "ongoing", isFull: false }
+        }
+      );
+    }
+
+    // check if all members voted NO, which will make the event empty, and we need to remove it
+    let updatedEvent = Events.findOne({ _id: eventId });
+    if (updatedEvent.member.length === 0) {
+      Events.remove({ _id: eventId });
+    }
+  },
 
   "events.vote"(eventId, vote) {
     if (Meteor.isServer) {
       if (!Meteor.userId()) {
         throw new Meteor.Error("not-authorized");
       }
-
-      // let myEvent = Events.findOne({ _id: eventId });
-
-      // myEvent.member = myEvent.member.map(e => {
-      //   if (e.id === Meteor.userId()) {
-      //     e.vote = vote;
-      //   }
-      //   return e;
-      // });
 
       Events.update(
         { _id: eventId, "member.id": Meteor.userId() },

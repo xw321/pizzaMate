@@ -25,7 +25,8 @@ class ChatBoard extends Component {
     this.state = {
       message: "",
       isOpen: false,
-      voted: false
+      voted: false,
+      bigPopupIsOpen: false
     };
   }
   // auto-scroll-to-bottom
@@ -110,10 +111,6 @@ class ChatBoard extends Component {
     }
   }
 
-  readySentEmail() {
-    Meteor.call("sendConfirmationEmail", this.props.currEventObj);
-  }
-
   didIVote() {
     console.log("called here--didIvote");
     for (let i = 0; i < this.props.currEventObj.member.length; i++) {
@@ -161,6 +158,12 @@ class ChatBoard extends Component {
     // change event status to "booking", which indicates there is a voting for finalizing event
     Meteor.call("events.booking", this.props.currEventObj._id);
 
+    setTimeout(
+      function() {
+        this.setState({ bigPopupIsOpen: false });
+      }.bind(this),
+      2000
+    );
     /*
     after clicking the button, all member in the group should have a message leting user choose confim going or not;
 
@@ -176,6 +179,7 @@ class ChatBoard extends Component {
   }
 
   // para: isGoing is a bool, TRUE means going to book, false otherwise
+  // call methods and update member's vote
   handleVote(evt, isGoing) {
     evt.preventDefault();
     this.setState({ voted: true });
@@ -207,6 +211,24 @@ class ChatBoard extends Component {
     //alert("book reservation feature - coming soon!");
   }
 
+  finalizeBooking() {
+    // call method, set status to "booked", and sent email
+    if (this.allVoted() && this.allVotedYes()) {
+      Meteor.call("events.booked", this.props.currEventObj._id);
+      Meteor.call("sendConfirmationEmail", this.props.currEventObj);
+    }
+  }
+
+  handleFailedVoting() {
+    // call method, remove who voted 0, set isFull to false, set status to "ongoing"
+    setTimeout(
+      function() {
+        Meteor.call("events.bookingFailed", this.props.currEventObj._id);
+      }.bind(this),
+      5000
+    );
+  }
+
   render() {
     return (
       <Segment>
@@ -232,10 +254,19 @@ class ChatBoard extends Component {
             }}
           />
         </Segment>
-        {this.allVoted() && this.allVotedYes() ? (
-          <div>All voted. You guys good to go.</div>
+        {!this.props.currEventObj.isFull ? (
+          <p />
+        ) : this.allVoted() && this.allVotedYes() ? (
+          <div>
+            All voted. You will receive a confirmation email shortly.{" "}
+            {this.finalizeBooking()}
+          </div>
         ) : this.allVoted() && !this.allVotedYes() ? (
-          <div>All voted. But some voted NO.</div>
+          <div>
+            All voted. But some voted NOT TO COME. We will have to remove who
+            voted NO and wait for the event to be full again.
+            {this.handleFailedVoting()}
+          </div>
         ) : this.didIVote() ? (
           <div>
             Waiting for group to vote... Currently {this.numberOfVotes()} of{" "}
@@ -278,7 +309,14 @@ class ChatBoard extends Component {
         <Input
           fluid
           action={
-            this.props.currEventObj.isFull ? (
+            this.props.currEventObj.status === "booked" ? (
+              <Button
+                disabled
+                color={"teal"}
+                icon="calendar check"
+                content="Booked!"
+              />
+            ) : this.props.currEventObj.isFull ? (
               <Popup
                 trigger={
                   <Button
@@ -289,6 +327,9 @@ class ChatBoard extends Component {
                   />
                 }
                 on="click"
+                open={this.state.bigPopupIsOpen}
+                onClose={() => this.setState({ bigPopupIsOpen: false })}
+                onOpen={() => this.setState({ bigPopupIsOpen: true })}
                 content={
                   <Segment>
                     <p>
