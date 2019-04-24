@@ -199,6 +199,20 @@ Meteor.methods({
     }
   },
 
+  "events.expire"(eventId) {
+    if (Meteor.isServer) {
+      if (!Meteor.userId()) {
+        throw new Meteor.Error("not-authorized");
+      }
+      Events.update(
+        { _id: eventId },
+        {
+          $set: { status: "expired" }
+        }
+      );
+    }
+  },
+
   "events.bookingFailed"(eventId) {
     if (Meteor.isServer) {
       if (!Meteor.userId()) {

@@ -36,17 +36,13 @@ export default class EventItem extends Component {
     return date;
   }
 
-  // get formatted current time
-  getTime() {
-    let today = new Date();
-    let time = today.getHours() + ":" + today.getMinutes();
-    return time;
-  }
-
   isExpired() {
     const nowDate = new Date();
+    const twoHour = 2 * 60 * 60 * 1000;
+    //const oneDay = 24 * 60 * 60 * 1000;
     //console.log("test get time:  " + nowDate.getTime());
-    if (nowDate.getTime() > this.props.myEvent.appTime.getTime()) {
+    if (nowDate.getTime() - twoHour > this.props.myEvent.appTime.getTime()) {
+      Meteor.call("events.expire", this.props.myEvent._id);
       return true;
     }
     return false;
