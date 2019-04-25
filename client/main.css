@@ -12,7 +12,17 @@
   font-family: "Righteous", cursive;
 }
 
-#eventList {
+.new-teal,
+.ui.teal {
+  background-color: #27db5a !important;
+  border-color: #27db5a !important;
+  color: black;
+}
+.pinkish {
+  background-color: #ff4747 !important;
+  border-color: #ff4747 !important;
+}
+.eventList {
   color: red;
 }
 .chat-label {

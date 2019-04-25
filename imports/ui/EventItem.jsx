@@ -91,13 +91,13 @@ export default class EventItem extends Component {
             Expired
           </Button>
         ) : this.props.myEvent.isFull ? (
-          <Button color={"teal"} floated={"right"} disabled size="tiny">
+          <Button className="new-teal" floated={"right"} disabled size="tiny">
             Full
           </Button>
         ) : (
           <Button
             disabled={this.checkJoined()}
-            color={this.checkJoined() ? "orange" : "red"}
+            color={"red"}
             size="tiny"
             floated={"right"}
             type="button"

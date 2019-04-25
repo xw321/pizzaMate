@@ -31,7 +31,7 @@ class GroupChat extends Component {
           })
         }
       >
-        <span id="eventList">
+        <span className="eventList">
           <Icon name="food" />
           {c.restaurantName}
           {"   -   Party of " + c.peopleLimit + ", on "}
@@ -39,7 +39,7 @@ class GroupChat extends Component {
           {", at " + c.displayTime}
 
           {c.status === "booked" ? (
-            <Label size="tiny" color="teal">
+            <Label size="tiny" className="new-teal">
               <Icon name="check" />
               Booked!
             </Label>
@@ -56,7 +56,7 @@ class GroupChat extends Component {
         : "Select an event to chat";
     return this.state.activeItem === "default" ? (
       <div>
-        <h3>{myProp}</h3>
+        <h2>{myProp}</h2>
       </div>
     ) : (
       <ChatBoard event={this.state.activeItem} />
@@ -77,7 +77,7 @@ class GroupChat extends Component {
         <Grid.Row>
           <Grid.Column width={2} />
           <Grid.Column width={6}>
-            <h3>My Events Channels</h3>
+            <h2>My Events Channels</h2>
             <Menu fluid pointing vertical>
               {this.renderMyEvents()}
             </Menu>

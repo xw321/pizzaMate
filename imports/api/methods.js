@@ -38,7 +38,7 @@ Meteor.methods({
     if (!Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
-    console.log("para" + params);
+    //console.log("para" + params);
     const URL = "https://api.yelp.com/v3/businesses/search";
     const options = {
       headers: {

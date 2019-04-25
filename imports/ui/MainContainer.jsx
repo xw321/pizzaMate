@@ -144,7 +144,8 @@ class MainContainer extends Component {
           latitude: this.state.lat,
           longitude: this.state.longt,
           radius: 30000,
-          term: this.state.message
+          term: this.state.message,
+          categories: "restaurants, All"
         };
 
         // Depending on the location input, if user didn't specify a location,
@@ -154,13 +155,15 @@ class MainContainer extends Component {
             latitude: this.state.lat,
             longitude: this.state.longt,
             radius: 30000,
-            term: this.state.message
+            term: this.state.message,
+            categories: "restaurants, All"
           };
         } else {
           params = {
             location: this.state.location,
             radius: 30000,
-            term: this.state.message
+            term: this.state.message,
+            categories: "restaurants, All"
           };
         }
 
@@ -211,11 +214,11 @@ class MainContainer extends Component {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row centered>
-          <Grid.Column width={4} />
-          <Grid.Column width={4}>
+          <Grid.Column width={5} />
+          <Grid.Column width={3}>
             <Input
               fluid
-              label={"Find"}
+              label={{ color: "red", content: "Find" }}
               loading={this.state.isloading}
               icon="search"
               type="text"
@@ -226,10 +229,10 @@ class MainContainer extends Component {
               aria-label="search"
             />
           </Grid.Column>
-          <Grid.Column width={4}>
+          <Grid.Column width={3}>
             <Input
               fluid
-              label={"Near"}
+              label={{ color: "red", content: "Near" }}
               loading={this.state.isloading}
               icon="search"
               type="text"
@@ -240,14 +243,15 @@ class MainContainer extends Component {
               aria-label="search-location"
             />
           </Grid.Column>
-          <Grid.Column width={4} />
+          <Grid.Column width={5} />
         </Grid.Row>
 
         <Grid.Row centered>
+          <Grid.Column width={1} />
           <Grid.Column width={4}>
             <UserProfile content={Meteor.user()} />
           </Grid.Column>
-          <Grid.Column width={7}>{this.renderMap()}</Grid.Column>
+
           <Grid.Column width={5}>
             {this.state.businesses.length === 0 ? null : (
               <Button
@@ -278,6 +282,7 @@ class MainContainer extends Component {
               )}
             </Segment>
           </Grid.Column>
+          <Grid.Column width={6}>{this.renderMap()}</Grid.Column>
         </Grid.Row>
       </Grid>
     );

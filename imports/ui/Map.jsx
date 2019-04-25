@@ -47,8 +47,8 @@ class Map extends Component {
         zoom: 11,
         bearing: 0,
         pitch: 0,
-        width: 550,
-        height: 550
+        width: 500,
+        height: 500
       },
       currentLat: 0.0,
       currentLon: 0.0,
@@ -163,6 +163,7 @@ class Map extends Component {
     //console.log("render--->" + this.props.token);
     return (
       <ReactMapGL
+        role="map"
         {...this.state.viewport}
         mapboxApiAccessToken={this.props.token}
         mapStyle={"mapbox://styles/mapbox/navigation-guidance-day-v4"}

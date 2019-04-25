@@ -17,6 +17,7 @@ export default class NavBar extends Component {
     return (
       <Menu inverted color={Meteor.user() ? "red" : "black"} pointing>
         <Menu.Item
+          role="navigation"
           name="  pizzaMate"
           active={this.state.activeItem === "   pizzaMate"}
         >
@@ -31,7 +32,11 @@ export default class NavBar extends Component {
         </Menu.Item>
 
         {Meteor.user() ? (
-          <Menu.Item name="mess" active={this.state.activeItem === "mess"}>
+          <Menu.Item
+            name="mess"
+            active={this.state.activeItem === "mess"}
+            role="navigation"
+          >
             <Link to="/message">
               <h4>Message</h4>
             </Link>

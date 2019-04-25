@@ -237,7 +237,7 @@ class ChatBoard extends Component {
     return (
       <Segment>
         <Container textAlign={"center"}>
-          <Label color={this.props.currEventObj.isFull ? "teal" : null}>
+          <Label className={this.props.currEventObj.isFull ? "new-teal" : null}>
             <Icon name="user" />
             {this.props.currEventObj.member.length +
               "/" +
@@ -276,10 +276,10 @@ class ChatBoard extends Component {
             Waiting for group to vote... Currently {this.numberOfVotes()} of{" "}
             {this.props.currEventObj.peopleLimit} voted.
             <Button
+              className="new-teal"
               disabled
               size={"tiny"}
               floated={"right"}
-              color={"teal"}
               content={"Vooted!"}
             />
           </div>
@@ -290,7 +290,7 @@ class ChatBoard extends Component {
             <Button.Group>
               <Button
                 disabled={this.state.voted}
-                color={"teal"}
+                className="new-teal"
                 onClick={e => {
                   this.handleVote(e, true);
                 }}
@@ -299,8 +299,8 @@ class ChatBoard extends Component {
               </Button>
               <Button.Or />
               <Button
+                className="pinkish"
                 disabled={this.state.voted}
-                negative
                 onClick={e => {
                   this.handleVote(e, false);
                 }}
@@ -312,11 +312,12 @@ class ChatBoard extends Component {
         ) : null}
         <Input
           fluid
+          aria-label="message-input"
           action={
             this.props.currEventObj.status === "booked" ? (
               <Button
                 disabled
-                color={"teal"}
+                className="new-teal"
                 icon="calendar check"
                 content="Booked!"
               />
@@ -325,7 +326,7 @@ class ChatBoard extends Component {
                 trigger={
                   <Button
                     disabled={this.props.currEventObj.status === "booking"}
-                    color="teal"
+                    className="new-teal"
                     icon="calendar check"
                     content="Let's Book!"
                   />
@@ -343,7 +344,7 @@ class ChatBoard extends Component {
                       want to cancel. Are your sure you want to proceed?
                     </p>
                     <Button
-                      color="teal"
+                      className="new-teal"
                       content="Confirm"
                       onClick={e => {
                         this.handleBook(e);

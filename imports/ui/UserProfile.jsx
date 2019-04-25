@@ -35,7 +35,14 @@ class UserProfile extends Component {
             {", at " + c.displayTime}
           </List.Description>
           {c.status === "booked" ? (
-            <Button icon color="teal" size="mini" type="button" floated="right">
+            <Button
+              className="new-teal"
+              disabled
+              icon
+              size="mini"
+              type="button"
+              floated="right"
+            >
               Booked!
             </Button>
           ) : (
@@ -47,6 +54,8 @@ class UserProfile extends Component {
                   size="mini"
                   type="button"
                   floated="right"
+                  role="button"
+                  aria-label="cancel-button-icon"
                 >
                   <Icon name="cancel" />
                 </Button>
@@ -56,10 +65,12 @@ class UserProfile extends Component {
                 <Segment>
                   <p>Are your sure you want to cancel?</p>
                   <Button
-                    color="yellow"
+                    className="pinkish"
+                    role="button"
                     size="mini"
                     content="Confirm Cancel"
                     onClick={() => this.handleCancel(c)}
+                    aria-label="cancel-button"
                   />
                 </Segment>
               }
