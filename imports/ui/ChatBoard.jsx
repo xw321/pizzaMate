@@ -213,7 +213,11 @@ class ChatBoard extends Component {
 
   finalizeBooking() {
     // call method, set status to "booked", and sent email
-    if (this.allVoted() && this.allVotedYes()) {
+    if (
+      this.allVoted() &&
+      this.allVotedYes() &&
+      this.props.currEventObj.status !== "booked"
+    ) {
       Meteor.call("events.booked", this.props.currEventObj._id);
       Meteor.call("sendConfirmationEmail", this.props.currEventObj);
     }
@@ -258,8 +262,8 @@ class ChatBoard extends Component {
           <p />
         ) : this.allVoted() && this.allVotedYes() ? (
           <div>
-            All voted. You will receive a confirmation email shortly.{" "}
-            {this.finalizeBooking()}
+            All voted. You will receive a confirmation email shortly. (Also
+            check your spam!) {this.finalizeBooking()}
           </div>
         ) : this.allVoted() && !this.allVotedYes() ? (
           <div>

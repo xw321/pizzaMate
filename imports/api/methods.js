@@ -91,7 +91,18 @@ Meteor.methods({
       to: receiverArr,
       from: "pizzamate.usa@gmail.com",
       subject: "Your Reservation Confirmation for " + event.restaurantName,
-      text: "Thanks for using pizzaMate." + event.restaurantName
+      text:
+        "Thanks for using pizzaMate.\n\nYour event at " +
+        event.restaurantName +
+        " on " +
+        event.displayDate +
+        ", at " +
+        event.displayTime +
+        ", party of " +
+        event.peopleLimit +
+        " was confirmed.\n\nWe would be happy to provide the service of booking the event for you." +
+        " Unfortunately, we are not partnered with Yelp or any other reservation booking services providers yet, so we cannot use the reservation APIs.\n\nTo complete your event, you have to reserve a table by yourself :-(" +
+        "\n\nLove,\npizzaMate"
     });
   },
 
@@ -99,6 +110,7 @@ Meteor.methods({
     // Let other method calls from the same client start running,
     // without waiting for the email sending to complete.
     this.unblock();
+    console.log("SEND CANCEL EMAIL");
 
     // don’t allow sending email unless the user is logged in
     if (!Meteor.user()) throw new Meteor.Error(403, "not logged in");
@@ -126,7 +138,8 @@ Meteor.methods({
         event.displayTime +
         ", party of " +
         event.peopleLimit +
-        " was expired. Good luck on your future events!"
+        " was expired.\n\n Good luck on your future events!" +
+        "\n\nLove,\npizzaMate"
     });
   }
 });

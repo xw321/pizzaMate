@@ -38,10 +38,17 @@ export default class EventItem extends Component {
 
   isExpired() {
     const nowDate = new Date();
-    const twoHour = 2 * 60 * 60 * 1000;
-    //const oneDay = 24 * 60 * 60 * 1000;
-    //console.log("test get time:  " + nowDate.getTime());
-    if (nowDate.getTime() - twoHour > this.props.myEvent.appTime.getTime()) {
+    const threeHour = 3 * 60 * 60 * 1000;
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (nowDate.getTime() - oneDay > this.props.myEvent.appTime.getTime()) {
+      Meteor.call("sendExpirationEmail", this.props.myEvent);
+      Meteor.call("events.remove", this.props.myEvent);
+      return true;
+    } else if (
+      nowDate.getTime() - threeHour >
+      this.props.myEvent.appTime.getTime()
+    ) {
       Meteor.call("events.expire", this.props.myEvent._id);
       return true;
     }

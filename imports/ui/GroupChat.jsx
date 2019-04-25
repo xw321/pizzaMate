@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Icon, Statistic, Menu, Grid } from "semantic-ui-react";
+import { Icon, Statistic, Menu, Grid, Label } from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
@@ -37,6 +37,13 @@ class GroupChat extends Component {
           {"   -   Party of " + c.peopleLimit + ", on "}
           {c.displayDate}
           {", at " + c.displayTime}
+
+          {c.status === "booked" ? (
+            <Label size="tiny" color="teal">
+              <Icon name="check" />
+              Booked!
+            </Label>
+          ) : null}
         </span>
       </Menu.Item>
     ));
@@ -68,14 +75,14 @@ class GroupChat extends Component {
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column width={3} />
-          <Grid.Column width={5}>
+          <Grid.Column width={2} />
+          <Grid.Column width={6}>
             <h3>My Events Channels</h3>
-            <Menu fluid pointing vertical floated="right">
+            <Menu fluid pointing vertical>
               {this.renderMyEvents()}
             </Menu>
           </Grid.Column>
-          <Grid.Column stretched width={5}>
+          <Grid.Column stretched width={6}>
             {this.state.activeItem === "default" ? null : (
               <Statistic size={"tiny"}>
                 <Statistic.Label>You are talking event @:</Statistic.Label>
@@ -88,7 +95,7 @@ class GroupChat extends Component {
             )}
             {this.renderChatBoard()}
           </Grid.Column>
-          <Grid.Column width={3} />
+          <Grid.Column width={2} />
         </Grid.Row>
       </Grid>
     );

@@ -40,9 +40,6 @@ class MainContainer extends Component {
 
   renderBusinesses() {
     return this.state.businesses.map((c, index) => (
-      // const className = c.highLight ? "res-hover" : "res-item";
-      //const resInfo = c.info;
-      // return (
       <BusinessItem
         key={c._id}
         content={c}

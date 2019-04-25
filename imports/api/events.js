@@ -212,6 +212,14 @@ Meteor.methods({
       );
     }
   },
+  "events.remove"(event) {
+    if (Meteor.isServer) {
+      if (!Meteor.userId()) {
+        throw new Meteor.Error("not-authorized");
+      }
+      Events.remove({ _id: event._id });
+    }
+  },
 
   "events.bookingFailed"(eventId) {
     if (Meteor.isServer) {

@@ -34,32 +34,38 @@ class UserProfile extends Component {
             {c.displayDate}
             {", at " + c.displayTime}
           </List.Description>
-          <Popup
-            trigger={
-              <Button
-                icon
-                color="red"
-                size="mini"
-                type="button"
-                floated="right"
-              >
-                <Icon name="cancel" />
-              </Button>
-            }
-            on="click"
-            content={
-              <Segment>
-                <p>Are your sure you want to cancel?</p>
+          {c.status === "booked" ? (
+            <Button icon color="teal" size="mini" type="button" floated="right">
+              Booked!
+            </Button>
+          ) : (
+            <Popup
+              trigger={
                 <Button
-                  color="yellow"
+                  icon
+                  color="red"
                   size="mini"
-                  content="Confirm Cancel"
-                  onClick={() => this.handleCancel(c)}
-                />
-              </Segment>
-            }
-            basic
-          />
+                  type="button"
+                  floated="right"
+                >
+                  <Icon name="cancel" />
+                </Button>
+              }
+              on="click"
+              content={
+                <Segment>
+                  <p>Are your sure you want to cancel?</p>
+                  <Button
+                    color="yellow"
+                    size="mini"
+                    content="Confirm Cancel"
+                    onClick={() => this.handleCancel(c)}
+                  />
+                </Segment>
+              }
+              basic
+            />
+          )}
         </List.Content>
       </List.Item>
     ));
