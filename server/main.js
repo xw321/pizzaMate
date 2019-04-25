@@ -7,12 +7,6 @@ import { WebApp } from "meteor/webapp";
 
 WebApp.addHtmlAttributeHook(() => ({ lang: "en" }));
 
-// Rate Limit. API calls are expensive
-// const methodName = {
-//   type: "method",
-//   name: "searchYelp"
-// };
-
 const LISTS_METHODS = [
   "searchYelp",
   "getYelpDetail",
@@ -27,10 +21,9 @@ const LISTS_METHODS = [
   "events.expire",
   "events.remove",
   "events.bookingFailed",
-  "events.vote"
+  "events.vote",
+  "messages.sendMessage"
 ];
-
-//const emailPass = Meteor.settings.email.password;
 
 if (Meteor.isServer) {
   DDPRateLimiter.addRule(
@@ -48,9 +41,9 @@ if (Meteor.isServer) {
     1000
   );
 }
-
+const emailPass = Meteor.settings.email.password;
 Meteor.startup(() => {
   /* Uncomment lines below when reservation feature is complete */
-  // process.env.MAIL_URL =
-  //   "smtps://pizzamate.usa@gmail.com:" + emailPass + "@smtp.gmail.com:465/";
+  process.env.MAIL_URL =
+    "smtps://pizzamate.usa@gmail.com:" + emailPass + "@smtp.gmail.com:465/";
 });
