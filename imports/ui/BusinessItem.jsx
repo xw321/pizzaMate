@@ -274,8 +274,9 @@ class BusinessItem extends Component {
           <Image
             src={"imgs/Yelp_trademark_RGB.png"}
             alt="yelp-logo-img"
-            size="mini"
+            size="tiny"
             href="https://www.yelp.com/"
+            target={"_blank"}
           />
         </Card.Content>
         <Card.Content>
@@ -331,7 +332,7 @@ class BusinessItem extends Component {
               >
                 <Modal.Header>Create Your Event</Modal.Header>
                 <Modal.Content>
-                  <Form size={"tiny"} error={this.state.formError}>
+                  <Form size={"small"} error={this.state.formError}>
                     {this.state.formError ? (
                       <Message negative>
                         <Message.Header>Opps</Message.Header>

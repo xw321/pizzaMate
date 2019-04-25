@@ -8,17 +8,24 @@
   }
 }
 */
+.mybody {
+  background-color: #1b1c1d !important;
+}
 .pizza-logo {
   font-family: "Righteous", cursive;
+}
+.ui.label {
+  color: #fff;
 }
 
 .new-teal,
 .ui.teal {
+  color: #fff !important;
   background-color: #27db5a !important;
   border-color: #27db5a !important;
-  color: black;
 }
 .pinkish {
+  color: #fff !important;
   background-color: #ff4747 !important;
   border-color: #ff4747 !important;
 }

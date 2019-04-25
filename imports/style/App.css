@@ -48,10 +48,19 @@ nav.ui.container .ui.inverted.compact.menu .active.item {
   border-bottom-width: 2px;
 }
 
-#big-bg {
+.big-bg {
+  background-color: rgb(51, 51, 51) !important;
   height: 100vh;
-  background-color: rgb(51, 51, 51);
+
   background-image: url("imgs/bg-img.jpg");
+  background-size: cover;
+}
+
+.big-bg-vert {
+  background-color: rgb(51, 51, 51) !important;
+  height: 100vh;
+
+  background-image: url("imgs/ng-2.jpg");
   background-size: cover;
 }
 

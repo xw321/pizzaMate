@@ -8,7 +8,8 @@ import {
   Input,
   Popup,
   Container,
-  Icon
+  Icon,
+  Message
 } from "semantic-ui-react";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
@@ -62,7 +63,10 @@ class ChatBoard extends Component {
           <Image src={myChat.user.profile.picture} />
         </Feed.Label>
         <Feed.Content>
-          <Feed.Date>{myChat.user.profile.name}</Feed.Date>
+          <Feed.Date>
+            {myChat.user.profile.name}
+            {myChat.user._id === Meteor.userId() ? " (you)" : " "}
+          </Feed.Date>
           <Feed.Summary>
             <Label className="chat-label" basic pointing={"left"}>
               <p>{myChat.message}</p>
@@ -118,7 +122,7 @@ class ChatBoard extends Component {
         this.props.currEventObj.member[i].id === Meteor.userId() &&
         this.props.currEventObj.member[i].vote !== -1
       ) {
-        console.log("i voted");
+        console.log("i voted:" + this.props.currEventObj.member[i].vote);
         return true;
       }
     }
@@ -147,10 +151,20 @@ class ChatBoard extends Component {
   allVotedYes() {
     for (let i = 0; i < this.props.currEventObj.member.length; i++) {
       if (this.props.currEventObj.member[i].vote !== 1) {
+        console.log("some voted -1");
         return false;
       }
     }
-    return true;
+    if (
+      this.props.currEventObj.isFull &&
+      this.props.currEventObj.member.length ===
+        this.props.currEventObj.peopleLimit
+    ) {
+      console.log("ALL voted 1");
+      return true;
+    } else {
+      return false;
+    }
   }
 
   handleBook(evt) {
@@ -218,8 +232,9 @@ class ChatBoard extends Component {
       this.allVotedYes() &&
       this.props.currEventObj.status !== "booked"
     ) {
+      console.log("send confim email here");
+      console.log("event detail:" + JSON.stringify(this.props.currEventObj));
       Meteor.call("events.booked", this.props.currEventObj._id);
-      Meteor.call("sendConfirmationEmail", this.props.currEventObj);
     }
   }
 
@@ -261,18 +276,27 @@ class ChatBoard extends Component {
         {!this.props.currEventObj.isFull ? (
           <p />
         ) : this.allVoted() && this.allVotedYes() ? (
-          <div>
-            All voted. You will receive a confirmation email shortly. (Also
-            check your spam!) {this.finalizeBooking()}
-          </div>
+          <Message icon positive>
+            <Icon name="check" />
+            <Message.Content>
+              <Message.Header>
+                All member voted and event is booked.
+              </Message.Header>
+              Check your email for confirmation. (Also check your spam!)
+              {this.finalizeBooking()}
+            </Message.Content>
+          </Message>
         ) : this.allVoted() && !this.allVotedYes() ? (
-          <div>
-            All voted. But some voted NOT TO COME. We will have to remove who
-            voted NO and wait for the event to be full again.
+          <Message>
+            <Message.Header>
+              All member voted,but some voted NOT TO COME.
+            </Message.Header>
+            We will have to remove who voted NO and wait for the event to be
+            full again.
             {this.handleFailedVoting()}
-          </div>
+          </Message>
         ) : this.didIVote() ? (
-          <div>
+          <Message>
             Waiting for group to vote... Currently {this.numberOfVotes()} of{" "}
             {this.props.currEventObj.peopleLimit} voted.
             <Button
@@ -282,33 +306,39 @@ class ChatBoard extends Component {
               floated={"right"}
               content={"Vooted!"}
             />
-          </div>
+          </Message>
         ) : this.props.currEventObj.status === "booking" ? (
-          <div>
-            Waiting for group to vote... Currently {this.numberOfVotes()} of{" "}
-            {this.props.currEventObj.peopleLimit} voted.
-            <Button.Group>
-              <Button
-                disabled={this.state.voted}
-                className="new-teal"
-                onClick={e => {
-                  this.handleVote(e, true);
-                }}
-              >
-                Book!
-              </Button>
-              <Button.Or />
-              <Button
-                className="pinkish"
-                disabled={this.state.voted}
-                onClick={e => {
-                  this.handleVote(e, false);
-                }}
-              >
-                Im not ready
-              </Button>
-            </Button.Group>
-          </div>
+          <Message icon>
+            <Icon name="circle notched" loading />
+            <Message.Content>
+              <Message.Header> Waiting for group to vote... </Message.Header>
+              Currently {this.numberOfVotes()} of{" "}
+              {this.props.currEventObj.peopleLimit} voted.
+              <Button.Group floated="right" size="tiny">
+                <Button
+                  size="tiny"
+                  disabled={this.didIVote()}
+                  className="new-teal"
+                  onClick={e => {
+                    this.handleVote(e, true);
+                  }}
+                >
+                  Book!
+                </Button>
+                <Button.Or />
+                <Button
+                  size="tiny"
+                  className="pinkish"
+                  disabled={this.didIVote()}
+                  onClick={e => {
+                    this.handleVote(e, false);
+                  }}
+                >
+                  Im not ready
+                </Button>
+              </Button.Group>
+            </Message.Content>
+          </Message>
         ) : null}
         <Input
           fluid

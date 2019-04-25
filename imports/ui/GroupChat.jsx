@@ -39,9 +39,14 @@ class GroupChat extends Component {
           {", at " + c.displayTime}
 
           {c.status === "booked" ? (
-            <Label size="tiny" className="new-teal">
+            <Label size="small" className="new-teal">
               <Icon name="check" />
               Booked!
+            </Label>
+          ) : c.status === "booking" ? (
+            <Label size="small" className="pinkish">
+              <Icon name="circle notched" loading />
+              Booking...
             </Label>
           ) : null}
         </span>
@@ -61,6 +66,24 @@ class GroupChat extends Component {
     ) : (
       <ChatBoard event={this.state.activeItem} />
     );
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.myEvents) {
+      let flag = -1;
+      let i = 0;
+      for (i = 0; i < nextProps.myEvents.length; i++) {
+        if (nextProps.myEvents[i]._id === this.state.activeItem) {
+          flag = 1;
+        }
+      }
+
+      if (flag === -1) {
+        this.setState({
+          activeItem: "default"
+        });
+      }
+    }
   }
 
   render() {

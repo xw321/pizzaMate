@@ -73,7 +73,7 @@ Meteor.methods({
     // Let other method calls from the same client start running,
     // without waiting for the email sending to complete.
     this.unblock();
-
+    console.log("SEND confirm EMAIL||" + event.restaurantName);
     // don’t allow sending email unless the user is logged in
     if (!Meteor.user()) throw new Meteor.Error(403, "not logged in");
 

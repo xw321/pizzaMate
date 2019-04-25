@@ -1,5 +1,6 @@
 #login-buttons .login-button {
-  color: black;
+  font-family: "Roboto", sans-serif;
+  color: grey;
   background: white;
   border: white;
 }
@@ -17,9 +18,11 @@
   background-image: url("imgs/gg.png");
   background-repeat: no-repeat;
   background-size: 16px 16px;
+  background-color: white;
 }
 
 #login-buttons .login-button:hover {
+  font-family: "Roboto", sans-serif;
   background-color: #4285f4;
   color: white;
 }

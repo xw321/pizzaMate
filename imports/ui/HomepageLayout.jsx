@@ -18,24 +18,36 @@ class HomepageLayout extends Component {
   render() {
     return (
       <div className="App">
-        <Segment id="big-bg" inverted vertical textAlign="center">
+        <Container
+          fluid
+          className={
+            window.innerWidth > window.innerHeight ? "big-bg" : "big-bg-vert"
+          }
+          textAlign="center"
+        >
           <Container className="content">
-            <Header inverted as="h1">
+            <Header
+              inverted
+              as="h1"
+              color={window.innerWidth > window.innerHeight ? null : "red"}
+            >
               Single is terrible.
             </Header>
-            <Header inverted as="h1">
+            <Header
+              inverted
+              as="h1"
+              color={window.innerWidth > window.innerHeight ? null : "red"}
+            >
               Meet new friends by joining or creating new food-sharing event.
             </Header>
           </Container>
-        </Segment>
-        <Segment inverted centered vertical style={{ padding: "2em 0em" }}>
+        </Container>
+        <Segment inverted vertical style={{ padding: "2em 0em" }}>
           <Container>
-            <Grid divided inverted stackable centered>
+            <Grid inverted stackable centered>
               <Grid.Row>
-                <Grid.Column textAlign={"center"} width={3}>
-                  <Header inverted as="h4" content="About" />
-                </Grid.Column>
-                <Grid.Column width={7} textAlign={"center"}>
+                <Grid.Column width={3} textAlign={"center"} />
+                <Grid.Column width={10} textAlign={"center"}>
                   <Header as="h4" inverted>
                     Made by{" "}
                     <a href="https://xw321.github.io/" target={"_blank"}>
@@ -46,8 +58,6 @@ class HomepageLayout extends Component {
                       Yan
                     </a>
                   </Header>
-                </Grid.Column>
-                <Grid.Column textAlign={"center"} width={3}>
                   <Header inverted as="h4">
                     <a
                       href="https://github.com/xw321/pizzaMate"
@@ -60,6 +70,7 @@ class HomepageLayout extends Component {
                     </a>
                   </Header>
                 </Grid.Column>
+                <Grid.Column textAlign={"center"} width={3} />
               </Grid.Row>
             </Grid>
           </Container>

@@ -159,6 +159,18 @@ Meteor.methods({
             }
           );
 
+          Events.update(
+            { _id: event._id, "member.vote": 0 },
+            { $set: { "member.$.vote": -1 } },
+            { multi: true }
+          );
+
+          Events.update(
+            { _id: event._id, "member.vote": 1 },
+            { $set: { "member.$.vote": -1 } },
+            { multi: true }
+          );
+
           Meteor.users.update(
             { _id: Meteor.userId() },
             {
@@ -190,12 +202,17 @@ Meteor.methods({
       if (!Meteor.userId()) {
         throw new Meteor.Error("not-authorized");
       }
-      Events.update(
-        { _id: eventId },
-        {
-          $set: { status: "booked" }
-        }
-      );
+      let currEvent = Events.findOne({ _id: eventId });
+      if (currEvent.status === "booked") {
+        Meteor.call("sendConfirmationEmail", currEvent);
+      } else {
+        Events.update(
+          { _id: eventId },
+          {
+            $set: { status: "booked" }
+          }
+        );
+      }
     }
   },
 
@@ -226,6 +243,7 @@ Meteor.methods({
       if (!Meteor.userId()) {
         throw new Meteor.Error("not-authorized");
       }
+      // Remove members who voted 0
       Events.update(
         { _id: eventId },
         {
@@ -234,18 +252,33 @@ Meteor.methods({
         { multi: true }
       );
 
+      // set back event status
       Events.update(
         { _id: eventId },
         {
           $set: { status: "ongoing", isFull: false }
         }
       );
-    }
 
-    // check if all members voted NO, which will make the event empty, and we need to remove it
-    let updatedEvent = Events.findOne({ _id: eventId });
-    if (updatedEvent.member.length === 0) {
-      Events.remove({ _id: eventId });
+      // check if all members voted NO, which will make the event empty, and we need to remove it
+      let updatedEvent = Events.findOne({ _id: eventId });
+      console.log("find event here");
+      if (updatedEvent && updatedEvent.member.length === 0) {
+        Events.remove({ _id: eventId });
+      } else {
+        // reset votes
+        Events.update(
+          { _id: eventId, "member.vote": 0 },
+          { $set: { "member.$.vote": -1 } },
+          { multi: true }
+        );
+
+        Events.update(
+          { _id: eventId, "member.vote": 1 },
+          { $set: { "member.$.vote": -1 } },
+          { multi: true }
+        );
+      }
     }
   },
 
