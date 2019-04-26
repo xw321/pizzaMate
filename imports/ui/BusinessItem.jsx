@@ -147,14 +147,23 @@ class BusinessItem extends Component {
         : "0" + (today.getMonth() + 1);
 
     date += mon;
-    date += "-" + today.getDate();
+    let dt = today.getDate() >= 10 ? today.getDate() : "0" + today.getDate();
+
+    date += "-" + dt;
+    console.log("formated date:" + date);
     return date;
   }
 
   // get formatted current time
   getTime() {
     let today = new Date();
-    let time = today.getHours() + ":" + today.getMinutes();
+    let hr = today.getHours() >= 10 ? today.getHours() : "0" + today.getHours();
+
+    let mm =
+      today.getMinutes() >= 10 ? today.getMinutes() : "0" + today.getMinutes();
+
+    let time = hr + ":" + mm;
+    console.log("formated time:" + time);
     return time;
   }
 
@@ -162,7 +171,7 @@ class BusinessItem extends Component {
   handleSubmit() {
     console.log("button clicked-----   " + this.props.content.restaurantName);
     let error = false;
-
+    //let today = new Date();
     // Cannot be empty date
     if (this.state.appTime === "" || this.state.appDate === "") {
       this.setState({ dateError: true });

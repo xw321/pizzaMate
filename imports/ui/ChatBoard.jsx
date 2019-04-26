@@ -289,7 +289,7 @@ class ChatBoard extends Component {
         ) : this.allVoted() && !this.allVotedYes() ? (
           <Message>
             <Message.Header>
-              All member voted,but some voted NOT TO COME.
+              All member voted, but some voted NOT TO COME.
             </Message.Header>
             We will have to remove who voted NO and wait for the event to be
             full again.
@@ -369,9 +369,9 @@ class ChatBoard extends Component {
                   <Segment>
                     <p>
                       You are about to start a vote in the group. Once all
-                      members agree to book, each member will place a deposit
-                      for reserving this event. There will be NO refund if you
-                      want to cancel. Are your sure you want to proceed?
+                      members agree to book, you will receive a confirmation for
+                      this event. You will be removed from the group if you vote
+                      cancel. Are your sure you want to proceed?
                     </p>
                     <Button
                       className="new-teal"
