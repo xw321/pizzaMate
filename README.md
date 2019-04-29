@@ -22,6 +22,9 @@ The project idea came from troubles we faced in real life. Often times we found 
 
 So, we think why not have a platform to help those who like food but don't like eating alone, and let people enjoy food together and meet each other. 
 
+## Usability Study
+
+[Usability Report](https://github.com/xw321/pizzaMate/blob/master/imports/README.md)
 
 ## Features
 
