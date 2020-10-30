@@ -1,5 +1,7 @@
 # pizzaMate
 
+A food sharing and meeting web application.
+
 Project 4 (and 5) for Web Development course(CS5610) in Northeastern University, Silicon Valley (Spring 2019 semester). You can find the couse web page [here](http://johnguerra.co/classes/webDevelopment_spring_2019/ "CS-5610 Web Development Spring 2019").
 
 This project is made by [Xun Wang](https://xw321.github.io/) and [Yan Zhao](https://yzhao430.github.io/), with :heart:.
